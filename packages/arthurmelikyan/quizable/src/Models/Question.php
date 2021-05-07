@@ -1,26 +1,17 @@
 <?php
 
-namespace App;
+namespace Arthurmelikyan\Quizable\Models;
 
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
-    use SoftDeletes, UsesTenantConnection;
+    use SoftDeletes;
 
     protected $table = 'questions';
 
-    protected $fillable = [
-        'quiz_id',
-        'title',
-        'type',
-        'file',
-        'file_type',
-        'url',
-        'order'
-    ];
+    protected $guarded = ['id'];
 
 
     protected $appends = [
@@ -29,7 +20,7 @@ class Question extends Model
 
     public function getFileUrlAttribute()
     {
-        return config('aws.aws_url') . '/' . getUuid() . '/' . $this->file;
+        return asset('storage/'.$this->file);
     }
 
     public function quiz()

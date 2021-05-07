@@ -1,25 +1,17 @@
 <?php
 
-namespace App;
+namespace Arthurmelikyan\Quizable\Models;
 
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class QuizAnswer extends Model
 {
-    use UsesTenantConnection;
 
     protected $table = 'quiz_answers';
 
-    protected $fillable = [
-        'user_quiz_id',
-        'quiz_report_id',
-        'question_id',
-        'answer_id',
-        'text',
-    ];
+    protected $guarded = ['id'];
 
     public function user_quiz(): BelongsTo
     {

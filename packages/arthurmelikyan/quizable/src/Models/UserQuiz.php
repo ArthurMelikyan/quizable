@@ -1,26 +1,19 @@
 <?php
 
-namespace App;
+namespace Arthurmelikyan\Quizable\Models;
 
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserQuiz extends Model
 {
-    use SoftDeletes, UsesTenantConnection;
+    use SoftDeletes;
 
     protected $table = 'user_quizes';
 
-    protected $fillable = [
-        'user_id',
-        'quiz_id',
-        'is_completed',
-    ];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'is_completed' => 'boolean'
@@ -41,6 +34,6 @@ class UserQuiz extends Model
 
     public function users(): HasMany
     {
-        return $this->hasMany(User::class, 'id', 'user_id');
+        return $this->hasMany(config('auth.providers.users.model'), 'id', 'user_id');
     }
 }

@@ -1,26 +1,15 @@
 <?php
 
-namespace App;
+namespace Arthurmelikyan\Quizable\Models;
 
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 use Illuminate\Database\Eloquent\Model;
 
 class QuizReport extends Model
 {
-    use UsesTenantConnection;
 
     protected $table = 'quiz_reports';
 
-    protected $fillable = [
-        'quiz_id',
-        'user_id',
-        'first_name',
-        'last_name',
-        'questions_count',
-        'answers_count',
-        'quiz_duration',
-        'questions_answers',
-    ];
+    protected $guarded = ['id'];
 
     protected $appends = [
         'question_answers'

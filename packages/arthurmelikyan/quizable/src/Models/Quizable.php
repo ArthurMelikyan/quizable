@@ -1,20 +1,14 @@
 <?php
 
-namespace App;
 
-use Hyn\Tenancy\Traits\UsesTenantConnection;
+namespace Arthurmelikyan\Quizable\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Quizable extends Model
 {
-    use UsesTenantConnection;
     protected $table = 'quizables';
-
-    protected $fillable = [
-        'quiz_id',
-        'quizable_id',
-        'quizable_type'
-    ];
+    protected $guarded = ['id'];
 
     public static function saveQuiz($section, $quiz_id)
     {
@@ -50,9 +44,6 @@ class Quizable extends Model
 
     }
 
-    /**
-     * Get the post that owns the comment.
-     */
     public function quiz()
     {
         return $this->belongsTo(Quiz::class, 'quiz_id');
