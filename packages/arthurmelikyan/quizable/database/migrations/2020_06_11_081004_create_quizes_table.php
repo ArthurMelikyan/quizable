@@ -17,7 +17,8 @@ class CreateQuizesTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('description');
-            $table->integer('time_limit');
+            $table->integer('time_limit')->nullable();
+            $table->boolean('answer_by_one')->default(false);
 
             $table->timestamps();
 

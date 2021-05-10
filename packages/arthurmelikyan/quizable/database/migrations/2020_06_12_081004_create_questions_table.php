@@ -16,7 +16,7 @@ class CreateQuestionsTable extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('quiz_id')->index();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->enum('type',['multiple', 'dropdown', 'file', 'radio', 'text', 'textarea'])->nullable();
             $table->string('file')->nullable();
             $table->enum('file_type', ['image', 'video', 'youtube', 'image_url'])->nullable();

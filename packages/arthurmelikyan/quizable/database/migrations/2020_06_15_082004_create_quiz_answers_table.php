@@ -15,16 +15,18 @@ class CreateQuizAnswersTable extends Migration
     {
         Schema::create('quiz_answers', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->text('text')->nullable();
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('quiz_id');
-            $table->unsignedBigInteger('question_id');
-            $table->unsignedBigInteger('answer_id');
+            $table->unsignedBigInteger('question_id')->nullable();
+            $table->unsignedBigInteger('answer_id')->nullable();
+            $table->unsignedBigInteger('user_quiz_id')->index();
 
-            $table->index(['user_id', 'quiz_id']);
-            $table->index(['user_id', 'quiz_id', 'question_id']);
-
+            $table->index(['user_id','question_id']);
+            $table->unsignedBigInteger('quiz_report_id')->nullable()->index();
             $table->timestamps();
-            $table->softDeletes();
+
+
         });
     }
 

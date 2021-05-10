@@ -16,7 +16,7 @@ class CreateAnswersTable extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('question_id')->index();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->boolean('is_right')->default(false);
             $table->string('file')->nullable();
             $table->enum('file_type', ['image', 'video', 'youtube', 'image_url'])->nullable();
