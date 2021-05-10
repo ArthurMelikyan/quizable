@@ -4,20 +4,22 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "69acb5ffdcc913353422ca3177ef9040",
+    "content-hash": "4dca4f5ecece3253c9772bac60bbaa68",
     "packages": [
         {
             "name": "arthurmelikyan/quizable",
             "version": "dev-main",
             "dist": {
                 "type": "path",
-                "url": "/Users/gevorgsargsyan/Sites/quiz-package/packages/arthurmelikyan/quizable",
-                "reference": "75da76040108510b56754015fa4bc005023432b6"
+                "url": "./packages/arthurmelikyan/quizable",
+                "reference": "ca5c58d9583c77d94d2d8d043c80e482b3b9e2c8"
             },
             "require": {
+                "doctrine/dbal": "^3.1",
                 "illuminate/support": "~7|~8"
             },
             "require-dev": {
+                "naoray/laravel-package-maker": "^4.0",
                 "orchestra/testbench": "~5|~6",
                 "phpunit/phpunit": "~9.0"
             },
@@ -60,7 +62,7 @@
             ],
             "transport-options": {
                 "symlink": true,
-                "relative": false
+                "relative": true
             }
         },
         {
@@ -1634,16 +1636,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "19a9673b833cc37770439097b381d86cd125bfe8"
+                "reference": "2651c497f005de305c7ba3f232cbd87b8c00ee8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/19a9673b833cc37770439097b381d86cd125bfe8",
-                "reference": "19a9673b833cc37770439097b381d86cd125bfe8",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/2651c497f005de305c7ba3f232cbd87b8c00ee8c",
+                "reference": "2651c497f005de305c7ba3f232cbd87b8c00ee8c",
                 "shasum": ""
             },
             "require": {
@@ -1731,7 +1733,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-01T19:00:49+00:00"
+            "time": "2021-05-08T16:08:00+00:00"
         },
         {
             "name": "league/flysystem",
@@ -6007,6 +6009,68 @@
                 }
             ],
             "time": "2020-11-13T09:40:50+00:00"
+        },
+        {
+            "name": "naoray/laravel-package-maker",
+            "version": "v4.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Naoray/laravel-package-maker.git",
+                "reference": "5152110f0f8539202688c3f096b4e3ae2de33528"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Naoray/laravel-package-maker/zipball/5152110f0f8539202688c3f096b4e3ae2de33528",
+                "reference": "5152110f0f8539202688c3f096b4e3ae2de33528",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^7.0|^8.0",
+                "illuminate/filesystem": "^7.0|^8.0",
+                "illuminate/support": "^7.0|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4",
+                "orchestra/testbench": "^5.0|^6.0"
+            },
+            "type": "package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Naoray\\LaravelPackageMaker\\LaravelPackageMakerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Naoray\\LaravelPackageMaker\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Krishan Koenig",
+                    "email": "krishan.koenig@googlemail.com"
+                }
+            ],
+            "description": "Get a package skeleton and all other `make` commands from laravel base for package development.",
+            "keywords": [
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/Naoray/laravel-package-maker/issues",
+                "source": "https://github.com/Naoray/laravel-package-maker/tree/v4.0.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Naoray",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-12-16T18:01:59+00:00"
         },
         {
             "name": "nunomaduro/collision",

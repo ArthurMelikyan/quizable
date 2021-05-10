@@ -13,10 +13,10 @@ class QuizableServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'arthurmelikyan');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'arthurmelikyan');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'arthurmelikyan');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'arthurmelikyan');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
@@ -37,6 +37,9 @@ class QuizableServiceProvider extends ServiceProvider
         $this->app->singleton('quizable', function ($app) {
             return new Quizable;
         });
+        // $this->publishes([
+        //     __DIR__.'/../public' => public_path('vendor/quizable'),
+        // ], 'public');
     }
 
     /**
@@ -67,13 +70,13 @@ class QuizableServiceProvider extends ServiceProvider
         ], 'quizable.views');*/
 
         // Publishing assets.
-        /*$this->publishes([
-            __DIR__.'/../resources/assets' => public_path('vendor/arthurmelikyan'),
-        ], 'quizable.views');*/
+        $this->publishes([
+            __DIR__.'/../public' => public_path('vendor/quizable'),
+        ], 'quizable.assets');
 
         // Publishing the translation files.
         /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/arthurmelikyan'),
+            __DIR__.'/../resources/lang' => resource_path('lang/vendor/quizable'),
         ], 'quizable.views');*/
 
         // Registering package commands.
