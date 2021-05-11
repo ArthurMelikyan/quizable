@@ -48,7 +48,7 @@ $(document).ready(function(){
         });
     }
     $('[data-toggle="tooltip"]').tooltip();
- 
+
 
    $(document).on('click', '.rm_dyn_inp',function(){
         let elem_id = $(this).attr('d-id');
@@ -73,5 +73,14 @@ $(document).ready(function(){
         objTo.find('.add_dyn_inp:last').removeClass('add_dyn_inp btn-primary').addClass('rm_dyn_inp btn-danger').text('-').attr('d-id',iter_plus);
         objTo.find('.value_inp:last').attr('name', `${valkey}[${iter_plus}][value]`).val('');
         objTo.find('.key_inp:last').attr('name', `${valkey}[${iter_plus}][key]`).val('');
-    })
+    });
+    
+    jQuery('[data-toggle="custom-file-input"]:not(.js-custom-file-input-enabled)').each((index, element) => {
+        let el = jQuery(element);
+        el.addClass('js-custom-file-input-enabled').on('change', e => {
+            let fileName = (e.target.files.length > 1) ? e.target.files.length + ' ' + (el.data('lang-files') || 'Files') : e.target.files[0].name;
+
+            el.next('.custom-file-label').css('overflow-x', 'hidden').html(fileName);
+        });
+    });
 })
