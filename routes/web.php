@@ -2,14 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 
-use Arthurmelikyan\Quizable\Quizable;
-use Arthurmelikyan\Quizable\QuizableServiceProvider;
+// use Arthurmelikyan\Quizable\Quizable;
+// use Arthurmelikyan\Quizable\QuizableServiceProvider;
+use Illuminate\Support\Facades\Auth;
+
 Route::get('/', function () {
-    $quizable = new Quizable();
-    dd($quizable->sayHello('Arthur'));
-    return view('welcome');
+
 });
 
+Auth::routes();
 
-// "url": "/home/arth/Sites/quizable/packages/arthurmelikyan/quizable",
-// "url": "/Users/gevorgsargsyan/Sites/quiz-package/packages/arthurmelikyan/quizable",
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

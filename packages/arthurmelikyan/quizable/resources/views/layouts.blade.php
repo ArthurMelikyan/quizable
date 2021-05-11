@@ -13,12 +13,13 @@
     <div id="quizable_wrap">
         <div id="quizable_some_block"></div>
         <div id="page-container" class="sidebar-o enable-page-overlay side-scroll page-header-fixed page-header-dark main-content-narrow">
-            @include('arthurmelikyan::quiz.partials.header')      
-            @include('arthurmelikyan::quiz.partials.nav')      
+            @include('arthurmelikyan::quiz.partials.header')
+            @include('arthurmelikyan::quiz.partials.nav')
             @yield('quizable_content')
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{asset('vendor/quizable/js/script.js')}}"></script>
     @stack('quizable_js')
 </body>
