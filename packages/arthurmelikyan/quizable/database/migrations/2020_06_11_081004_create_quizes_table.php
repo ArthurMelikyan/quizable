@@ -19,10 +19,7 @@ class CreateQuizesTable extends Migration
             $table->text('description');
             $table->integer('time_limit')->nullable();
             $table->boolean('answer_by_one')->default(false);
-
             $table->timestamps();
-
-            $table->softDeletes();
         });
     }
 

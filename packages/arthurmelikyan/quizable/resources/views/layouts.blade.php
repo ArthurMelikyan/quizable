@@ -21,6 +21,25 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{asset('vendor/quizable/js/script.js')}}"></script>
+    <script>
+        @if (session()->has('success'))
+            Swal.fire({
+                title: 'Success',
+                text: "{!! session()->get('success') !!}",
+                icon: 'success',
+                timer: 5000
+            })
+        @endif
+
+        jQuery('[data-toggle="custom-file-input"]:not(.js-custom-file-input-enabled)').each((index, element) => {
+            let el = jQuery(element);
+            el.addClass('js-custom-file-input-enabled').on('change', e => {
+                let fileName = (e.target.files.length > 1) ? e.target.files.length + ' ' + (el.data('lang-files') || 'Files') : e.target.files[0].name;
+
+                el.next('.custom-file-label').css('overflow-x', 'hidden').html(fileName);
+            });
+        });
+    </script>
     @stack('quizable_js')
 </body>
 

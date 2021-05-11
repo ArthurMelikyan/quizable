@@ -43,7 +43,7 @@ class QuizController extends BaseController {
     public function store(QuizRequest $request)
     {
         Quiz::create($request->validated());
-        return redirect()->route('quizable.quiz.index');
+        return redirect()->route('quizable.quiz.index')->with('success','Quiz successfully added');
     }
 
     /**
@@ -79,7 +79,7 @@ class QuizController extends BaseController {
     public function update(QuizRequest $request,Quiz $quiz)
     {
         $quiz->update($request->validated());
-        return redirect()->route('quizable.quiz.index');
+        return redirect()->route('quizable.quiz.index')->with('success','Quiz successfully updated');
     }
 
     /**
@@ -91,6 +91,6 @@ class QuizController extends BaseController {
     public function destroy(Quiz $quiz)
     {
         $quiz->delete();
-        return back();
+        return back()->with('success','Quiz successfully removed');
     }
 }
