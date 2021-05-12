@@ -1,6 +1,549 @@
 <template>
+    <div id="quiz">
+        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid mt-4">
+            <div class="row">
+                <div class="col-xl-10 col-md-12">
 
+                    <div class="kt-portlet">
 
+                        <div class="kt-portlet__body " id="kt-portlet__body">
+                            <div class="material-switch mb-3 d-flex align-items-center justify-content-end" v-if="quiz_id">
+                                <span class="mr-3 mb-1">
+                                    is_quiz_active
+                                </span>
+                                <input id="someSwitchOptionSuccess" name="someSwitchOption001" type="checkbox" @change="quizActive" v-model="quiz_is_active"/>
+                                <label for="someSwitchOptionSuccess" class="label-success"></label>
+                            </div>
+                            <div class="timeline timeline-5 mt-3">
+                                <div v-if="!quizHide" class="d-flex block-1 align-items-center mb-4">
+                                    <p class="m-0">{{title}}</p>
+                                    <a href="#" @click.prevent="quizEdit"
+                                       class="btn btn-sm btn-clean btn-icon btn-icon-md ml-auto"
+                                       title="Edit details">
+                                        <i class="flaticon-edit"></i>
+                                    </a>
+                                </div>
+                                <form action="" v-if="quizHide" class="quizCreateForm"
+                                      @submit.prevent="createQuiz($event)">
+                                    <div class="form-group">
+                                        <label for="Title">Title</label>
+                                        <input type="text" class="form-control title" maxlength="255"
+                                               :placeholder="'Title'"
+                                               v-model="title"
+                                               id="Title">
+                                        <div class="valid mt-2 error" v-if="quiz_create_valid.title">
+                                             The field is required
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Description"> quiz.Description </label>
+                                        <textarea class="form-control description"
+                                                  :placeholder="'Description'"
+                                                  v-model="description"
+                                                  id="Description"></textarea>
+                                        <div class="valid mt-2 error" v-if="quiz_create_valid.description">
+                                             The field is required
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="minute">
+                                             Quiz Time Limit
+                                        </label>
+                                        <input type="number" class="form-control"
+                                               :placeholder="'Enter the Duration in Minutes'"
+                                               v-model="time_limit"
+                                               id="minute" min="0" max="9999"
+                                               onkeydown="return ((event.keyCode>7) && (event.keyCode<56) || (event.keyCode >= 96) && (event.keyCode<=105) );">
+                                        <div class="valid mt-2 error" v-if="quiz_create_valid.limit_time">
+                                            Invalid input
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <a href="/dashboard/quiz/" class="btn btn-secondary">Cancel</a>
+                                        <button type="submit" :disabled="loading" class="btn btn-primary" v-if="saveOrEdit">
+                                            <span v-if="loading" class="spinner-border spinner-border-sm mr-1" style="padding: 5px;" role="status" aria-hidden="true"></span>
+                                            Save
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="openQuestion" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+            <div class="row">
+                <div class="col-xl-10 col-md-12">
+                    <div class="kt-portlet">
+                        <div class="kt-portlet__body">
+                            <div class="timeline timeline-5 mt-3">
+
+                                <app-question v-for="(item, index) in questionData" :index="index"
+                                              :quizResponse="quizResponse" :quiz_id="quiz_id" :item="item" :key="index"
+                                              @allQuestions="allQuestions" @questionCountDelete="questionCountDelete"/>
+                                <div class="text-center">
+                                    <a href="#" class="btn btn-success btn-success-2 add__question__item"
+                                       @click.prevent="addNewQuestion"><span class="plus-icon2 mr-2"><span
+                                        class="plus-vertical-correction">+</span></span>
+                                         Create New Question
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="openQuestion" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+            <div class="row">
+                <div class="col-xl-10 col-md-12">
+                    <div class="kt-portlet">
+                        <div class="kt-portlet__body">
+                            <div class="timeline timeline-5 mt-3 ">
+                                <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Question {{ questionNavigation.checkLangType }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group" v-show="questionNavigation.file_type.url">
+                                                    <label for="url"><b>Set your file url</b></label>
+                                                    <input type="text" class="form-control" id="url"
+                                                           @input="questionNavigationUrlChange"
+                                                           v-model="questionNavigation.url"
+                                                           :class="{'is-invalid': error.validUrl}" :placeholder="question_file_type">
+                                                    <div v-if="error.validUrl" class="mt-1" style="color: red">
+                                                        Please enter correct values
+                                                    </div>
+                                                    <div v-if="error.validUrlYoutube" class="mt-1" style="color: red">
+                                                        Please enter correct Youtube video url
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  align-items-center" :class="{'d-md-flex' : questionNavigation.class}" v-show="questionNavigation.file_type.file">
+                                                    <div v-show="questionNavigation.class"
+                                                         class="position-relative question-img-preview "
+                                                         :class="{'my-style block-5': questionNavigation.class}">
+                                                        <img :src="questionNavigation.file_url" alt="">
+                                                    </div>
+
+                                                    <div class="block-3 d-flex align-items-center ">
+                                                        <div class="custom-file w-auto">
+                                                            <input type="file" class="custom-file-input " id="file"
+                                                                   @change="getFileQuestion($event)"  :accept="(questionNavigation.file_type.name == 'image') ? 'image/x-png,image/jpeg' : 'video/mp4,video/x-m4v,video/*'">
+                                                            <label class="custom-file-label overflow-hidden" for="file">
+                                                                Choose file</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="position-relative question-video-preview "
+                                                         style="margin-bottom: -25px;" v-show="questionNavigation.video">
+                                                        <video :src="questionNavigation.file_url" width="100%"
+                                                               height="100%" class="mt-3" controls></video>
+                                                    </div>
+                                                </div>
+                                                <div v-if="error.validUploadFile" class="mt-1" style="color: red">
+                                                    Please select {{questionNavigation.checkLangType__}}
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+
+                                                <button v-if="formChanged" type="button" class=" btn btn-secondary"
+                                                        @click="questionNavigationFileTypeChange('Choose file')">
+                                                        Clear
+                                                </button>
+                                                <button type="button" class="btn btn-primary" v-if="modal_button_save" data-dismiss="modal">
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <draggable
+                                    tag="div"
+                                    v-model="dataQuestions"
+                                    v-bind="dragOptions"
+                                    @change="changeQuestions"
+                                >
+                                    <div class="accordion accordion-quize" :id="'accordionExample'+element.id"
+                                         v-for="(element, index) in dataQuestions"
+                                         :key="element.id">
+                                        <div class="card mb-3">
+                                            <div class="card-header question" :id="'headingOne'+element.id">
+                                                <div class="card-title">
+                                                    <span @click="openedItem(element.id)" class="collapsed quiz-question-title-ellipsis"
+                                                          data-toggle="collapse"
+                                                          :data-target="'#collapseOne'+element.id"
+                                                          :aria-expanded="index ? 'false' : 'true'"
+                                                          :aria-controls="'collapseOne'+element.id">
+                                                        <img src="/img/Image 382.png" alt="" class="mr-3 my-handle">
+
+                                                        <svg v-if="element.file_type == 'image' || element.file_type == 'image_url'" class="bi bi-card-image "
+                                                             width="1.4em" height="1.4em"
+                                                             viewBox="0 0 16 16"
+                                                             fill="#5867dd"
+                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                                <path fill-rule="evenodd"
+                                                                                      d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                                                                                <path
+                                                                                    d="M10.648 7.646a.5.5 0 0 1 .577-.093L15.002 9.5V13h-14v-1l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71z"/>
+                                                                                <path fill-rule="evenodd"
+                                                                                      d="M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                                                                            </svg>
+                                                        <svg v-if="element.file_type == 'video' || element.file_type == 'youtube'" class="bi bi-camera-video-fill "
+                                                             width="1.4em" height="1.4em"
+                                                             viewBox="0 0 16 16"
+                                                             fill="#5867dd"
+                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                                <path
+                                                                                    d="M2.667 3h6.666C10.253 3 11 3.746 11 4.667v6.666c0 .92-.746 1.667-1.667 1.667H2.667C1.747 13 1 12.254 1 11.333V4.667C1 3.747 1.746 3 2.667 3z"/>
+                                                                                <path
+                                                                                    d="M7.404 8.697l6.363 3.692c.54.313 1.233-.066 1.233-.697V4.308c0-.63-.693-1.01-1.233-.696L7.404 7.304a.802.802 0 0 0 0 1.393z"/>
+                                                                            </svg>
+                                                        {{element.title}}
+
+                                                    </span>
+
+                                                    <div class="ml-auto text-nowrap ">
+                                                        <a href="#"
+                                                           @click.prevent="questionEdit(element, [
+                                                               'Multiple',
+                                                               'Yes/No',
+                                                               'Dropdown',
+                                                               'Short Text',
+                                                               'Picture Choice',
+                                                               'Long Text',
+                                                           ], 'Choose file')"
+                                                           class="btn btn-sm  btn-clean btn-icon btn-icon-md ml-auto"
+                                                           :title="'Edit details'">
+                                                            <i class="flaticon-edit"></i>
+                                                        </a>
+                                                        <a href="#" @click.prevent="cloneQuestion(element.id)"
+                                                           class="btn btn-sm btn-clean btn-icon btn-icon-md ml-auto"
+                                                           :title="'quiz.Copy'">
+                                                            <img src="/img/copy.svg" alt="">
+                                                        </a>
+                                                        <a href="#" @click.prevent="questionDelete(element.id, index)"
+                                                           class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                                                           :title="'Delete'">
+                                                            <i class="flaticon2-trash"></i>
+                                                        </a>
+                                                        <img style="padding: 12px 10px;transition: .2s"  @click="openedItem(element.id)" :class="[opened === element.id ? 'rotate' : '']" src="/img/directional.svg" alt="" data-toggle="collapse"
+                                                             :data-target="'#collapseOne'+element.id">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div :id="'collapseOne'+element.id" :data-id="element.id"
+                                                 class="questionBodyCollapse collapse"
+                                                 :aria-labelledby="'headingOne'+element.id"
+                                                 :data-parent="'#accordionExample'+element.id"
+                                                 :data-question-id="element.id">
+                                                <div class="card-body questionItemEdit">
+                                                    <div class="edit-block">
+                                                        <div class="d-md-flex align-items-end block-2 mb-5">
+                                                            <div class="form-group mb-0 questionTitleAndNavigationBlock w-100"
+                                                                 @mouseover="showEditNavigation()" @mouseout="hide">
+                                                                <div class="d-flex justify-content-end">
+                                                                    <div class="questionsNavigationButton" :class="{'_show':showNavigation}"
+                                                                         data-toggle="modal"
+                                                                         data-target="#exampleModalCenter2">
+                                                                        <button :class="{'active' : questionNavigation.file_type.name == 'image'}" class="q-navigation-btn" style="margin-right: -4px;"
+                                                                            @click.prevent="questionNavigationControl('image', 'quiz.image', 'Choose file', 'jpeg | jpg | gif | png', 'image')">
+                                                                            <svg class="bi bi-card-image "
+                                                                                 width="1.4em" height="1.4em"
+                                                                                 viewBox="0 0 16 16"
+                                                                                 fill="currentColor"
+                                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                                <path fill-rule="evenodd"
+                                                                                      d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                                                                                <path
+                                                                                    d="M10.648 7.646a.5.5 0 0 1 .577-.093L15.002 9.5V13h-14v-1l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71z"/>
+                                                                                <path fill-rule="evenodd"
+                                                                                      d="M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                                                                            </svg>
+                                                                        </button>
+                                                                        <button :class="{'active' : questionNavigation.file_type.name == 'video'}" class="q-navigation-btn"
+                                                                            @click.prevent="questionNavigationControl('video', 'video', 'Choose file', 'Youtube video url', 'quiz.video__')">
+                                                                            <svg class="bi bi-camera-video-fill "
+                                                                                 width="1.4em" height="1.4em"
+                                                                                 viewBox="0 0 16 16"
+                                                                                 fill="currentColor"
+                                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                                <path
+                                                                                    d="M2.667 3h6.666C10.253 3 11 3.746 11 4.667v6.666c0 .92-.746 1.667-1.667 1.667H2.667C1.747 13 1 12.254 1 11.333V4.667C1 3.747 1.746 3 2.667 3z"/>
+                                                                                <path
+                                                                                    d="M7.404 8.697l6.363 3.692c.54.313 1.233-.066 1.233-.697V4.308c0-.63-.693-1.01-1.233-.696L7.404 7.304a.802.802 0 0 0 0 1.393z"/>
+                                                                            </svg>
+                                                                        </button>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <input type="text"
+                                                                       @input="questionNameChange"
+                                                                       class="form-control questionName"
+                                                                       :placeholder="'Enter your question'"
+                                                                       v-model="questionName">
+                                                                <div class="valid q-correct mt-2 position-absolute"
+                                                                     v-show="valid_error.r_title">
+                                                                    Is required question title
+                                                                </div>
+                                                                <div class="valid q-correct mt-2 position-absolute"
+                                                                     v-show="valid_error.r_select">
+                                                                    Please select question type
+                                                                </div>
+                                                                <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_limit">
+                                                                    This field must not exceed 255 characters
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="dropdown">
+
+                                                                <button
+                                                                    class="btn btn-secondary dropdown-toggle w-100"
+                                                                    type="button"
+                                                                    :id="'dropdownMenuButton'+element.id"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false">
+                                                                    {{ questionCurrentType || 'Select question type' }}
+                                                                </button>
+                                                                <div class="dropdown-menu w-100"
+                                                                     :aria-labelledby="'dropdownMenuButton'+element.id">
+                                                                    <table class="table drop-table">
+                                                                        <tr>
+                                                                            <td @click="selectQuestionType('multiple', element.id, 'Multiple')">
+                                                                                <img src="/img/Multiple.svg" alt="">Multiple
+                                                                            </td>
+                                                                            <td @click="selectQuestionType('radio', element.id, 'Yes/No')">
+                                                                                <img
+                                                                                    src="/img/radio.svg" alt="">Yes/No
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td @click="selectQuestionType('dropdown', element.id, 'Dropdown')">
+                                                                                <img src="/img/Dropdown.svg" alt="">Dropdown
+                                                                            </td>
+                                                                            <td @click="selectQuestionType('text', element.id, 'Short Text')"><span
+                                                                                class="short-text-icon"></span>Short Text
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td @click="selectQuestionType('file', element.id, 'Picture Choice')">
+                                                                                <img src="/img/photo2.svg" alt="">
+                                                                                Picture Choice
+                                                                            </td>
+                                                                            <td @click="selectQuestionType('textarea', element.id, 'Long Text')">
+                                                                                <span class="long-text-icon"></span>Long Text
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="questionType === 'multiple'" v-for="(item, index) in data"
+                                                             class="block-3 d-flex align-items-center mb-3 ">
+                                                            <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
+                                                                <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
+                                                                <input type="text" class="form-control" maxlength="250" :placeholder="'Enter an answer choice'"
+                                                                       v-model="data[index]['title']">
+                                                                <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
+                                                                    <span class="CP">Correct answer</span>
+                                                                    <span class="mobile position-absolute">
+                                                                        Correct answer
+                                                                    </span>
+                                                                    <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div v-if="questionType === 'radio'"
+                                                             class="block-3  mb-3 ">
+                                                            <div class="d-flex align-items-center mb-3 answer">
+                                                                <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
+                                                                    <span class="d-flex align-items-center " style="width: 30px;">
+                                                                        Yes
+                                                                    </span>
+                                                                </label>
+
+                                                                <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
+                                                                    <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
+                                                                        <span class="mr-3">Correct answer</span>
+                                                                        <input type="radio" name="Yes/No" :value="true" @change="getRadioValue(true, 'Yes')">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex align-items-center">
+                                                                <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
+                                                                    <span class="d-flex align-items-center " style="width: 30px;">
+                                                                        No
+                                                                    </span>
+                                                                </label>
+                                                                <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
+                                                                    <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
+                                                                        <span class="mr-3">Correct answer</span>
+                                                                        <input type="radio" name="Yes/No" :value="false" @change="getRadioValue(false, 'No')">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div v-if="questionType === 'file'"
+                                                             class="block-3 d-md-flex align-items-center mb-3 image-block"
+                                                             v-for="(item, index) in data">
+                                                            <div class="position-relative mb-3 block-5 ">
+                                                                <button type="button" style="display: block"
+                                                                        class="position-absolute userSelectImageIcon"
+                                                                        @click="clearUserSelectImg(index, 'Choose file')">
+                                                                    ×
+                                                                </button>
+                                                                <div class="img-preview block-5 mr-0">
+                                                                    <img class="rounded" :src="data[index]['file_url'] ? data[index]['file_url'] : data[index]['url']"
+                                                                         alt="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="block-3 d-flex align-items-center mb-3 position-relative answer">
+                                                                <div class="custom-file w-auto ">
+                                                                    <input type="file" class="custom-file-input answer-image" accept="image/x-png,image/jpeg"
+                                                                           id="customFile" @change="getImages(index, $event)">
+                                                                    <label class="custom-file-label answer-image-label" :data-browse="'quiz.Choose file'" for="customFile">Choose file</label>
+                                                                </div>
+                                                                <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success " style="background: transparent;">
+                                                                    <span class="CP">Correct answer</span>
+                                                                    <span class="mobile position-absolute"  style="top: -14px; width: auto">
+                                                                        Correct answer
+                                                                    </span>
+                                                                    <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="questionType === 'dropdown'" v-for="(item, index) in data"
+                                                             class="block-3 d-flex align-items-center mb-3">
+                                                            <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
+                                                                <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
+                                                                <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice'"
+                                                                       v-model="data[index]['title']" >
+                                                                <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
+                                                                    <span class="CP">Correct answer</span>
+                                                                    <span class="mobile position-absolute">
+                                                                        Correct answer
+                                                                    </span>
+                                                                    <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="validationAnswer" style="color: red">
+                                                            Please fill in all fields and select at least one correct variant
+                                                        </div>
+                                                        <div v-if="validationAnswerUploadFile" style="color: red">
+                                                            Please select image
+                                                        </div>
+                                                        <div v-if="addOtherQuestionShow"
+                                                             class="block-4 d-inline-flex align-items-center mt-3 mb-3"
+                                                             @click="addOtherQuestion()">
+                                                            <span class="plus-icon mr-2">+</span>
+                                                            <p class="m-0">Add new answer</p>
+                                                        </div>
+                                                        <div class="text-right">
+                                                            <a href="#" class="btn btn-secondary mr-2"
+                                                               @click.prevent="formToEmpty">Clear</a>
+                                                            <button type="submit" class="btn btn-primary" :disabled="loading"
+                                                                    @click="questionUpdateSave(element.id)">
+                                                                <span v-if="loading" class="spinner-border spinner-border-sm mr-1" style="padding: 5px;" role="status" aria-hidden="true"></span>
+                                                                <span>Save</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="preview">
+                                                        <div v-if="element.type === 'multiple'">
+                                                            <div class="d-flex align-items-center mb-4"
+                                                                 v-for="answer in element.answers">
+                                                                <label
+                                                                    class="radio radio-outline radio-big radio-success mr-4 mb-0 d-flex align-items-center">
+                                                                    <input type="checkbox" class="mr-2">
+                                                                    {{answer.title}}
+                                                                    <span></span>
+                                                                </label>
+                                                                <img v-if="answer.is_right" src="/img/correct.svg"
+                                                                     alt="" class="">
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="element.type === 'radio'">
+                                                            <div v-for="answer in element.answers" :key="answer.id">
+                                                                <div class="d-flex align-items-center mb-3">
+                                                                    <label
+                                                                        class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mb-0">
+                                                                        <span class="d-flex align-items-center "
+                                                                              style="width: 60px;">
+                                                                            <input
+                                                                                class="d-flex align-items-center mr-1"
+                                                                                type="radio" name="type-radio[2]"
+                                                                                :value="true">
+                                                                            {{answer.title}}
+                                                                        </span>
+                                                                    </label>
+                                                                    <div
+                                                                        class="form-group mb-0 position-relative flex-grow-1 ">
+                                                                        <img src="/img/correct.svg" alt=""
+                                                                             class="correct-icon"
+                                                                             v-if="!!answer.is_right"
+                                                                             style="position: static; opacity: 1">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="element.type === 'text'"
+                                                             class="d-flex align-items-center mb-4">
+                                                            <div class="form-group mb-0 position-relative flex-grow-1">
+                                                                <input type="text" class="form-control pr-5"
+                                                                       maxlength="250" :placeholder="'Enter an answer choice'">
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="element.type === 'dropdown'" class="form-group">
+                                                            <select class="form-control" id="exampleSelect1">
+                                                                <option v-for="answer in element.answers"
+                                                                        :selected="answer.is_right ? 'selected': ''">
+                                                                    {{answer.title}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div v-if="element.type === 'textarea'" class="form-group">
+                                                            <textarea class="form-control"
+                                                                      :placeholder="'Textbox'"></textarea>
+                                                        </div>
+                                                        <div v-if="element.type === 'file'"
+                                                             class="d-flex flex-wrap align-items-start">
+                                                            <div class="position-relative block-5 mt-2"
+                                                                 v-for="answer in element.answers">
+                                                                <img :src="answer.file_url ? answer.file_url : answer.url "
+                                                                     alt="">
+                                                                <label
+                                                                    class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-4 mb-0">
+                                                                    <input type="checkbox" checked disabled v-if="answer.is_right">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </draggable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>

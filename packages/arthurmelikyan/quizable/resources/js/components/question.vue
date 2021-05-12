@@ -22,7 +22,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{ trans('quiz.Question')}} {{questionNavigation.checkLangType }}</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Question {{questionNavigation.checkLangType }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -30,15 +30,15 @@
 
                     <div class="modal-body">
                         <div class="form-group" v-show="questionNavigation.file_type.url">
-                            <label :for="'url'+index"><b>{{trans('quiz.Set your file url')}}</b></label>
+                            <label :for="'url'+index"><b> Set your file url </b></label>
                             <input type="text" class="form-control" :id="'url'+index"
                                    @input="questionNavigationUrlChange"
                                    v-model="questionNavigation.url" :placeholder="question_file_type">
                             <div v-if="error.validUrl" class="mt-1" style="color: red">
-                                {{trans('quiz.Please enter correct values')}}
+                                 Please enter correct values
                             </div>
                             <div v-if="error.validUrlYoutube" class="mt-1" style="color: red">
-                                {{trans('quiz.Please enter correct Youtube video url')}}
+                                Please enter correct Youtube video url
                             </div>
                         </div>
                         <div class="form-group  align-items-center" :class="{'d-md-flex' : questionNavigation.class}"
@@ -52,8 +52,9 @@
                                 <div class="custom-file w-auto">
                                     <input type="file" class="custom-file-input "   :accept="(questionNavigation.file_type.name == 'image') ? 'image/x-png,image/jpeg' : 'video/mp4,video/x-m4v,video/*'" :id="'c-file'+index"
                                            @change="getFileQuestion($event, index)">
-                                    <label class="custom-file-label overflow-hidden" :data-browse="trans('quiz.Choose file')" :for="'c-file'+index">
-                                        {{ trans('quiz.Choose file') }}</label>
+                                    <label class="custom-file-label overflow-hidden" :for="'c-file'+index">
+                                        Choose file
+                                    </label>
                                 </div>
 
                             </div>
@@ -63,15 +64,15 @@
 
                         </div>
                         <div v-if="error.validUploadFile" class="mt-1" style="color: red">
-                            {{trans('quiz.Please select '+questionNavigation.checkLangType__)}}
+                           Please select {{ questionNavigation.checkLangType__}}
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button v-if="formChanged" type="button" class=" btn btn-secondary"
-                                @click="questionNavigationFileClear(trans('quiz.Choose file'), index)"> {{trans('quiz.Clear')}}
+                                @click="questionNavigationFileClear('quiz.Choose file', index)">  Clear
                         </button>
                         <button type="button" class="btn btn-primary" v-if="modal_button_save" data-dismiss="modal">
-                            {{trans('quiz.Save')}}
+                             Save
                         </button>
                     </div>
                 </div>
@@ -82,10 +83,10 @@
             <div class="d-flex flex-wrap align-items-end block-2 mb-5 mt-2 questionCreatePanel">
                 <div class="form-group mb-0" @mouseover="showEditNavigation()" @mouseout="hide">
                     <div class="d-flex justify-content-between ">
-                        <label :for="'Q'+(index+1)" class="questionCount ">{{ trans('quiz.Question') }} <span>{{': '+(index+1)}}</span></label>
+                        <label :for="'Q'+(index+1)" class="questionCount ">Question <span>{{': '+(index+1)}}</span></label>
                         <div class="questionsNavigationButton" :class="{'_show':showNavigation}" data-toggle="modal"
                              :data-target="'#exampleModalCenter'+index">
-                            <button style="margin-right: -4px;" @click.prevent="questionNavigationControl('image', trans('quiz.image'), trans('quiz.Choose file'), index, 'jpeg | jpg | png ', 'image')">
+                            <button style="margin-right: -4px;" @click.prevent="questionNavigationControl('image', 'image', 'quiz.Choose file', index, 'jpeg | jpg | png ', 'image')">
                                 <svg class="bi bi-card-image"
                                      width="1.4em" height="1.4em"
                                      viewBox="0 0 16 16"
@@ -99,7 +100,7 @@
                                           d="M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                                 </svg>
                             </button>
-                            <button @click.prevent="questionNavigationControl('video', trans('quiz.video'), trans('quiz.Choose file'), index, trans('quiz.Youtube video url'), trans('quiz.video__'))">
+                            <button @click.prevent="questionNavigationControl('video', 'quiz.video', 'quiz.Choose file', index, 'quiz.Youtube video url', 'quiz.video__')">
                                 <svg class="bi bi-camera-video-fill"
                                      width="1.4em" height="1.4em"
                                      viewBox="0 0 16 16"
@@ -119,16 +120,16 @@
                         <input type="text"
                                @input="questionNameChange"
                                class="form-control questionName w-100"
-                               :placeholder="trans('quiz.Enter your question')" :id="'Q'+(index+1)"
+                               :placeholder="'Enter your question'" :id="'Q'+(index+1)"
                                v-model="questionName">
                         <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_title">
-                            {{trans('quiz.Is required question title')}}
+                            Is required question title
                         </div>
                         <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_select">
-                            {{trans('quiz.Please select question type')}}
+                            Please select question type
                         </div>
                         <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_limit">
-                            {{trans('quiz.This field must not exceed 255 characters')}}
+                            This field must not exceed 255 characters
                         </div>
                     </div>
 
@@ -137,32 +138,32 @@
                     <button class="btn btn-secondary dropdown-toggle w-100" type="button"
                             id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ questionCurrentType || trans('quiz.Select question type') }}
+                        {{ questionCurrentType || 'Select question type' }}
                     </button>
                     <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                         <table class="table drop-table">
                             <tr>
-                                <td @click="selectQuestionType('multiple', trans('quiz.Multiple'))">
-                                    <img src="/img/Multiple.svg" alt="">{{trans('quiz.Multiple')}}
+                                <td @click="selectQuestionType('multiple', 'quiz.Multiple')">
+                                    <img src="/img/Multiple.svg" alt="">Multiple
                                 </td>
-                                <td @click="selectQuestionType('radio', trans('quiz.Yes/No'))">
-                                    <img src="/img/radio.svg" alt="">{{trans('quiz.Yes/No')}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td @click="selectQuestionType('dropdown', trans('quiz.Dropdown'))">
-                                    <img src="/img/Dropdown.svg" alt="">{{trans('quiz.Dropdown')}}
-                                </td>
-                                <td @click="selectQuestionType('text', trans('quiz.Short Text'))"><span
-                                    class="short-text-icon"></span>{{trans('quiz.Short Text')}}
+                                <td @click="selectQuestionType('radio', 'Yes/No')">
+                                    <img src="/img/radio.svg" alt="">Yes/No
                                 </td>
                             </tr>
                             <tr>
-                                <td @click="selectQuestionType('file', trans('quiz.Picture Choice'))">
-                                    <img src="/img/photo2.svg" alt="">{{ trans('quiz.Picture Choice') }}
+                                <td @click="selectQuestionType('dropdown', 'Dropdown')">
+                                    <img src="/img/Dropdown.svg" alt="">Dropdown
                                 </td>
-                                <td @click="selectQuestionType('textarea', trans('quiz.Long Text'))">
-                                    <span class="long-text-icon"></span>{{trans('quiz.Long Text')}}
+                                <td @click="selectQuestionType('text', 'Short Text')"><span
+                                    class="short-text-icon"></span>Short Text
+                                </td>
+                            </tr>
+                            <tr>
+                                <td @click="selectQuestionType('file', 'Picture Choice')">
+                                    <img src="/img/photo2.svg" alt="">Picture Choice
+                                </td>
+                                <td @click="selectQuestionType('textarea', 'Long Text')">
+                                    <span class="long-text-icon"></span>Long Text
                                 </td>
                             </tr>
                         </table>
@@ -174,12 +175,12 @@
                  class="block-3 d-flex align-items-center mb-3 ">
                 <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
                     <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
-                    <input type="text" class="form-control"  maxlength="250"  :placeholder="trans('quiz.Enter an answer choice')"
+                    <input type="text" class="form-control"  maxlength="250"  :placeholder="'Enter an answer choice'"
                            v-model="data[index]['title']">
                     <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
-                        <span class="CP">{{trans('quiz.Correct answer')}}</span>
+                        <span class="CP">Correct answer_by_one</span>
                         <span class="mobile position-absolute">
-                            {{trans('quiz.Correct answer')}}
+                            Correct answer
                         </span>
                         <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                     </div>
@@ -191,13 +192,13 @@
                 <div class="d-flex align-items-center mb-3 answer">
                     <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
                     <span class="d-flex align-items-center " style="width: 30px;">
-                        {{ trans('quiz.Yes')}}
+                        Yes
                     </span>
                     </label>
 
                     <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
                         <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
-                            <span class="mr-3">{{trans('quiz.Correct answer')}}</span>
+                            <span class="mr-3">Correct answer</span>
                             <input type="radio" name="Yes/No" :value="true" @change="getRadioValue(true, 'Yes')">
                         </div>
                     </div>
@@ -205,12 +206,12 @@
                 <div class="d-flex align-items-center">
                     <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
                     <span class="d-flex align-items-center " style="width: 30px;">
-                        {{ trans('quiz.No')}} 
+                        No
                     </span>
                     </label>
                     <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
                         <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
-                            <span class="mr-3 ">{{trans('quiz.Correct answer')}}</span>
+                            <span class="mr-3 ">Correct answer</span>
                             <input type="radio" name="Yes/No" :value="false" @change="getRadioValue(false, 'No')">
                         </div>
                     </div>
@@ -231,12 +232,12 @@
                     <div class="custom-file w-auto ">
                         <input type="file" class="custom-file-input answer-image"  accept="image/x-png,image/jpeg"
                                id="customFile" @change="getImages(index, $event)">
-                        <label class="custom-file-label answer-image-label" :data-browse="trans('quiz.Choose file')" for="customFile">{{trans('quiz.Choose file')}}</label>
+                        <label class="custom-file-label answer-image-label"  for="customFile">Choose file</label>
                     </div>
                     <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success " style="background: transparent;">
-                        <span class="CP">{{trans('quiz.Correct answer')}}</span>
+                        <span class="CP">Correct answer</span>
                         <span class="mobile position-absolute" style="top: -14px; width: auto">
-                            {{trans('quiz.Correct answer')}}
+                           Correct answer
                         </span>
                         <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                     </div>
@@ -246,35 +247,35 @@
                  class="block-3 d-flex align-items-center mb-3">
                 <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
                     <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
-                    <input type="text" class="form-control pr-5" maxlength="250" :placeholder="trans('quiz.Enter an answer choice')"
+                    <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice' "
                            v-model="data[index]['title']" >
                     <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
-                        <span class="CP">{{trans('quiz.Correct answer')}}</span>
+                        <span class="CP">Correct answer</span>
                         <span class="mobile position-absolute">
-                            {{trans('quiz.Correct answer')}}
+                            Correct answer
                         </span>
                         <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                     </div>
                 </div>
             </div>
             <div v-if="validationAnswer" style="color: red">
-                {{trans('quiz.Please fill in all fields and select at least one correct variant')}}
+                Please fill in all fields and select at least one correct variant
             </div>
             <div v-if="validationAnswerUploadFile" class="file_validate_err" style="color: red">
-                {{trans('quiz.Please select image')}}
+                Please select image
             </div>
             <div v-if="addOtherQuestionShow"
                  class="block-4 d-inline-flex align-items-center mt-3"
                  @click="addOtherQuestion()">
                 <span class="plus-icon mr-2">+</span>
-                <p class="m-0">{{trans('quiz.Add new answer')}}</p>
+                <p class="m-0">Add new answer</p>
             </div>
             <div class="text-right">
                 <a href="#" class="btn btn-secondary mr-2"
-                   @click.prevent="formToEmpty">{{trans('quiz.Clear')}}</a>
+                   @click.prevent="formToEmpty">Clear</a>
                 <button type="submit" class="btn btn-primary" :disabled="loading">
                     <span v-if="loading" class="spinner-border spinner-border-sm mr-1" style="padding: 5px;" role="status" aria-hidden="true"></span>
-                    <span>{{trans('quiz.Save')}}</span>
+                    <span>Save</span>
                 </button>
             </div>
         </div>
@@ -521,7 +522,7 @@
                             this.modal_button_save = false;
                             this.error.validUrlYoutube = true;
                         }
-                       
+
                     }
 
                     this.questionNavigation.file_type.file = false;
