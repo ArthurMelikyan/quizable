@@ -3,6 +3,8 @@
  window.Vue = require('vue').default;
 
  Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+ Vue.component('quiz', require('./components/quiz_main.vue').default);
+//  Vue.component('question', require('./components/question.vue').default);
 
 
  const app = new Vue({
