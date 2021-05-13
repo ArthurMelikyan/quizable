@@ -1,4 +1,9 @@
 @extends('arthurmelikyan::layouts')
+@push('css')
+    <style>
+
+    </style>
+@endpush
 @section('quizable_content')
 <main id="main-container">
     <div class="bg-body-light">
@@ -34,7 +39,9 @@
                     </div>
                 </div>
             </div>
-            <quiz></quiz>
+            <div class="pb-3 -pt-3">
+                <quiz></quiz>
+            </div>
         </div>
     </div>
 </main>

@@ -10,9 +10,7 @@
                     <span class="text-white-75">{{config('quizable.appname')}} </span>
                 </span>
             </a>
-
             <div>
-
                 <a class="d-lg-none text-white ml-2" data-toggle="layout" data-action="sidebar_close" href="javascript:void(0)">
                     <i class="fa fa-times-circle"></i>
                 </a>
@@ -23,7 +21,7 @@
     <div class="content-side content-side-full">
         <ul class="nav-main">
             <li class="nav-main-item mb-4">
-                <a class="nav-main-link active" href="{{route('quizable.dashboard')}}">
+                <a class="nav-main-link  @if(request()->routeIs('quizable.dashboard')) active @endif " href="{{route('quizable.dashboard')}}">
                     <i class="nav-main-link-icon si si-cursor"></i>
                     <span class="nav-main-link-name">Welcome</span>
                 </a>
@@ -35,14 +33,12 @@
                 </a>
                 <ul class="nav-main-submenu">
                     <li class="nav-main-item">
-                        <a class="nav-main-link @if(request()->routeIs('quizable.quiz.index')) active @endif "  href="{{route('quizable.quiz.index')}}">
+                        <a class="nav-main-link @if(request()->routeIs('quizable.quiz.*')) active @endif "  href="{{route('quizable.quiz.index')}}">
                             <span class="nav-main-link-name">Quizes</span>
                         </a>
                     </li>
                 </ul>
             </li>
-
-
         </ul>
     </div>
 
