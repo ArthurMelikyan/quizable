@@ -1,78 +1,6 @@
 <template>
     <div id="quiz">
-        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid mt-4">
-            <div class="row">
-                <div class="col-xl-10 col-md-12">
 
-                    <div class="kt-portlet">
-
-                        <div class="kt-portlet__body " id="kt-portlet__body">
-                            <div class="material-switch mb-3 d-flex align-items-center justify-content-end" v-if="quiz_id">
-                                <span class="mr-3 mb-1">
-                                    is_quiz_active
-                                </span>
-                                <input id="someSwitchOptionSuccess" name="someSwitchOption001" type="checkbox" @change="quizActive" v-model="quiz_is_active"/>
-                                <label for="someSwitchOptionSuccess" class="label-success"></label>
-                            </div>
-                            <div class="timeline timeline-5 mt-3">
-                                <div v-if="!quizHide" class="d-flex block-1 align-items-center mb-4">
-                                    <p class="m-0">{{title}}</p>
-                                    <a href="#" @click.prevent="quizEdit"
-                                       class="btn btn-sm btn-clean btn-icon btn-icon-md ml-auto"
-                                       title="Edit details">
-                                        <i class="flaticon-edit"></i>
-                                    </a>
-                                </div>
-                                <form action="" v-if="quizHide" class="quizCreateForm"
-                                      @submit.prevent="createQuiz($event)">
-                                    <div class="form-group">
-                                        <label for="Title">Title</label>
-                                        <input type="text" class="form-control title" maxlength="255"
-                                               :placeholder="'Title'"
-                                               v-model="title"
-                                               id="Title">
-                                        <div class="valid mt-2 error" v-if="quiz_create_valid.title">
-                                             The field is required
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="Description"> quiz.Description </label>
-                                        <textarea class="form-control description"
-                                                  :placeholder="'Description'"
-                                                  v-model="description"
-                                                  id="Description"></textarea>
-                                        <div class="valid mt-2 error" v-if="quiz_create_valid.description">
-                                             The field is required
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="minute">
-                                             Quiz Time Limit
-                                        </label>
-                                        <input type="number" class="form-control"
-                                               :placeholder="'Enter the Duration in Minutes'"
-                                               v-model="time_limit"
-                                               id="minute" min="0" max="9999"
-                                               onkeydown="return ((event.keyCode>7) && (event.keyCode<56) || (event.keyCode >= 96) && (event.keyCode<=105) );">
-                                        <div class="valid mt-2 error" v-if="quiz_create_valid.limit_time">
-                                            Invalid input
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <a href="/dashboard/quiz/" class="btn btn-secondary">Cancel</a>
-                                        <button type="submit" :disabled="loading" class="btn btn-primary" v-if="saveOrEdit">
-                                            <span v-if="loading" class="spinner-border spinner-border-sm mr-1" style="padding: 5px;" role="status" aria-hidden="true"></span>
-                                            Save
-                                        </button>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div v-if="openQuestion" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
             <div class="row">
                 <div class="col-xl-10 col-md-12">
@@ -85,8 +13,8 @@
                                               @allQuestions="allQuestions" @questionCountDelete="questionCountDelete"/>
                                 <div class="text-center">
                                     <a href="#" class="btn btn-success btn-success-2 add__question__item"
-                                       @click.prevent="addNewQuestion"><span class="plus-icon2 mr-2"><span
-                                        class="plus-vertical-correction">+</span></span>
+                                       @click.prevent="addNewQuestion">
+                                       <span class="plus-icon2 mr-2"><span class="plus-vertical-correction">+</span></span>
                                          Create New Question
                                     </a>
                                 </div>
@@ -647,13 +575,13 @@
                 this.opened = item_id;
 
             },
-            quizActive(){
-                let formData = new FormData();
-                formData.append('is_active', this.quiz_is_active);
-                axios.patch(`/dashboard/api-quiz-is_active/${this.quiz_id}`, {is_active:this.quiz_is_active})
-                    .then()
-                    .catch(error => console.log(error))
-            },
+            // quizActive(){
+            //     let formData = new FormData();
+            //     formData.append('is_active', this.quiz_is_active);
+            //     axios.patch(`/dashboard/api-quiz-is_active/${this.quiz_id}`, {is_active:this.quiz_is_active})
+            //         .then()
+            //         .catch(error => console.log(error))
+            // },
             questionCountDelete(index)
             {
                 this.questionData.splice(index, 1);

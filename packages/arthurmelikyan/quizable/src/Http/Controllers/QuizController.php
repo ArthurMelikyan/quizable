@@ -2,10 +2,14 @@
 
 namespace Arthurmelikyan\Quizable\Http\Controllers;
 
+use App\Http\Requests\Quiz\CreateQuizRequest;
+use App\Http\Requests\Quiz\UpdateQuizRequest;
+use App\Http\Resources\QuizResource;
 use Arthurmelikyan\Quizable\Http\Requests\QuizRequest;
 use Arthurmelikyan\Quizable\Models\Quiz;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class QuizController extends BaseController {
     public function dashboard(){
@@ -92,5 +96,74 @@ class QuizController extends BaseController {
     {
         $quiz->delete();
         return back()->with('success','Quiz successfully removed');
+    }
+
+    // ! QUIZABLE 
+
+    public function retrieveAllQuizes(): JsonResource
+    {
+        $quizes = Quiz::orderBy('id', 'desc')->get();
+
+        return QuizResource::collection($quizes);
+    }
+
+    public function retrieveOneByID(int $quiz_id): JsonResource
+    {
+        $quiz = $this->checkIfExistsQuiz($quiz_id);
+
+        return QuizResource::make($quiz);
+    }
+
+
+    public function createQuiz(CreateQuizRequest $request): JsonResource
+    {
+        $data = $request->only([
+            'title',
+            'description',
+            'time_limit',
+            'answer_by_one',
+        ]);
+        $data['user_id'] = $request->user()->id;
+        $data['is_active'] = false;
+
+        $quiz = Quiz::create($data);
+
+        return QuizResource::make($quiz->refresh());
+    }
+
+    public function quizIsActive(Request $request, $id)
+    {
+        $request->validate([
+           'is_active' => 'boolean'
+        ]);
+        Quiz::find($id)->update($request->all());
+        return response()->json('success', 200);
+
+    }
+
+
+    public function updateQuiz(UpdateQuizRequest $request, Quiz $quiz): JsonResource
+    {
+        $data = $request->only([
+            'title',
+            'description',
+            'time_limit',
+            'answer_by_one'
+        ]);
+
+        $quiz->update($data);
+
+        return QuizResource::make($quiz->refresh());
+    }
+
+    public function deleteQuiz(int $quiz_id): JsonResource
+    {
+        $quiz = $this->checkIfExistsQuiz($quiz_id);
+
+        $quiz->delete();
+
+        return JsonResource::make([
+            'deleted' => true,
+        ]);
     }
 }

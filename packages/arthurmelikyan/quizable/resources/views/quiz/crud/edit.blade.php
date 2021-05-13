@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            {{-- <quiz></quiz> --}}
+            <quiz></quiz>
         </div>
     </div>
 </main>
