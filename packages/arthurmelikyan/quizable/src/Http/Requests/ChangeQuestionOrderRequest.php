@@ -5,30 +5,18 @@ namespace Arthurmelikyan\Quizable\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class CreateQuizRequest extends FormRequest
+class ChangeQuestionOrderRequest extends FormRequest
 {
     public function rules()
     {
         return [
-            'title' => [
-                'required',
-                'string',
-                'max:255'
-            ],
-            'description' => [
-                'required',
-                'string'
-            ],
-            'time_limit' => [
-                $this->time_limit ? 'integer' : 'nullable',
-            ],
-            'answer_by_one' => [
-                'boolean'
-            ]
+            'ids' => ['required', 'array']
         ];
+
     }
 
     protected function failedValidation(Validator $validator)
@@ -38,4 +26,3 @@ class CreateQuizRequest extends FormRequest
         ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
-

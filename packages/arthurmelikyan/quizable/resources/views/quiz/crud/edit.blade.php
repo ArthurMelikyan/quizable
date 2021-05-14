@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="pb-3 -pt-3">
-                <quiz></quiz>
+                <quiz v-bind:quiz="{{json_encode($quiz)}}"></quiz>
             </div>
         </div>
     </div>

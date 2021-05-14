@@ -5,29 +5,44 @@ namespace Arthurmelikyan\Quizable\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class CreateQuizRequest extends FormRequest
+class CreateAnswerRequest extends FormRequest
 {
     public function rules()
     {
         return [
-            'title' => [
+            'data' => [
                 'required',
+                'array'
+            ],
+            'data.*.title' => [
+//                'required',
                 'string',
                 'max:255'
             ],
-            'description' => [
-                'required',
-                'string'
+            'data.*.file' => [
+//                'file',
+//                'required_without_all:data.*.url'
             ],
-            'time_limit' => [
-                $this->time_limit ? 'integer' : 'nullable',
+            'data.*.file_type' => [
+//                'required',
+                Rule::in(
+                    [
+                        'image',
+                        'video',
+                        'youtube',
+                        'image_url',
+                    ])
+
             ],
-            'answer_by_one' => [
-                'boolean'
-            ]
+
+            'data.*.url' => [
+//                'string',
+//                'required_without_all:data.*.file'
+            ],
         ];
     }
 
@@ -38,4 +53,3 @@ class CreateQuizRequest extends FormRequest
         ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
-

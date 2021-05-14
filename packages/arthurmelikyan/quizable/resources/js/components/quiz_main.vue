@@ -153,14 +153,14 @@
                                                     <a href="#" @click.prevent="cloneQuestion(element.id)"
                                                         class="btn btn-sm btn-clean btn-icon btn-icon-md ml-auto"
                                                         :title="'quiz.Copy'">
-                                                        <img src="/img/copy.svg" alt="">
+                                                        <i class="fas fa-copy"></i>
                                                     </a>
                                                     <a href="#" @click.prevent="questionDelete(element.id, index)"
                                                         class="btn btn-sm btn-clean btn-icon btn-icon-md"
                                                         :title="'Delete'">
                                                         <i class="flaticon2-trash"></i>
                                                     </a>
-                                                    <img style="padding: 12px 10px;transition: .2s"  @click="openedItem(element.id)" :class="[opened === element.id ? 'rotate' : '']" src="/img/directional.svg" alt="" data-toggle="collapse"
+                                                    <img style="padding: 12px 10px;transition: .2s; width:5px"  @click="openedItem(element.id)" :class="[opened === element.id ? 'rotate' : '']" src="https://static.thenounproject.com/png/1315951-200.png" alt="" data-toggle="collapse"
                                                             :data-target="'#collapseOne'+element.id">
                                                 </div>
                                             </div>
@@ -394,8 +394,8 @@
                                                                 {{answer.title}}
                                                                 <span></span>
                                                             </label>
-                                                            <img v-if="answer.is_right" src="/img/correct.svg"
-                                                                    alt="" class="">
+                                                            <i v-if="answer.is_right" class="fas fa-check-circle">
+                                                            </i>
                                                         </div>
                                                     </div>
                                                     <div v-if="element.type === 'radio'">
@@ -414,10 +414,10 @@
                                                                 </label>
                                                                 <div
                                                                     class="form-group mb-0 position-relative flex-grow-1 ">
-                                                                    <img src="/img/correct.svg" alt=""
-                                                                            class="correct-icon"
+                                                                    <i
+                                                                            class="correct-icon fas fa-check-circle"
                                                                             v-if="!!answer.is_right"
-                                                                            style="position: static; opacity: 1">
+                                                                            style="position: static; opacity: 1"> </i>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -570,13 +570,13 @@ export default {
             this.opened = item_id;
 
         },
-        // quizActive(){
-        //     let formData = new FormData();
-        //     formData.append('is_active', this.quiz_is_active);
-        //     axios.patch(`/dashboard/api-quiz-is_active/${this.quiz_id}`, {is_active:this.quiz_is_active})
-        //         .then()
-        //         .catch(error => console.log(error))
-        // },
+        quizActive(){
+            let formData = new FormData();
+            formData.append('is_active', this.quiz_is_active);
+            axios.patch(`/quizable/api-quiz-is_active/${this.quiz_id}`, {is_active:this.quiz_is_active})
+                .then()
+                .catch(error => console.log(error))
+        },
         questionCountDelete(index)
         {
             this.questionData.splice(index, 1);
@@ -954,8 +954,8 @@ export default {
                                 item.querySelector('.edit-block').style.display = 'none';
                             }
                         });
-                        await this.questionUpdate(`/dashboard/quiz/${this.quiz_id}/questions/${question_id}`, 'post');
-                        await axios.delete(`/dashboard/questions/${question_id}/answers`).catch(error => {
+                        await this.questionUpdate(`/quizable/quiz/${this.quiz_id}/questions/${question_id}`, 'post');
+                        await axios.delete(`/quizable/questions/${question_id}/answers`).catch(error => {
                             console.log(error)
                         });
                         let formData = new FormData();
@@ -976,7 +976,7 @@ export default {
                                 data: this.data
                             }
                         }
-                        axios.post(`/dashboard/questions/${question_id}/answers`, formData).then(response => {
+                        axios.post(`/quizable/questions/${question_id}/answers`, formData).then(response => {
                             this.getAllQuizQuestions();
                             this.valid = true;
                             this.edit = true;
@@ -1194,12 +1194,12 @@ export default {
                 if (this.time_limit) form.append('time_limit', this.time_limit);
                 this.loading = true;
                 if (!this.quizResponse && !this.quiz_id) {
-                    url = '/dashboard/api-quiz';
+                    url = '/quizable/api-quiz';
                     await this.sendMethod(url, 'post', form);
                 } else {
                     form.append('answer_by_one', 0);
                     form.append('_method', 'PATCH');
-                    url = '/dashboard/api-quiz/' + this.quiz_id + "/update";
+                    url = '/quizable/api-quiz/' + this.quiz_id + "/update";
                     await this.sendMethod(url, 'post', form);
                 }
             }
@@ -1210,7 +1210,7 @@ export default {
             this.quizHide = true
         },
         async cloneQuestion(question_id) {
-            await axios.post(`/dashboard/quiz/${this.quiz_id}/questions/${question_id}`)
+            await axios.post(`/quizable/quiz/${this.quiz_id}/questions/${question_id}`)
                 .then(response => {
                     this.getAllQuizQuestions();
                 }).catch(error => {
@@ -1250,7 +1250,7 @@ export default {
         },
         questionDelete(questionId, index) {
             alert('a')
-            axios.delete(`/dashboard/quiz/${this.quiz_id}/questions/${questionId}`)
+            axios.delete(`/quizable/quiz/${this.quiz_id}/questions/${questionId}`)
                 .then(resp => {
                     this.getAllQuizQuestions();
                 }).catch(error => {
@@ -1303,7 +1303,7 @@ export default {
             });
             await axios({
                 method: 'patch',
-                url: `/dashboard/quiz/${this.quiz_id}/questions`,
+                url: `/quizable/quiz/${this.quiz_id}/questions`,
                 data: {
                     ids: obj
                 },
@@ -1317,7 +1317,7 @@ export default {
             })
         },
         async getAllQuizQuestions() {
-            await axios.get(`/dashboard/quiz/${this.quiz_id}/questions`)
+            await axios.get(`/quizable/quiz/${this.quiz_id}/questions`)
                 .then(response => {
                     this.dataQuestions = response.data.data;
                     this.questionData = [];
