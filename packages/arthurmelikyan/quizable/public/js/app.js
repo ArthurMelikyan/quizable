@@ -2701,6 +2701,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }).then(function (response) {
                   _this6.valid = true;
                   _this6.questionId = response.data.data.id;
+
+                  _this6.showSweet({
+                    successmsg: 'Question created successfully'
+                  }, 'success');
                 })["catch"](function (error) {
                   _this6.valid = false;
                   console.log(error);
@@ -3095,6 +3099,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
 //
 //
 //
@@ -4078,6 +4083,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }).then(function (response) {
                   _this5.valid = true;
                   _this5.questionId = response.data.data.id;
+
+                  _this5.showSweet({
+                    successmsg: 'Question updated successfully'
+                  }, 'success');
                 })["catch"](function (error) {
                   _this5.valid = false;
                   console.log(error);
@@ -4593,6 +4602,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.saveOrEdit = true;
       this.quizHide = true;
     },
+    showSweet: function showSweet(obj, level) {
+      showSweetMsg(obj, level);
+    },
     cloneQuestion: function cloneQuestion(question_id) {
       var _this11 = this;
 
@@ -4604,7 +4616,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context7.next = 2;
                 return axios.post("/quizable/quiz/".concat(_this11.quiz_id, "/questions/").concat(question_id)).then(function (response) {
                   _this11.getAllQuizQuestions();
-                })["catch"](function (error) {});
+
+                  _this11.showSweet({
+                    successmsg: 'Question cloned successfully'
+                  }, 'success');
+                })["catch"](function (error) {
+                  console.log(error);
+                });
 
               case 2:
               case "end":
@@ -4632,6 +4650,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     sendMethod: function sendMethod(url, method, form) {
       var _this12 = this;
 
+      alert('aaa');
+      console.log(form);
       axios({
         url: url,
         method: method,
@@ -4655,6 +4675,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       axios["delete"]("/quizable/quiz/".concat(this.quiz_id, "/questions/").concat(questionId)).then(function (resp) {
         _this13.getAllQuizQuestions();
+
+        _this13.showSweet({
+          successmsg: 'Question deleted successfully'
+        }, 'success');
       })["catch"](function (error) {
         console.log(error);
       });
@@ -7728,7 +7752,7 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _c("div", { staticClass: "text-right" }, [
+              _c("div", { staticClass: "text-right mr-3" }, [
                 _c(
                   "a",
                   {
@@ -7871,7 +7895,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "quiz" } }, [
+  return _c("div", { staticClass: "p-4", attrs: { id: "quiz" } }, [
     _c(
       "div",
       {
@@ -7880,7 +7904,7 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-xl-10 col-md-12" }, [
+          _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "kt-portlet" }, [
               _c("div", { staticClass: "kt-portlet__body" }, [
                 _c(
@@ -7944,7 +7968,7 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-xl-10 col-md-12" }, [
+              _c("div", { staticClass: "col-md-12" }, [
                 _c("div", { staticClass: "kt-portlet" }, [
                   _c("div", { staticClass: "kt-portlet__body" }, [
                     _c(
@@ -8308,7 +8332,7 @@ var render = function() {
                                   [
                                     _c("div", { staticClass: "card-title" }, [
                                       _c("div", { staticClass: "col-md-12" }, [
-                                        _c("div", { staticClass: "row" }, [
+                                        _c("div", { staticClass: "row p-2" }, [
                                           _c(
                                             "div",
                                             { staticClass: "col-md-10" },
@@ -8317,7 +8341,7 @@ var render = function() {
                                                 "span",
                                                 {
                                                   staticClass:
-                                                    "collapsed quiz-question-title-ellipsis",
+                                                    "collapsed quiz-question-title-ellipsis pt-3",
                                                   attrs: {
                                                     "data-toggle": "collapse",
                                                     "data-target":
@@ -8338,15 +8362,6 @@ var render = function() {
                                                   }
                                                 },
                                                 [
-                                                  _c("img", {
-                                                    staticClass:
-                                                      "mr-3 my-handle",
-                                                    attrs: {
-                                                      src: "/img/Image 382.png",
-                                                      alt: ""
-                                                    }
-                                                  }),
-                                                  _vm._v(" "),
                                                   element.file_type ==
                                                     "image" ||
                                                   element.file_type ==
@@ -8532,7 +8547,8 @@ var render = function() {
                                                   ]
                                                 ),
                                                 _vm._v(" "),
-                                                _c("img", {
+                                                _c("i", {
+                                                  staticClass: "fas fa-sync",
                                                   class: [
                                                     _vm.opened === element.id
                                                       ? "rotate"
@@ -8540,17 +8556,13 @@ var render = function() {
                                                   ],
                                                   staticStyle: {
                                                     padding: "12px 10px",
-                                                    transition: ".2s",
-                                                    width: "5px"
+                                                    transition: ".2s"
                                                   },
                                                   attrs: {
-                                                    src:
-                                                      "https://static.thenounproject.com/png/1315951-200.png",
-                                                    alt: "",
-                                                    "data-toggle": "collapse",
                                                     "data-target":
                                                       "#collapseOne" +
-                                                      element.id
+                                                      element.id,
+                                                    "data-toggle": "collapse"
                                                   },
                                                   on: {
                                                     click: function($event) {
@@ -8587,10 +8599,7 @@ var render = function() {
                                   [
                                     _c(
                                       "div",
-                                      {
-                                        staticClass:
-                                          "card-body questionItemEdit"
-                                      },
+                                      { staticClass: "questionItemEdit" },
                                       [
                                         _c(
                                           "div",
@@ -9395,7 +9404,7 @@ var render = function() {
                                                   "div",
                                                   {
                                                     staticClass:
-                                                      "block-3  mb-3 "
+                                                      "block-3 mb-3 p-3"
                                                   },
                                                   [
                                                     _c(
@@ -10182,7 +10191,9 @@ var render = function() {
                                             _vm._v(" "),
                                             _c(
                                               "div",
-                                              { staticClass: "text-right" },
+                                              {
+                                                staticClass: "text-right mr-3"
+                                              },
                                               [
                                                 _c(
                                                   "a",
@@ -10244,298 +10255,306 @@ var render = function() {
                                           2
                                         ),
                                         _vm._v(" "),
-                                        _c("div", { staticClass: "preview" }, [
-                                          element.type === "multiple"
-                                            ? _c(
-                                                "div",
-                                                _vm._l(
-                                                  element.answers,
-                                                  function(answer) {
-                                                    return _c(
+                                        _c(
+                                          "div",
+                                          { staticClass: "pl-4 preview" },
+                                          [
+                                            element.type === "multiple"
+                                              ? _c(
+                                                  "div",
+                                                  _vm._l(
+                                                    element.answers,
+                                                    function(answer) {
+                                                      return _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "d-flex align-items-center mb-4"
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "label",
+                                                            {
+                                                              staticClass:
+                                                                "radio radio-outline radio-big radio-success mr-4 mb-0 d-flex align-items-center"
+                                                            },
+                                                            [
+                                                              _c("input", {
+                                                                staticClass:
+                                                                  "mr-2",
+                                                                attrs: {
+                                                                  type:
+                                                                    "checkbox"
+                                                                }
+                                                              }),
+                                                              _vm._v(
+                                                                "\n                                                                " +
+                                                                  _vm._s(
+                                                                    answer.title
+                                                                  ) +
+                                                                  "\n                                                                "
+                                                              ),
+                                                              _c("span")
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          answer.is_right
+                                                            ? _c("i", {
+                                                                staticClass:
+                                                                  "fas fa-check-circle"
+                                                              })
+                                                            : _vm._e()
+                                                        ]
+                                                      )
+                                                    }
+                                                  ),
+                                                  0
+                                                )
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            element.type === "radio"
+                                              ? _c(
+                                                  "div",
+                                                  _vm._l(
+                                                    element.answers,
+                                                    function(answer) {
+                                                      return _c(
+                                                        "div",
+                                                        { key: answer.id },
+                                                        [
+                                                          _c(
+                                                            "div",
+                                                            {
+                                                              staticClass:
+                                                                "d-flex align-items-center mb-3"
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "label",
+                                                                {
+                                                                  staticClass:
+                                                                    "checkbox checkbox-outline checkbox-outline-2x checkbox-success mb-0"
+                                                                },
+                                                                [
+                                                                  _c(
+                                                                    "span",
+                                                                    {
+                                                                      staticClass:
+                                                                        "d-flex align-items-center ",
+                                                                      staticStyle: {
+                                                                        width:
+                                                                          "60px"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _c(
+                                                                        "input",
+                                                                        {
+                                                                          staticClass:
+                                                                            "d-flex align-items-center mr-1",
+                                                                          attrs: {
+                                                                            type:
+                                                                              "radio",
+                                                                            name:
+                                                                              "type-radio[2]"
+                                                                          },
+                                                                          domProps: {
+                                                                            value: true
+                                                                          }
+                                                                        }
+                                                                      ),
+                                                                      _vm._v(
+                                                                        "\n                                                                        " +
+                                                                          _vm._s(
+                                                                            answer.title
+                                                                          ) +
+                                                                          "\n                                                                    "
+                                                                      )
+                                                                    ]
+                                                                  )
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "div",
+                                                                {
+                                                                  staticClass:
+                                                                    "form-group mb-0 position-relative flex-grow-1 "
+                                                                },
+                                                                [
+                                                                  !!answer.is_right
+                                                                    ? _c("i", {
+                                                                        staticClass:
+                                                                          "correct-icon fas fa-check-circle",
+                                                                        staticStyle: {
+                                                                          position:
+                                                                            "static",
+                                                                          opacity:
+                                                                            "1"
+                                                                        }
+                                                                      })
+                                                                    : _vm._e()
+                                                                ]
+                                                              )
+                                                            ]
+                                                          )
+                                                        ]
+                                                      )
+                                                    }
+                                                  ),
+                                                  0
+                                                )
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            element.type === "text"
+                                              ? _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "d-flex align-items-center mb-4"
+                                                  },
+                                                  [
+                                                    _c(
                                                       "div",
                                                       {
                                                         staticClass:
-                                                          "d-flex align-items-center mb-4"
+                                                          "form-group mb-0 position-relative flex-grow-1"
                                                       },
                                                       [
-                                                        _c(
-                                                          "label",
-                                                          {
-                                                            staticClass:
-                                                              "radio radio-outline radio-big radio-success mr-4 mb-0 d-flex align-items-center"
-                                                          },
-                                                          [
-                                                            _c("input", {
-                                                              staticClass:
-                                                                "mr-2",
-                                                              attrs: {
-                                                                type: "checkbox"
-                                                              }
-                                                            }),
-                                                            _vm._v(
-                                                              "\n                                                                " +
-                                                                _vm._s(
-                                                                  answer.title
-                                                                ) +
-                                                                "\n                                                                "
-                                                            ),
-                                                            _c("span")
-                                                          ]
-                                                        ),
-                                                        _vm._v(" "),
-                                                        answer.is_right
-                                                          ? _c("i", {
-                                                              staticClass:
-                                                                "fas fa-check-circle"
-                                                            })
-                                                          : _vm._e()
+                                                        _c("input", {
+                                                          staticClass:
+                                                            "form-control pr-5",
+                                                          attrs: {
+                                                            type: "text",
+                                                            maxlength: "250",
+                                                            placeholder:
+                                                              "Enter an answer choice"
+                                                          }
+                                                        })
                                                       ]
                                                     )
-                                                  }
-                                                ),
-                                                0
-                                              )
-                                            : _vm._e(),
-                                          _vm._v(" "),
-                                          element.type === "radio"
-                                            ? _c(
-                                                "div",
-                                                _vm._l(
-                                                  element.answers,
-                                                  function(answer) {
-                                                    return _c(
-                                                      "div",
-                                                      { key: answer.id },
-                                                      [
-                                                        _c(
-                                                          "div",
-                                                          {
-                                                            staticClass:
-                                                              "d-flex align-items-center mb-3"
-                                                          },
-                                                          [
-                                                            _c(
-                                                              "label",
-                                                              {
-                                                                staticClass:
-                                                                  "checkbox checkbox-outline checkbox-outline-2x checkbox-success mb-0"
-                                                              },
-                                                              [
-                                                                _c(
-                                                                  "span",
-                                                                  {
-                                                                    staticClass:
-                                                                      "d-flex align-items-center ",
-                                                                    staticStyle: {
-                                                                      width:
-                                                                        "60px"
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _c(
-                                                                      "input",
-                                                                      {
-                                                                        staticClass:
-                                                                          "d-flex align-items-center mr-1",
-                                                                        attrs: {
-                                                                          type:
-                                                                            "radio",
-                                                                          name:
-                                                                            "type-radio[2]"
-                                                                        },
-                                                                        domProps: {
-                                                                          value: true
-                                                                        }
-                                                                      }
-                                                                    ),
-                                                                    _vm._v(
-                                                                      "\n                                                                        " +
-                                                                        _vm._s(
-                                                                          answer.title
-                                                                        ) +
-                                                                        "\n                                                                    "
-                                                                    )
-                                                                  ]
-                                                                )
-                                                              ]
-                                                            ),
-                                                            _vm._v(" "),
-                                                            _c(
-                                                              "div",
-                                                              {
-                                                                staticClass:
-                                                                  "form-group mb-0 position-relative flex-grow-1 "
-                                                              },
-                                                              [
-                                                                !!answer.is_right
-                                                                  ? _c("i", {
-                                                                      staticClass:
-                                                                        "correct-icon fas fa-check-circle",
-                                                                      staticStyle: {
-                                                                        position:
-                                                                          "static",
-                                                                        opacity:
-                                                                          "1"
-                                                                      }
-                                                                    })
-                                                                  : _vm._e()
-                                                              ]
-                                                            )
-                                                          ]
-                                                        )
-                                                      ]
-                                                    )
-                                                  }
-                                                ),
-                                                0
-                                              )
-                                            : _vm._e(),
-                                          _vm._v(" "),
-                                          element.type === "text"
-                                            ? _c(
-                                                "div",
-                                                {
-                                                  staticClass:
-                                                    "d-flex align-items-center mb-4"
-                                                },
-                                                [
-                                                  _c(
-                                                    "div",
-                                                    {
-                                                      staticClass:
-                                                        "form-group mb-0 position-relative flex-grow-1"
-                                                    },
-                                                    [
-                                                      _c("input", {
+                                                  ]
+                                                )
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            element.type === "dropdown"
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "form-group" },
+                                                  [
+                                                    _c(
+                                                      "select",
+                                                      {
                                                         staticClass:
-                                                          "form-control pr-5",
+                                                          "form-control",
                                                         attrs: {
-                                                          type: "text",
-                                                          maxlength: "250",
-                                                          placeholder:
-                                                            "Enter an answer choice"
+                                                          id: "exampleSelect1"
                                                         }
-                                                      })
-                                                    ]
-                                                  )
-                                                ]
-                                              )
-                                            : _vm._e(),
-                                          _vm._v(" "),
-                                          element.type === "dropdown"
-                                            ? _c(
-                                                "div",
-                                                { staticClass: "form-group" },
-                                                [
-                                                  _c(
-                                                    "select",
-                                                    {
+                                                      },
+                                                      _vm._l(
+                                                        element.answers,
+                                                        function(answer) {
+                                                          return _c(
+                                                            "option",
+                                                            {
+                                                              domProps: {
+                                                                selected: answer.is_right
+                                                                  ? "selected"
+                                                                  : ""
+                                                              }
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                " +
+                                                                  _vm._s(
+                                                                    answer.title
+                                                                  ) +
+                                                                  "\n                                                            "
+                                                              )
+                                                            ]
+                                                          )
+                                                        }
+                                                      ),
+                                                      0
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            element.type === "textarea"
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "form-group" },
+                                                  [
+                                                    _c("textarea", {
                                                       staticClass:
                                                         "form-control",
                                                       attrs: {
-                                                        id: "exampleSelect1"
+                                                        placeholder: "Textbox"
                                                       }
-                                                    },
-                                                    _vm._l(
-                                                      element.answers,
-                                                      function(answer) {
-                                                        return _c(
-                                                          "option",
-                                                          {
-                                                            domProps: {
-                                                              selected: answer.is_right
-                                                                ? "selected"
-                                                                : ""
+                                                    })
+                                                  ]
+                                                )
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            element.type === "file"
+                                              ? _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "d-flex flex-wrap align-items-start"
+                                                  },
+                                                  _vm._l(
+                                                    element.answers,
+                                                    function(answer) {
+                                                      return _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "position-relative block-5 mt-2"
+                                                        },
+                                                        [
+                                                          _c("img", {
+                                                            attrs: {
+                                                              src: answer.file_url
+                                                                ? answer.file_url
+                                                                : answer.url,
+                                                              alt: ""
                                                             }
-                                                          },
-                                                          [
-                                                            _vm._v(
-                                                              "\n                                                                " +
-                                                                _vm._s(
-                                                                  answer.title
-                                                                ) +
-                                                                "\n                                                            "
-                                                            )
-                                                          ]
-                                                        )
-                                                      }
-                                                    ),
-                                                    0
-                                                  )
-                                                ]
-                                              )
-                                            : _vm._e(),
-                                          _vm._v(" "),
-                                          element.type === "textarea"
-                                            ? _c(
-                                                "div",
-                                                { staticClass: "form-group" },
-                                                [
-                                                  _c("textarea", {
-                                                    staticClass: "form-control",
-                                                    attrs: {
-                                                      placeholder: "Textbox"
+                                                          }),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "label",
+                                                            {
+                                                              staticClass:
+                                                                "checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-4 mb-0"
+                                                            },
+                                                            [
+                                                              answer.is_right
+                                                                ? _c("input", {
+                                                                    attrs: {
+                                                                      type:
+                                                                        "checkbox",
+                                                                      checked:
+                                                                        "",
+                                                                      disabled:
+                                                                        ""
+                                                                    }
+                                                                  })
+                                                                : _vm._e(),
+                                                              _vm._v(" "),
+                                                              _c("span")
+                                                            ]
+                                                          )
+                                                        ]
+                                                      )
                                                     }
-                                                  })
-                                                ]
-                                              )
-                                            : _vm._e(),
-                                          _vm._v(" "),
-                                          element.type === "file"
-                                            ? _c(
-                                                "div",
-                                                {
-                                                  staticClass:
-                                                    "d-flex flex-wrap align-items-start"
-                                                },
-                                                _vm._l(
-                                                  element.answers,
-                                                  function(answer) {
-                                                    return _c(
-                                                      "div",
-                                                      {
-                                                        staticClass:
-                                                          "position-relative block-5 mt-2"
-                                                      },
-                                                      [
-                                                        _c("img", {
-                                                          attrs: {
-                                                            src: answer.file_url
-                                                              ? answer.file_url
-                                                              : answer.url,
-                                                            alt: ""
-                                                          }
-                                                        }),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "label",
-                                                          {
-                                                            staticClass:
-                                                              "checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-4 mb-0"
-                                                          },
-                                                          [
-                                                            answer.is_right
-                                                              ? _c("input", {
-                                                                  attrs: {
-                                                                    type:
-                                                                      "checkbox",
-                                                                    checked: "",
-                                                                    disabled: ""
-                                                                  }
-                                                                })
-                                                              : _vm._e(),
-                                                            _vm._v(" "),
-                                                            _c("span")
-                                                          ]
-                                                        )
-                                                      ]
-                                                    )
-                                                  }
-                                                ),
-                                                0
-                                              )
-                                            : _vm._e()
-                                        ])
+                                                  ),
+                                                  0
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        )
                                       ]
                                     )
                                   ]

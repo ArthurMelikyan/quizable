@@ -1,8 +1,8 @@
 <template>
-<div id="quiz">
+<div id="quiz" class="p-4">
     <div  class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
         <div class="row">
-            <div class="col-xl-10 col-md-12">
+            <div class="col-md-12">
                 <div class="kt-portlet">
                     <div class="kt-portlet__body">
                         <div class="mt-3">
@@ -23,7 +23,7 @@
     </div>
     <div v-if="openQuestion" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
         <div class="row">
-            <div class="col-xl-10 col-md-12">
+            <div class="col-md-12">
                 <div class="kt-portlet">
                     <div class="kt-portlet__body">
                         <div class="mt-3 ">
@@ -104,14 +104,16 @@
                                         <div class="card-header question" :id="'headingOne'+element.id">
                                             <div class="card-title">
                                                 <div class="col-md-12">
-                                                    <div class="row">
+                                                    <div class="row p-2">
                                                         <div class="col-md-10">
-                                                            <span @click="openedItem(element.id)" class="collapsed quiz-question-title-ellipsis"
+                                                            <span @click="openedItem(element.id)" class="collapsed quiz-question-title-ellipsis pt-3"
                                                                 data-toggle="collapse"
                                                                 :data-target="'#collapseOne'+element.id"
                                                                 :aria-expanded="index ? 'false' : 'true'"
                                                                 :aria-controls="'collapseOne'+element.id">
-                                                            <img src="/img/Image 382.png" alt="" class="mr-3 my-handle">
+                                                                <!-- <i class="fas fa-arrows-alt mr-3 my-handle"></i>
+                                                                TODO DO DRAGGABLE LOGIC
+                                                                -->
 
                                                             <svg v-if="element.file_type == 'image' || element.file_type == 'image_url'" class="bi bi-card-image "
                                                                     width="1.4em" height="1.4em"
@@ -164,8 +166,7 @@
                                                                         :title="'Delete'">
                                                                         <i class="fas fa-trash"></i>
                                                                     </a>
-                                                                    <img style="padding: 12px 10px;transition: .2s; width:5px"  @click="openedItem(element.id)" :class="[opened === element.id ? 'rotate' : '']" src="https://static.thenounproject.com/png/1315951-200.png" alt="" data-toggle="collapse"
-                                                                            :data-target="'#collapseOne'+element.id">
+                                                                    <i class="fas fa-sync" style="padding: 12px 10px;transition: .2s;"  :data-target="'#collapseOne'+element.id" data-toggle="collapse" @click="openedItem(element.id)" :class="[opened === element.id ? 'rotate' : '']"></i>
                                                                 </div>
                                                         </div>
                                                     </div>
@@ -180,7 +181,7 @@
                                                 :aria-labelledby="'headingOne'+element.id"
                                                 :data-parent="'#accordionExample'+element.id"
                                                 :data-question-id="element.id">
-                                            <div class="card-body questionItemEdit">
+                                            <div class="questionItemEdit">
                                                 <div class="edit-block">
                                                     <div class="d-md-flex align-items-end block-2 mb-5">
                                                         <div class="form-group mb-0 questionTitleAndNavigationBlock w-100"
@@ -297,7 +298,7 @@
 
                                                     </div>
                                                     <div v-if="questionType === 'radio'"
-                                                            class="block-3  mb-3 ">
+                                                            class="block-3 mb-3 p-3">
                                                         <div class="d-flex align-items-center mb-3 answer">
                                                             <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
                                                                 <span class="d-flex align-items-center " style="width: 30px;">
@@ -383,7 +384,7 @@
                                                         <span class="plus-icon mr-2">+</span>
                                                         <p class="m-0">Add new answer</p>
                                                     </div>
-                                                    <div class="text-right">
+                                                    <div class="text-right mr-3">
                                                         <a href="#" class="btn btn-secondary mr-2"
                                                             @click.prevent="formToEmpty">Clear</a>
                                                         <button type="submit" class="btn btn-primary" :disabled="loading"
@@ -393,7 +394,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <div class="preview">
+                                                <div class="pl-4 preview">
                                                     <div v-if="element.type === 'multiple'">
                                                         <div class="d-flex align-items-center mb-4"
                                                                 v-for="answer in element.answers">
@@ -912,6 +913,7 @@ export default {
             }).then(response => {
                 this.valid = true;
                 this.questionId = response.data.data.id;
+                this.showSweet({successmsg:'Question updated successfully'}, 'success');
             }).catch(error => {
                 this.valid = false;
                 console.log(error)
@@ -1218,12 +1220,18 @@ export default {
             this.saveOrEdit = true;
             this.quizHide = true
         },
+        showSweet(obj,level){
+            showSweetMsg(obj,level);
+        },
+
         async cloneQuestion(question_id) {
             await axios.post(`/quizable/quiz/${this.quiz_id}/questions/${question_id}`)
-                .then(response => {
-                    this.getAllQuizQuestions();
-                }).catch(error => {
-                });
+            .then(response => {
+                this.getAllQuizQuestions();
+                this.showSweet({successmsg:'Question cloned successfully'}, 'success');
+            }).catch(error => {
+                console.log(error);
+            });
         },
         addNewQuestion() {
             this.questionData.push({
@@ -1240,6 +1248,8 @@ export default {
             }
         },
         sendMethod(url, method, form) {
+            alert('aaa')
+            console.log(form);
             axios({
                 url: url,
                 method: method,
@@ -1261,6 +1271,7 @@ export default {
             axios.delete(`/quizable/quiz/${this.quiz_id}/questions/${questionId}`)
                 .then(resp => {
                     this.getAllQuizQuestions();
+                    this.showSweet({successmsg:'Question deleted successfully'}, 'success');
                 }).catch(error => {
                 console.log(error)
             })

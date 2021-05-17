@@ -74,7 +74,7 @@ $(document).ready(function(){
         objTo.find('.value_inp:last').attr('name', `${valkey}[${iter_plus}][value]`).val('');
         objTo.find('.key_inp:last').attr('name', `${valkey}[${iter_plus}][key]`).val('');
     });
-    
+
     jQuery('[data-toggle="custom-file-input"]:not(.js-custom-file-input-enabled)').each((index, element) => {
         let el = jQuery(element);
         el.addClass('js-custom-file-input-enabled').on('change', e => {
@@ -84,3 +84,21 @@ $(document).ready(function(){
         });
     });
 })
+
+var showSweetMsg = function(sweetObj, level = 'success') {
+    var msg = '';
+    if (level == 'error' && sweetObj.errors) {
+        for (const err in sweetObj.errors) {
+             msg += `${sweetObj.errors[err][0]} <br>`;
+        }
+    } else if(level == 'error' && sweetObj.exceptionion && sweetObj.message){
+        msg = 'Something went wrong...';
+    } else if(level == 'success' && sweetObj.successmsg){
+        msg = sweetObj.successmsg;
+    }
+
+    if (msg) {
+        Swal.fire({icon: level, html: msg , showCloseButton:true, showConfirmButton: false,});
+    }
+    console.log(sweetObj); // TODO RM  THIS LATER
+}

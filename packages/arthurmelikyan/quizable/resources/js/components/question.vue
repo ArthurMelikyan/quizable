@@ -275,7 +275,7 @@
             </span>
             <p class="m-0">Add new answer</p>
         </div>
-        <div class="text-right">
+        <div class="text-right mr-3">
             <a href="#" class="btn btn-secondary mr-2"
                 @click.prevent="formToEmpty">Clear</a>
             <button type="submit" class="btn btn-primary" :disabled="loading">
@@ -637,6 +637,7 @@ export default {
             }).then(response => {
                 this.valid = true;
                 this.questionId = response.data.data.id;
+                this.showSweet({successmsg:'Question created successfully'}, 'success');
             }).catch(error => {
                 this.valid = false;
                 console.log(error)

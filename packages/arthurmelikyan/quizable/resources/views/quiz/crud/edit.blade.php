@@ -20,7 +20,7 @@
             </div>
             <div class="block block-rounded block-bordered">
                 <ul class="nav nav-tabs nav-tabs-alt js-tabs-enabled p-3" data-toggle="tabs" role="tablist">
-                   <h3 class="pl-3"> {{$quiz->title}}</h3>
+                   <h3 class="pl-3 pt-3"> {{$quiz->title}}</h3>
                     <li class="nav-item ml-auto">
                         <a class="nav-link" data-toggle="tab" href="#edit-quiz">
                             <i class="fas fa-pen fa-2x"></i>

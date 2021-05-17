@@ -12,7 +12,7 @@ use Arthurmelikyan\Quizable\Models\Quiz;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use Arthurmelikyan\Quizable\Models\Answer;
 // use App\Answer;
 // use App\Exceptions\ForbiddenException;
 // use App\Exceptions\NotFoundException;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 // use Illuminate\Http\Resources\Json\JsonResource;
 // use Illuminate\Support\Arr;
 // use Illuminate\Support\Facades\Log;
-// use Spatie\Url\Url;
+use Spatie\Url\Url;
 
 class QuestionController extends Controller
 {

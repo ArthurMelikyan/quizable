@@ -23976,7 +23976,10 @@ table.dataTable thead td {
 .accordion-quize .card .card-header .card-title {
     color: #000;
 }
-
+.accordion-quize .card{
+    border:1px solid rgba(176, 176, 176,.3);
+    border-radius:10px;
+}
 .accordion-quize .card .card-body {
     padding-left: 55px;
 }
