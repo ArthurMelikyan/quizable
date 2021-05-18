@@ -191,7 +191,7 @@
 
         </div>
         <div v-if="questionType === 'radio'"
-                class="block-3  mb-3 ">
+                class="block-3  mb-3 pl-4">
             <div class="d-flex align-items-center mb-3 answer">
                 <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
                 <span class="d-flex align-items-center " style="width: 30px;">
@@ -608,6 +608,9 @@ export default {
                 }
             })
         },
+         showSweet(obj,level){
+            showSweetMsg(obj,level);
+        },
         async selectQuestionType(name, currentName) {
             this.data = [];
             this.questionType = name;
@@ -859,6 +862,9 @@ export default {
 </script>
 
 <style lang="scss">
+.table.drop-table{
+    z-index: 999999;
+}
 .table.drop-table td i{
     margin-left: 10px;
 }
@@ -937,10 +943,9 @@ input{
     font-size: 10px;
     width: 25px;
     height: 25px;
+    margin-left: 10px;
     margin-right: 10px;
-    margin-left: -10px;
     transition: .2s;
-    margin-left: 0;
 &:hover{
     color: #fff;
     background: #5766db;

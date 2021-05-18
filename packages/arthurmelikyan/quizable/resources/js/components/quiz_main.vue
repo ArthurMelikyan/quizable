@@ -101,7 +101,7 @@
                                         v-for="(element, index) in dataQuestions"
                                         :key="element.id">
                                     <div class="card mb-3">
-                                        <div class="card-header question" :id="'headingOne'+element.id">
+                                        <div class="question" :id="'headingOne'+element.id">
                                             <div class="card-title">
                                                 <div class="col-md-12">
                                                     <div class="row">
@@ -137,11 +137,11 @@
                                                                                     <path
                                                                                         d="M7.404 8.697l6.363 3.692c.54.313 1.233-.066 1.233-.697V4.308c0-.63-.693-1.01-1.233-.696L7.404 7.304a.802.802 0 0 0 0 1.393z"/>
                                                                                 </svg>
-                                                            <h3>{{element.title}}</h3>
+                                                            <h4>{{element.title}}</h4>
 
                                                         </span>
                                                         </div>
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-2 question_list_actions">
                                                             <div>
                                                                     <a href="#"
                                                                         @click.prevent="questionEdit(element, [
@@ -182,7 +182,7 @@
                                                 :data-parent="'#accordionExample'+element.id"
                                                 :data-question-id="element.id">
                                             <div class="questionItemEdit">
-                                                <div class="edit-block">
+                                                <div class="edit-block mb-5">
                                                     <div class="d-md-flex align-items-end block-2 mb-5">
                                                         <div class="form-group mb-0 questionTitleAndNavigationBlock w-100"
                                                                 @mouseover="showEditNavigation()" @mouseout="hide">
@@ -255,7 +255,7 @@
                                                                 <table class="table drop-table">
                                                                     <tr>
                                                                         <td @click="selectQuestionType('multiple', element.id, 'Multiple')">
-                                                                            <i class="fas fa-bars"></i>>Multiple
+                                                                            <i class="fas fa-bars"></i>Multiple
                                                                         </td>
                                                                         <td @click="selectQuestionType('radio', element.id, 'Yes/No')">
                                                                             <i class="fas fa-dot-circle"></i>Yes/No
@@ -338,8 +338,7 @@
                                                                 ×
                                                             </button>
                                                             <div class="img-preview block-5 mr-0">
-                                                                <img class="rounded" :src="data[index]['file_url'] ? data[index]['file_url'] : data[index]['url']"
-                                                                        alt="">
+                                                                <img class="rounded" :src="data[index]['file_url'] ? data[index]['file_url'] : data[index]['url']" alt="">
                                                             </div>
                                                         </div>
                                                         <div class="block-3 d-flex align-items-center mb-3 position-relative answer">
@@ -1114,9 +1113,6 @@ export default {
                         delete item.file_url;
                         delete item.url;
                     }
-                    if (item.file_url =='https://aist-elearning.s3.eu-central-1.amazonaws.com/CixbCxTd4rko/'){
-
-                    }
                     delete item.question_id;
                     delete item.created_at;
                     delete item.deleted_at;
@@ -1406,6 +1402,12 @@ export default {
 
 
 <style scoped lang="scss">
+.table.drop-table{
+    z-index: 999999;
+}
+.question_list_actions i {
+    font-size: 18px;
+}
 .table.drop-table td i{
     margin-left: 10px;
 }
@@ -1418,10 +1420,9 @@ export default {
     font-size: 10px;
     width: 25px;
     height: 25px;
-    // margin-right: 10px;
-    margin-left: -10px;
+    margin-left: 10px;
+    margin-right: 10px;
     transition: .2s;
-    margin-left: 5px;
     &:hover {
         color: #fff;
         background: #5766db;

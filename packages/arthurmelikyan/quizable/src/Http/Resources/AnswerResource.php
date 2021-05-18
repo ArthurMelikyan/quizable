@@ -13,6 +13,7 @@ class AnswerResource extends JsonResource
             'title' => $this->title,
             'is_right' => $this->is_right,
             'file_url' => $this->file ? $this->file_url : null,
+            'file' => $this->file,
             'file_type' => $this->file_type,
             'url' => $this->url,
             'order' => $this->order,

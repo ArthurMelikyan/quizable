@@ -14,7 +14,8 @@
     "require": {
         "illuminate/support": "~7|~8",
         "doctrine/dbal": "^3.1",
-        "spatie/url": "^1.3"
+        "spatie/url": "^1.3",
+        "intervention/image": "^2.5"
     },
     "require-dev": {
         "phpunit/phpunit": "~9.0",
@@ -34,10 +35,12 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Arthurmelikyan\\Quizable\\QuizableServiceProvider"
+                "Arthurmelikyan\\Quizable\\QuizableServiceProvider",
+                "Intervention\\Image\\ImageServiceProvider"
             ],
             "aliases": {
-                "Quizable": "Arthurmelikyan\\Quizable\\Facades\\Quizable"
+                "Quizable": "Arthurmelikyan\\Quizable\\Facades\\Quizable",
+                "Image": "Intervention\\Image\\Facades\\Image"
             }
         }
     }

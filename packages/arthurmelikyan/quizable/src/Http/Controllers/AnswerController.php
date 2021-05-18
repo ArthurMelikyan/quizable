@@ -13,7 +13,7 @@ use Arthurmelikyan\Quizable\Models\Question;
 use Arthurmelikyan\Quizable\Models\Answer;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
-
+use Arthurmelikyan\Quizable\Helpers\HelperRepo;
 
 class AnswerController extends Controller
 {
@@ -28,8 +28,7 @@ class AnswerController extends Controller
             $answer = Answer::create(Arr::except($item, ['file']));
 
             if (Arr::exists($item, 'file')) {
-                $path = ImageService::saveFile($item['file'], 'answers/' . $answer->id);
-                $answer->file = $path;
+                $answer->file = HelperRepo::upload_image($item['file'],"answers/$answer->id",[1600 => null]);
                 $answer->save();
             }
         });
@@ -70,8 +69,7 @@ class AnswerController extends Controller
             $answer->update($data);
 
             if (Arr::exists($item, 'file')) {
-                $path = ImageService::saveFile($item['file'], 'answers/' . $answer->id);
-                $answer->file = $path;
+                $answer->file = HelperRepo::upload_image($item['file'],"answers/$answer->id",[1600 => null]);
                 $answer->save();
             }
         });
@@ -131,26 +129,16 @@ class AnswerController extends Controller
 
     public function checkIfExistsAnswer(int $answer_id): Answer
     {
-        $answer = Answer::find($answer_id);
-
-        if (!$answer) {
-            throw new NotFoundException();
-        }
-
-        return $answer;
+        return Answer::findOrFail($answer_id);
     }
 
     public function checkIfExistsQuestion(int $question_id, int $answer_id = null): Question
     {
-        $question = Question::find($question_id);
-
-        if (!$question) {
-            throw new NotFoundException();
-        }
+        $question = Question::findOrFail($question_id);
 
         if ($answer_id) {
             if (!$question->answers->contains('id', $answer_id)) {
-                throw new ForbiddenException();
+                return false;
             }
         }
 

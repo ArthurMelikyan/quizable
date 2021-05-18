@@ -21,11 +21,7 @@ class Answer extends Model
 
     public function getFileUrlAttribute()
     {
-        // if($this->file){
-        //     return config('aws.aws_url') . '/' . getUuid() . '/' . $this->file;
-        // }
-
-        return null;
+        return config('quizable.asseturl').$this->file;
     }
 
     public function question()
