@@ -3,6 +3,7 @@
 namespace Arthurmelikyan\Quizable\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Arthurmelikyan\Quizable\Helpers\HelperRepo;
 use Arthurmelikyan\Quizable\Http\Resources\QuestionResource;
 use Arthurmelikyan\Quizable\Http\Requests\ChangeQuestionOrderRequest;
 use Arthurmelikyan\Quizable\Http\Requests\CreateQuestionRequest;
@@ -13,17 +14,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Arthurmelikyan\Quizable\Models\Answer;
-// use App\Answer;
-// use App\Exceptions\ForbiddenException;
-// use App\Exceptions\NotFoundException;
-// use App\Http\Controllers\Controller;
-// use App\Http\Resources\QuestionResource;
-// use App\Question;
-// use App\Quiz;
-// use App\Services\ImageService;
-// use Illuminate\Http\Resources\Json\JsonResource;
-// use Illuminate\Support\Arr;
-// use Illuminate\Support\Facades\Log;
 use Spatie\Url\Url;
 
 class QuestionController extends Controller
@@ -40,12 +30,7 @@ class QuestionController extends Controller
     {
         $this->checkIfExistsQuiz($quiz_id);
 
-        $data = $request->only([
-                'title',
-                'type',
-                'file_type',
-                'url',
-            ]) + ['quiz_id' => $quiz_id];
+        $data = $request->only([ 'title', 'type', 'file_type', 'url', ]) + ['quiz_id' => $quiz_id];
 
         if (isset($data['file_type']) && $data['file_type'] === 'youtube') {
             $data['url'] = $this->getYoutubeVideoID($data['url']);
@@ -53,11 +38,11 @@ class QuestionController extends Controller
 
         $question = Question::create($data);
 
-        // if (!empty($request->file)) {
-        //     $path = ImageService::saveFile($request->file('file'), 'questions/' . $question->id);
-        //     $question->file = $path;
-        //     $question->save();
-        // }
+        if (!empty($request->file)) {
+            // $path = ImageService::saveFile($request->file('file'), 'questions/' . $question->id);
+            $question->file = HelperRepo::upload_image($request->file('file') ,"questions/$question->id",[1600 => null]);
+            $question->save();
+        }
 
         return QuestionResource::make($question);
     }
@@ -77,22 +62,17 @@ class QuestionController extends Controller
 
         $question = $this->checkIfExistsQuestion($question_id);
 
-        $data = $request->only([
-                'title',
-                'type',
-                'file_type',
-                'url',
-            ]) + ['quiz_id' => $quiz_id];
+        $data = $request->only([ 'title', 'type', 'file_type', 'url', ]) + ['quiz_id' => $quiz_id];
 
         if ($data['type'] === 'file' && isset($data['file_type']) && $data['file_type'] === 'youtube') {
             $data['url'] = $this->getYoutubeVideoID($data['url']);
         }
 
-        // if ($request->file('file')) {
-        //     $data['url'] = null;
-        //     $path = ImageService::saveFile($request->file('file'), 'questions/' . $question->id);
-        //     $data['file'] = $path;
-        // }
+        if ($request->file('file')) {
+            $data['url'] = null;
+            // $path = ImageService::saveFile($request->file('file'), 'questions/' . $question->id);
+            $data['file'] = HelperRepo::upload_image($request->file('file') ,"questions/$question->id",[1600 => null]);
+        }
 
         $question->update($data);
 

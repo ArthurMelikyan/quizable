@@ -20,7 +20,6 @@ class AnswerController extends Controller
     public function createAnswer(CreateAnswerRequest $request, int $question_id): JsonResource
     {
         $this->checkIfExistsQuestion($question_id);
-
         collect($request->data)->each(function ($item) use ($question_id) {
 
             $item = $item + ['question_id' => $question_id];

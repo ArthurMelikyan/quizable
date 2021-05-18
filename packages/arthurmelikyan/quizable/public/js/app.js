@@ -3559,29 +3559,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -8171,7 +8148,7 @@ var render = function() {
                                               [
                                                 _c("input", {
                                                   staticClass:
-                                                    "custom-file-input ",
+                                                    "custom-file-input",
                                                   attrs: {
                                                     type: "file",
                                                     id: "file",
@@ -8198,11 +8175,7 @@ var render = function() {
                                                       "custom-file-label overflow-hidden",
                                                     attrs: { for: "file" }
                                                   },
-                                                  [
-                                                    _vm._v(
-                                                      "\n                                                            Choose file"
-                                                    )
-                                                  ]
+                                                  [_vm._v("Choose file")]
                                                 )
                                               ]
                                             )
@@ -8366,84 +8339,19 @@ var render = function() {
                                                     "image" ||
                                                   element.file_type ==
                                                     "image_url"
-                                                    ? _c(
-                                                        "svg",
-                                                        {
-                                                          staticClass:
-                                                            "bi bi-card-image ",
-                                                          attrs: {
-                                                            width: "1.4em",
-                                                            height: "1.4em",
-                                                            viewBox:
-                                                              "0 0 16 16",
-                                                            fill: "#5867dd",
-                                                            xmlns:
-                                                              "http://www.w3.org/2000/svg"
-                                                          }
-                                                        },
-                                                        [
-                                                          _c("path", {
-                                                            attrs: {
-                                                              "fill-rule":
-                                                                "evenodd",
-                                                              d:
-                                                                "M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"
-                                                            }
-                                                          }),
-                                                          _vm._v(" "),
-                                                          _c("path", {
-                                                            attrs: {
-                                                              d:
-                                                                "M10.648 7.646a.5.5 0 0 1 .577-.093L15.002 9.5V13h-14v-1l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71z"
-                                                            }
-                                                          }),
-                                                          _vm._v(" "),
-                                                          _c("path", {
-                                                            attrs: {
-                                                              "fill-rule":
-                                                                "evenodd",
-                                                              d:
-                                                                "M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"
-                                                            }
-                                                          })
-                                                        ]
-                                                      )
+                                                    ? _c("i", {
+                                                        staticClass:
+                                                          "far fa-images text-info"
+                                                      })
                                                     : _vm._e(),
                                                   _vm._v(" "),
                                                   element.file_type ==
                                                     "video" ||
                                                   element.file_type == "youtube"
-                                                    ? _c(
-                                                        "svg",
-                                                        {
-                                                          staticClass:
-                                                            "bi bi-camera-video-fill ",
-                                                          attrs: {
-                                                            width: "1.4em",
-                                                            height: "1.4em",
-                                                            viewBox:
-                                                              "0 0 16 16",
-                                                            fill: "#5867dd",
-                                                            xmlns:
-                                                              "http://www.w3.org/2000/svg"
-                                                          }
-                                                        },
-                                                        [
-                                                          _c("path", {
-                                                            attrs: {
-                                                              d:
-                                                                "M2.667 3h6.666C10.253 3 11 3.746 11 4.667v6.666c0 .92-.746 1.667-1.667 1.667H2.667C1.747 13 1 12.254 1 11.333V4.667C1 3.747 1.746 3 2.667 3z"
-                                                            }
-                                                          }),
-                                                          _vm._v(" "),
-                                                          _c("path", {
-                                                            attrs: {
-                                                              d:
-                                                                "M7.404 8.697l6.363 3.692c.54.313 1.233-.066 1.233-.697V4.308c0-.63-.693-1.01-1.233-.696L7.404 7.304a.802.802 0 0 0 0 1.393z"
-                                                            }
-                                                          })
-                                                        ]
-                                                      )
+                                                    ? _c("i", {
+                                                        staticClass:
+                                                          "fas fa-video text-info"
+                                                      })
                                                     : _vm._e(),
                                                   _vm._v(" "),
                                                   _c("h4", [

@@ -61,17 +61,13 @@
 
                                                 <div class="block-3 d-flex align-items-center ">
                                                     <div class="custom-file w-auto">
-                                                        <input type="file" class="custom-file-input " id="file"
-                                                                @change="getFileQuestion($event)"  :accept="(questionNavigation.file_type.name == 'image') ? 'image/x-png,image/jpeg' : 'video/mp4,video/x-m4v,video/*'">
-                                                        <label class="custom-file-label overflow-hidden" for="file">
-                                                            Choose file</label>
+                                                        <input type="file" class="custom-file-input" id="file" @change="getFileQuestion($event)"  :accept="(questionNavigation.file_type.name == 'image') ? 'image/x-png,image/jpeg' : 'video/mp4,video/x-m4v,video/*'">
+                                                        <label class="custom-file-label overflow-hidden" for="file">Choose file</label>
                                                     </div>
                                                 </div>
 
-                                                <div class="position-relative question-video-preview "
-                                                        style="margin-bottom: -25px;" v-show="questionNavigation.video">
-                                                    <video :src="questionNavigation.file_url" width="100%"
-                                                            height="100%" class="mt-3" controls></video>
+                                                <div class="position-relative question-video-preview " style="margin-bottom: -25px;" v-show="questionNavigation.video">
+                                                    <video :src="questionNavigation.file_url" width="100%"  height="100%" class="mt-3" controls></video>
                                                 </div>
                                             </div>
                                             <div v-if="error.validUploadFile" class="mt-1" style="color: red">
@@ -115,28 +111,9 @@
                                                                 TODO DO DRAGGABLE LOGIC
                                                                 -->
 
-                                                            <svg v-if="element.file_type == 'image' || element.file_type == 'image_url'" class="bi bi-card-image "
-                                                                    width="1.4em" height="1.4em"
-                                                                    viewBox="0 0 16 16"
-                                                                    fill="#5867dd"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                                    <path fill-rule="evenodd"
-                                                                                            d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
-                                                                                    <path
-                                                                                        d="M10.648 7.646a.5.5 0 0 1 .577-.093L15.002 9.5V13h-14v-1l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71z"/>
-                                                                                    <path fill-rule="evenodd"
-                                                                                            d="M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
-                                                                                </svg>
-                                                            <svg v-if="element.file_type == 'video' || element.file_type == 'youtube'" class="bi bi-camera-video-fill "
-                                                                    width="1.4em" height="1.4em"
-                                                                    viewBox="0 0 16 16"
-                                                                    fill="#5867dd"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                                    <path
-                                                                                        d="M2.667 3h6.666C10.253 3 11 3.746 11 4.667v6.666c0 .92-.746 1.667-1.667 1.667H2.667C1.747 13 1 12.254 1 11.333V4.667C1 3.747 1.746 3 2.667 3z"/>
-                                                                                    <path
-                                                                                        d="M7.404 8.697l6.363 3.692c.54.313 1.233-.066 1.233-.697V4.308c0-.63-.693-1.01-1.233-.696L7.404 7.304a.802.802 0 0 0 0 1.393z"/>
-                                                                                </svg>
+                                                            <i  v-if="element.file_type == 'image' || element.file_type == 'image_url'" class="far fa-images text-info"></i>
+                                                            <i  v-if="element.file_type == 'video' || element.file_type == 'youtube'" class="fas fa-video text-info"></i>
+
                                                             <h4>{{element.title}}</h4>
 
                                                         </span>
