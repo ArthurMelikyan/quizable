@@ -1,5 +1,5 @@
 <template>
-<div id="quiz" class="p-4">
+<div id="quiz">
     <div  class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
         <div class="row">
             <div class="col-md-12">
@@ -10,7 +10,7 @@
                                             :quizResponse="quizResponse" :quiz_id="quiz_id" :item="item" :key="index"
                                             @allQuestions="allQuestions" @questionCountDelete="questionCountDelete"/>
                             <div class="text-center">
-                                <a href="#" class="btn pb-2 btn-success btn-success-2 add__question__item"
+                                <a href="#" class="btn btn-success add__question__item"
                                     @click.prevent="addNewQuestion">
                                         Create New Question <i class="fas fa-plus"></i>
                                 </a>
@@ -104,7 +104,7 @@
                                         <div class="card-header question" :id="'headingOne'+element.id">
                                             <div class="card-title">
                                                 <div class="col-md-12">
-                                                    <div class="row p-2">
+                                                    <div class="row">
                                                         <div class="col-md-10">
                                                             <span @click="openedItem(element.id)" class="collapsed quiz-question-title-ellipsis pt-3"
                                                                 data-toggle="collapse"
@@ -298,7 +298,7 @@
 
                                                     </div>
                                                     <div v-if="questionType === 'radio'"
-                                                            class="block-3 mb-3 p-3">
+                                                            class="block-3 mb-3">
                                                         <div class="d-flex align-items-center mb-3 answer">
                                                             <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
                                                                 <span class="d-flex align-items-center " style="width: 30px;">
@@ -394,7 +394,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <div class="pl-4 preview">
+                                                <div class="preview">
                                                     <div v-if="element.type === 'multiple'">
                                                         <div class="d-flex align-items-center mb-4"
                                                                 v-for="answer in element.answers">
@@ -1459,12 +1459,10 @@ export default {
     display: block;
 }
 
-.edit-block {
+.edit-block,  .preview{
+    padding:30px;
+    background-color:#fff;
     display: none;
-}
-
-.preview {
-    display: block;
 }
 
 ._show {

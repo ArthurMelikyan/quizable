@@ -1,25 +1,30 @@
 @extends('arthurmelikyan::layouts')
 @section('quizable_content')
-<main id="main-container">
-    <div class="bg-body-light">
-        <div class="content content-full">
-            @include('arthurmelikyan::quiz.partials.errors')
-        </div>
-    </div>
-    <div class="content">
-        <div class="block block-rounded block-bordered">
-            <div class="block-header block-header-default">
-                <h3 class="block-title">
+
+
+<div class="container-fluid">
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="card-title">
+                <h3 class="card-label">
                     Create Quiz
                 </h3>
             </div>
-            <form action="{{route('quizable.quiz.store')}}" class="multiple_form" method="post">
-                @csrf
+        </div>
+
+        <div class="card-body">
+            <div class="row">
                 <div class="col-md-12">
-                    @include('arthurmelikyan::quiz.crud.forms')
+                    @include('arthurmelikyan::quiz.partials.errors')
+                <form action="{{route('quizable.quiz.store')}}" class="multiple_form" method="post">
+                    @csrf
+                    <div class="col-md-12">
+                        @include('arthurmelikyan::quiz.crud.forms')
+                    </div>
+                </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</main>
+</div>
 @endsection

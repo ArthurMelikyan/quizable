@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <div>
+    <div class="border pt-3 pb-3">
         <div class="mb-5 mt-2 questionCreatePanel">
             <div class="form-group mb-0" @mouseover="showEditNavigation()" @mouseout="hide">
 
@@ -141,7 +141,7 @@
                     <table class="table drop-table">
                         <tr>
                             <td @click="selectQuestionType('multiple', 'quiz.Multiple')">
-                                <i class="fas fa-bars"></i>>Multiple
+                                <i class="fas fa-bars"></i>Multiple
                             </td>
                             <td @click="selectQuestionType('radio', 'Yes/No')">
                                 <i class="fas fa-dot-circle"></i>Yes/No
@@ -859,25 +859,31 @@ export default {
 </script>
 
 <style lang="scss">
+.questionItem{
+    position: relative;
+}
+.table.drop-table i{
+    margin-right:10px;
+}
 #quiz{
-    .block-5 img{
-        object-fit: contain!important;
-    }
+.block-5 img{
+    object-fit: contain!important;
+}
 }
 .answer{
-    >input[type="text"]{
-        padding-right: 48.5px!important;
-    }
-    .mobile{
-        top: 0;
-        color: green;
-        font-size: 11px;
-        opacity: 0;
-        visibility: hidden;
-        width: 125px;
-        display: block;
-        white-space: nowrap;
-    }
+>input[type="text"]{
+    padding-right: 48.5px!important;
+}
+.mobile{
+    top: 0;
+    color: green;
+    font-size: 11px;
+    opacity: 0;
+    visibility: hidden;
+    width: 125px;
+    display: block;
+    white-space: nowrap;
+}
 }
 .correct-answer{
     right: 0;
@@ -888,38 +894,38 @@ export default {
     justify-content: flex-end;
     border-bottom-right-radius: 4px;
     border-top-right-radius: 4px;
-    >span.CP{
-        display: none;
-        color: #555;
-        margin: 0 20px;
-    }
-    input{
-        cursor:pointer;
+>span.CP{
+    display: none;
+    color: #555;
+    margin: 0 20px;
+}
+input{
+    cursor:pointer;
 
-    }
+}
 
 }
 @media (min-width: 768px) {
-    .correct-answer{
-        padding: 10px 20px 10px 0;
-        span.CP{
-            display: block;
-        }
+.correct-answer{
+    padding: 10px 20px 10px 0;
+    span.CP{
+        display: block;
     }
-    .answer{
-        >input[type="text"]{
-            padding-right: 170px!important;
-        }
-        .mobile{
-            display: none;
-        }
+}
+.answer{
+    >input[type="text"]{
+        padding-right: 170px!important;
     }
-    .block-2 .dropdown {
-        width: 42%;
+    .mobile{
+        display: none;
     }
-    .my-d-md-flex{
-        display:flex
-    }
+}
+.block-2 .dropdown {
+    width: 42%;
+}
+.my-d-md-flex{
+    display:flex
+}
 }
 
 .answer-delete-btn{
@@ -929,31 +935,28 @@ export default {
     width: 25px;
     height: 25px;
     margin-right: 10px;
-    // margin-left: -10px;
+    margin-left: -10px;
     transition: .2s;
-    margin-left: 7px;
-    &:hover{
-        color: #fff;
-        background: #5766db;
-    }
+    margin-left: 0;
+&:hover{
+    color: #fff;
+    background: #5766db;
+}
     border-radius: 48%;
 }
-.q-correct {
-
-}
-
+ 
 .questionDelete {
     position: absolute;
-    right: 4px;
-    top: 4px;
+    right: 2px;
+    top: 2px;
     border: none;
     width: 38px;
     background: #fff;
     transition: background-color .2s;
 
-    &:hover {
-        background: #ddd;
-    }
+&:hover {
+    background: #ddd;
+}
 }
 
 .userSelectImageIcon {
@@ -966,18 +969,18 @@ export default {
     height: 25px;
     border-radius: 2px;
     transition: color .3s, background-color .3s;
-    &:hover {
-        background: #5766db;
-        color: #fff;
-        span {
-            color: #fff;
-        }
-    }
-
+&:hover {
+    background: #5766db;
+    color: #fff;
     span {
-        margin-top: -1px;
-        display: block;
+        color: #fff;
     }
+}
+
+span {
+    margin-top: -1px;
+    display: block;
+}
 }
 
 .my-style {
@@ -1018,46 +1021,46 @@ export default {
     opacity: 0;
     visibility: hidden;
 
-    button {
-        margin: 0;
-        height: 25.5px;
-        border: none;
-        background: transparent;
+button {
+    margin: 0;
+    height: 25.5px;
+    border: none;
+    background: transparent;
 
-        svg {
-            fill: #fff
-        }
-
-        &:hover {
-            background: #ddd;
-        }
+    svg {
+        fill: #fff
     }
+
+    &:hover {
+        background: #ddd;
+    }
+}
 }
 .drop-table td{
     font-size: 1rem!important;
 }
 
 .answer{
-    .mobile_is_true {
-        opacity: 0;
-        visibility: hidden;
-        animation: showHide 2s forwards; /* IE 10+, Fx 29+ */
-    }
+.mobile_is_true {
+    opacity: 0;
+    visibility: hidden;
+    animation: showHide 2s forwards; /* IE 10+, Fx 29+ */
+}
 }
 
 @keyframes showHide {
-    0% {
-        opacity: 0;
-        visibility: visible;
-    }
+0% {
+    opacity: 0;
+    visibility: visible;
+}
 
-    50% {
-        opacity: 0.5;
-        visibility: visible;
-    }
-    100% {
-        overflow: hidden;
-        visibility: hidden;
-    }
+50% {
+    opacity: 0.5;
+    visibility: visible;
+}
+100% {
+    overflow: hidden;
+    visibility: hidden;
+}
 }
 </style>

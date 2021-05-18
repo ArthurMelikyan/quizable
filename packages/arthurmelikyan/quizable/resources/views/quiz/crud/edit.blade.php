@@ -1,48 +1,48 @@
-@extends('arthurmelikyan::layouts')
-@push('css')
-    <style>
 
-    </style>
-@endpush
+
+
+
+
+@extends('arthurmelikyan::layouts')
 @section('quizable_content')
-<main id="main-container">
-    <div class="bg-body-light">
-        <div class="content content-full">
-            @include('arthurmelikyan::quiz.partials.errors')
-        </div>
-    </div>
-    <div class="content">
-        <div class="block block-rounded block-bordered">
-            <div class="block-header block-header-default">
-                <h3 class="block-title">
+<div class="container-fluid">
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="card-title">
+                <h3 class="card-label">
                     Update Quiz
                 </h3>
             </div>
-            <div class="block block-rounded block-bordered">
-                <ul class="nav nav-tabs nav-tabs-alt js-tabs-enabled p-3" data-toggle="tabs" role="tablist">
-                   <h3 class="pl-3 pt-3"> {{$quiz->title}}</h3>
-                    <li class="nav-item ml-auto">
-                        <a class="nav-link" data-toggle="tab" href="#edit-quiz">
-                            <i class="fas fa-pen fa-2x"></i>
-                        </a>
-                    </li>
-                </ul>
-                <div class="block-content tab-content">
-                    <div class="tab-pane" id="edit-quiz" role="tabpanel">
-                        <form action="{{route('quizable.quiz.update',$quiz->id)}}" class="multiple_form" method="post">
-                            @csrf
-                            @method('PUT')
-                            <div class="col-md-12">
-                                @include('arthurmelikyan::quiz.crud.forms', ['quiz'=>$quiz])
-                            </div>
-                        </form>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @include('arthurmelikyan::quiz.partials.errors')
+                <div class="col-md-12 border pt-3 pb-3">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h3 class="pl-3 pt-3"> {{$quiz->title}}</h3>
+                        </div>
+                        <div class="col-md-2 text-right pt-3">
+                            <a data-toggle="collapse" href="#editQuiz" role="button" aria-expanded="false" aria-controls="editQuiz">
+                                <i class="fas fa-pen fa-2x"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="pb-3 -pt-3">
-                <quiz v-bind:quiz="{{json_encode($quiz)}}"></quiz>
+                <div class="collapse" id="editQuiz">
+                    <form action="{{route('quizable.quiz.update',$quiz->id)}}" class="multiple_form" method="post">
+                        @csrf
+                        @method('PUT')
+                        <div class="col-md-12">
+                            @include('arthurmelikyan::quiz.crud.forms', ['quiz'=>$quiz])
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-12 pb-3 mt-5">
+                        <quiz v-bind:quiz="{{json_encode($quiz)}}"></quiz>
+                </div>
             </div>
         </div>
     </div>
-</main>
+</div>
 @endsection
