@@ -34,7 +34,7 @@
                                 <td>{{$quiz->id}}</td>
                                 <td>{{$quiz->title}}</td>
                                 <td>{{$quiz->time_limit}}</td>
-                                <td>{{(!is_null($quiz->created_at)) ?? $quiz->created_at->format('Y-m-d h:i:s')}}</td>
+                                <td>{{ $quiz->created_at->format('Y-m-d h:i:s') }}</td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <a href="{{route('quizable.quiz.edit',$quiz->id)}}"

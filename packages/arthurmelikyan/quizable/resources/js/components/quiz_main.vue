@@ -1406,7 +1406,9 @@ export default {
 
 
 <style scoped lang="scss">
-
+.table.drop-table td i{
+    margin-left: 10px;
+}
 .active{
     background: #ddd!important;
 }

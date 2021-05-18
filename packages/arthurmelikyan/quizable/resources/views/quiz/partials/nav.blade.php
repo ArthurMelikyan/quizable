@@ -1,7 +1,7 @@
 <div class="left-menu">
-    <div class="brand d-flex align-items-center">
-        <a href="#" class="brand-logo" aria-label="brand" style="font-size: 26px">
-            {{ config('quizable.appname') }}
+    <div class="brand d-flex align-items-center mt-3">
+        <a href="{{ route('quizable.dashboard') }}" class="brand-logo" aria-label="brand" style="font-size: 26px">
+            <img height="400" src="{{ config('quizable.applogo') }}" alt="">
         </a>
         {{-- <button class="brand-toggle" type="button" aria-label="minimaize menu">
             <span>

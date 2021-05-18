@@ -859,6 +859,9 @@ export default {
 </script>
 
 <style lang="scss">
+.table.drop-table td i{
+    margin-left: 10px;
+}
 .questionItem{
     position: relative;
 }
@@ -944,7 +947,7 @@ input{
 }
     border-radius: 48%;
 }
- 
+
 .questionDelete {
     position: absolute;
     right: 2px;

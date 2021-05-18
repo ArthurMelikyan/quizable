@@ -29,13 +29,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="collapse" id="editQuiz">
+                <div class="collapse col-md-12" id="editQuiz">
                     <form action="{{route('quizable.quiz.update',$quiz->id)}}" class="multiple_form" method="post">
                         @csrf
                         @method('PUT')
-                        <div class="col-md-12">
-                            @include('arthurmelikyan::quiz.crud.forms', ['quiz'=>$quiz])
-                        </div>
+                        @include('arthurmelikyan::quiz.crud.forms', ['quiz'=>$quiz])
                     </form>
                 </div>
                 <div class="col-md-12 pb-3 mt-5">
