@@ -22,7 +22,9 @@ class QuizableServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
         }
-        require_once __DIR__ . '/../vendor/autoload.php';
+        if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+            require_once __DIR__ . '/../vendor/autoload.php';
+        }
 
     }
 
