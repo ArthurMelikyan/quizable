@@ -16,7 +16,11 @@ $ composer require arthurmelikyan/quizable
 ```
 
 ## Usage
+For first you need publish package configuration file, here you can change `logo`, `asset url`, `disk driver` for file uploads and `migrations` configurations. To publish configuration file run `php artisan vendor:publish --tag=quizable.config`
 
+If you want to change default migration directory, you need to define directory name on `quizable.php` file. Just change `'migrations_publish_path'   =>    'subfolder'` config parameter. It will publish all the migration files on `database/migrations/subfolder` directory. If you don't need migration subfolders , you can run `php artisan migrate` without publishing package migrations
+
+To publish assets run `php artisan vendor:publish --tag=quizable.assets`
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
