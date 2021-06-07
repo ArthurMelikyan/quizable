@@ -69,9 +69,9 @@ class QuizableServiceProvider extends ServiceProvider
         ], 'quizable.config');
 
         // Publishing the views.
-        /*$this->publishes([
+        $this->publishes([
             __DIR__.'/../resources/views' => base_path('resources/views/vendor/arthurmelikyan'),
-        ], 'quizable.views');*/
+        ], 'quizable.views');
 
         // Publishing assets.
         $this->publishes([
