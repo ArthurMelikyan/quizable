@@ -46,7 +46,7 @@ class QuizController extends BaseController {
      */
     public function store(QuizRequest $request)
     {
-        Quiz::create($request->validated());
+        Quiz::create($request->all());
         return redirect()->route('quizable.quiz.index')->with('success','Quiz successfully added');
     }
 
@@ -98,7 +98,7 @@ class QuizController extends BaseController {
         return back()->with('success','Quiz successfully removed');
     }
 
-    // ! QUIZABLE 
+    // ! QUIZABLE
 
     public function retrieveAllQuizes(): JsonResource
     {
