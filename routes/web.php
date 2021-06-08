@@ -5,9 +5,9 @@ use Arthurmelikyan\Quizable\Http\Controllers\QuestionController;
 use Illuminate\Support\Facades\Route;
 use Arthurmelikyan\Quizable\Http\Controllers\QuizController;
 
-Route::middleware(['web'])->prefix('quizable')->group(function () {
-    Route::get('dashboard', [QuizController::class, 'dashboard'])->name('quizable.dashboard');
-    Route::resource('quiz',QuizController::class, ['as' => 'quizable']);
+Route::middleware(explode(',' , config('quizable.middlewares')))->prefix(config('quizable.urlprefix'))->group(function () {
+    Route::get('/', [QuizController::class, 'dashboard'])->name('quizable.dashboard');
+    Route::resource('quiz', QuizController::class, ['as' => 'quizable']);
 
 
     //    QUIZ API
