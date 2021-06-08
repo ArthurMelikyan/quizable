@@ -82,7 +82,7 @@ class QuizController extends BaseController {
      */
     public function update(QuizRequest $request,Quiz $quiz)
     {
-        $quiz->update($request->validated());
+        $quiz->update($request->all());
         return redirect()->route('quizable.quiz.index')->with('success','Quiz successfully updated');
     }
 
