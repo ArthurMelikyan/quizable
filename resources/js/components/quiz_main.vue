@@ -559,7 +559,7 @@ export default {
         quizActive(){
             let formData = new FormData();
             formData.append('is_active', this.quiz_is_active);
-            axios.patch(`/${this.urlprefix}/quizable/api-quiz-is_active/${this.quiz_id}`, {is_active:this.quiz_is_active})
+            axios.patch(`/${window.urlprefix}/quizable/api-quiz-is_active/${this.quiz_id}`, {is_active:this.quiz_is_active})
                 .then()
                 .catch(error => console.log(error))
         },
@@ -941,8 +941,8 @@ export default {
                                 item.querySelector('.edit-block').style.display = 'none';
                             }
                         });
-                        await this.questionUpdate(`/${this.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${question_id}`, 'post');
-                        await axios.delete(`/${this.urlprefix}/quizable/questions/${question_id}/answers`).catch(error => {
+                        await this.questionUpdate(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${question_id}`, 'post');
+                        await axios.delete(`/${window.urlprefix}/quizable/questions/${question_id}/answers`).catch(error => {
                             console.log(error)
                         });
                         let formData = new FormData();
@@ -963,7 +963,7 @@ export default {
                                 data: this.data
                             }
                         }
-                        axios.post(`/${this.urlprefix}/quizable/questions/${question_id}/answers`, formData).then(response => {
+                        axios.post(`/${window.urlprefix}/quizable/questions/${question_id}/answers`, formData).then(response => {
                             this.getAllQuizQuestions();
                             this.valid = true;
                             this.edit = true;
@@ -1178,12 +1178,12 @@ export default {
                 if (this.time_limit) form.append('time_limit', this.time_limit);
                 this.loading = true;
                 if (!this.quizResponse && !this.quiz_id) {
-                    url = `/${this.urlprefix}/quizable/api-quiz`;
+                    url = `/${window.urlprefix}/quizable/api-quiz`;
                     await this.sendMethod(url, 'post', form);
                 } else {
                     form.append('answer_by_one', 0);
                     form.append('_method', 'PATCH');
-                    url = `/${this.urlprefix}/quizable/api-quiz/${this.quiz_id}/update`;
+                    url = `/${window.urlprefix}/quizable/api-quiz/${this.quiz_id}/update`;
                     await this.sendMethod(url, 'post', form);
                 }
             }
@@ -1198,7 +1198,7 @@ export default {
         },
 
         async cloneQuestion(question_id) {
-            await axios.post(`/${this.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${question_id}`)
+            await axios.post(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${question_id}`)
             .then(response => {
                 this.getAllQuizQuestions();
                 this.showSweet({successmsg:'Question cloned successfully'}, 'success');
@@ -1241,7 +1241,7 @@ export default {
             })
         },
         questionDelete(questionId, index) {
-            axios.delete(`/${this.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${questionId}`)
+            axios.delete(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${questionId}`)
                 .then(resp => {
                     this.getAllQuizQuestions();
                     this.showSweet({successmsg:'Question deleted successfully'}, 'success');
@@ -1295,7 +1295,7 @@ export default {
             });
             await axios({
                 method: 'patch',
-                url: `/${this.urlprefix}/quizable/quiz/${this.quiz_id}/questions`,
+                url: `/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions`,
                 data: {
                     ids: obj
                 },
@@ -1309,7 +1309,7 @@ export default {
             })
         },
         async getAllQuizQuestions() {
-            await axios.get(`/${this.urlprefix}/quizable/quiz/${this.quiz_id}/questions`)
+            await axios.get(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions`)
                 .then(response => {
                     this.dataQuestions = response.data.data;
                     this.questionData = [];

@@ -622,7 +622,7 @@ export default {
             this.valid_error.r_select = false;
             this.validationAnswer = false;
             this.checkExceptionAnswers();
-            if (this.questionId) await axios.delete(`/${this.urlprefix}/quizable/questions/${this.questionId}/answers`).catch(error => {
+            if (this.questionId) await axios.delete(`/${window.urlprefix}/quizable/questions/${this.questionId}/answers`).catch(error => {
                 console.log(error)
             });
         },
@@ -687,9 +687,9 @@ export default {
                     }
                     if (this.valid) {
                         this.loading = true;
-                        await this.createQuestion(`/${this.urlprefix}/quizable/quiz/${this.quiz_id}/questions`, 'post');
+                        await this.createQuestion(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions`, 'post');
                         if (this.edit) {
-                            await axios.patch(`/${this.urlprefix}/quizable/questions/${this.questionId}/update-answers`, {
+                            await axios.patch(`/${window.urlprefix}/quizable/questions/${this.questionId}/update-answers`, {
                                 data: this.data
                             }).then(response => {
                                 this.valid = true;
@@ -715,7 +715,7 @@ export default {
                                     data: this.data
                                 }
                             }
-                            await axios.post(`/${this.urlprefix}/quizable/questions/${this.questionId}/answers`, formData)
+                            await axios.post(`/${window.urlprefix}/quizable/questions/${this.questionId}/answers`, formData)
                                 .then(response => {
                                     this.valid = true;
                                     this.edit = true;
@@ -838,7 +838,7 @@ export default {
             this.showNavigation = !this.showNavigation
         },
         getAllQuizQuestions() {
-            axios.get(`/${this.urlprefix}/quizable/quiz/${this.quiz_id}/questions`)
+            axios.get(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions`)
                 .then(response => {
                     this.$emit('allQuestions', response);
                 }).catch(error => {
