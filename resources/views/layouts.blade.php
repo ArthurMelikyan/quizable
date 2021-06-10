@@ -28,6 +28,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{ asset('/vendor/quizable/js/script.js') }}"></script>
     <script>
+        alert('a')
         window.urlprefix = "{{ config('quizable.urlprefix') }}";
         @if (session()->has('success'))
             Swal.fire({
