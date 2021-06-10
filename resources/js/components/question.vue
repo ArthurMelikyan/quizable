@@ -351,7 +351,8 @@ export default {
         'index',
         'quizResponse',
         'quiz_id',
-        'item'
+        'item',
+        'urlprefix'
     ],
     methods: {
         showMessageSelectCorrectAnswer(e) {
@@ -621,7 +622,7 @@ export default {
             this.valid_error.r_select = false;
             this.validationAnswer = false;
             this.checkExceptionAnswers();
-            if (this.questionId) await axios.delete(`/quizable/questions/${this.questionId}/answers`).catch(error => {
+            if (this.questionId) await axios.delete(`/${this.urlprefix}/quizable/questions/${this.questionId}/answers`).catch(error => {
                 console.log(error)
             });
         },
@@ -686,9 +687,9 @@ export default {
                     }
                     if (this.valid) {
                         this.loading = true;
-                        await this.createQuestion(`/quizable/quiz/${this.quiz_id}/questions`, 'post');
+                        await this.createQuestion(`/${this.urlprefix}/quizable/quiz/${this.quiz_id}/questions`, 'post');
                         if (this.edit) {
-                            await axios.patch(`/quizable/questions/${this.questionId}/update-answers`, {
+                            await axios.patch(`/${this.urlprefix}/quizable/questions/${this.questionId}/update-answers`, {
                                 data: this.data
                             }).then(response => {
                                 this.valid = true;
@@ -714,7 +715,7 @@ export default {
                                     data: this.data
                                 }
                             }
-                            await axios.post(`/quizable/questions/${this.questionId}/answers`, formData)
+                            await axios.post(`/${this.urlprefix}/quizable/questions/${this.questionId}/answers`, formData)
                                 .then(response => {
                                     this.valid = true;
                                     this.edit = true;
@@ -837,7 +838,7 @@ export default {
             this.showNavigation = !this.showNavigation
         },
         getAllQuizQuestions() {
-            axios.get(`/quizable/quiz/${this.quiz_id}/questions`)
+            axios.get(`/${this.urlprefix}/quizable/quiz/${this.quiz_id}/questions`)
                 .then(response => {
                     this.$emit('allQuestions', response);
                 }).catch(error => {
