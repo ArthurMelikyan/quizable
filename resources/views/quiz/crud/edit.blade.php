@@ -37,7 +37,7 @@
                     </form>
                 </div>
                 <div class="col-md-12 pb-3 mt-5">
-                        <quiz v-bind:quiz="{{json_encode($quiz)}}"  urlprefix="{{config('quizable.urlprefix')}}"></quiz>
+                        <quiz v-bind:quiz="{{json_encode($quiz)}}"></quiz>
                 </div>
             </div>
         </div>
