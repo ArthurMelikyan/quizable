@@ -231,26 +231,26 @@
                                                                     :aria-labelledby="'dropdownMenuButton'+element.id">
                                                                 <table class="table drop-table">
                                                                     <tr>
-                                                                        <td @click="selectQuestionType('multiple', element.id, 'Multiple')">
+                                                                        <td v-if="check_if_enabled('multiple')" @click="selectQuestionType('multiple', element.id, 'Multiple')">
                                                                             <i class="fas fa-bars"></i>Multiple
                                                                         </td>
-                                                                        <td @click="selectQuestionType('radio', element.id, 'Yes/No')">
+                                                                        <td v-if="check_if_enabled('radio')" @click="selectQuestionType('radio', element.id, 'Yes/No')">
                                                                             <i class="fas fa-dot-circle"></i>Yes/No
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td @click="selectQuestionType('dropdown', element.id, 'Dropdown')">
+                                                                        <td v-if="check_if_enabled('dropdown')" @click="selectQuestionType('dropdown', element.id, 'Dropdown')">
                                                                             <i class="fas fa-caret-down"></i>Dropdown
                                                                         </td>
-                                                                        <td @click="selectQuestionType('text', element.id, 'Short Text')">
+                                                                        <td v-if="check_if_enabled('text')" @click="selectQuestionType('text', element.id, 'Short Text')">
                                                                                 <i class="fas fa-align-justify"></i> Short Text
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td @click="selectQuestionType('file', element.id, 'Picture Choice')">
+                                                                        <td  v-if="check_if_enabled('file')" @click="selectQuestionType('file', element.id, 'Picture Choice')">
                                                                             <i class="far fa-image"></i> Picture Choice
                                                                         </td>
-                                                                        <td @click="selectQuestionType('textarea', element.id, 'Long Text')">
+                                                                        <td  v-if="check_if_enabled('textarea')"  @click="selectQuestionType('textarea', element.id, 'Long Text')">
                                                                             <i class="fas fa-align-justify"></i>Long Text
                                                                         </td>
                                                                     </tr>
@@ -461,6 +461,7 @@ import ClickOutside from 'vue-click-outside';
 export default {
     data() {
         return {
+            enabled_options: window.question_options.split(','),
             quiz_is_active: false,
             questionCurrentType: null,
             formChanged: false,
@@ -1330,6 +1331,9 @@ export default {
                     console.log(error)
                 })
         },
+        check_if_enabled(option){
+           return this.enabled_options.includes(option);
+        },
         async init() {
             if (this.quiz) {
                 this.quiz_id = this.quiz.id;
@@ -1352,6 +1356,7 @@ export default {
         }
     },
     mounted() {
+        console.log(this.enabled_options);
     },
     created: function () {
         if (this.quiz) {

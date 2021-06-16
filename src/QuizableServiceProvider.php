@@ -1,9 +1,8 @@
 <?php
 
 namespace Arthurmelikyan\Quizable;
-
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
-
 class QuizableServiceProvider extends ServiceProvider
 {
     /**
@@ -78,10 +77,10 @@ class QuizableServiceProvider extends ServiceProvider
             __DIR__.'/../public' => public_path('vendor/quizable'),
         ], 'quizable.assets');
 
-        // Publishing the translation files.
-        /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/quizable'),
-        ], 'quizable.views');*/
+        // Remove vendor direcory and publish again
+        // $this->publishes([
+        //     __DIR__.'/../public' => $this->publishAssets(),
+        // ], 'quizable.updateassets');
 
         // Publishing the migration files.
 
@@ -89,8 +88,18 @@ class QuizableServiceProvider extends ServiceProvider
             __DIR__.'/../database/migrations' => database_path('migrations/'.config('quizable.migrations_publish_path')),
         ], 'quizable.migrations');
 
+}
 
-        // Registering package commands.
-        // $this->commands([]);
-    }
+
+// protected function publishAssets()
+// {
+//     if (File::exists(public_path('vendor/quizable'))) {
+//         File::deleteDirectory(public_path('vendor/quizable'));
+//     }
+//     return public_path('vendor/quizable');
+// }
+// Registering package commands.
+// $this->commands([]);
+
+
 }

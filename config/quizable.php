@@ -8,5 +8,6 @@ return [
     'asseturl'                  =>    'https://quiz-package.test/storage/',
     'migrations_publish_path'   =>    'tenant',
     'middlewares'               =>    'web', // 'web, auth , ...' separated with comma
-    'urlprefix'                 =>    'dashboard'
+    'urlprefix'                 =>    'dashboard',
+    'enabled_question_options'  =>    'multiple,radio,dropdown,text,file,textarea',
 ];

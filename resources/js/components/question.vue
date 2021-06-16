@@ -140,26 +140,26 @@
                 <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                     <table class="table drop-table">
                         <tr>
-                            <td @click="selectQuestionType('multiple', 'quiz.Multiple')">
+                            <td v-if="check_if_enabled('multiple') " @click="selectQuestionType('multiple', 'quiz.Multiple')">
                                 <i class="fas fa-bars"></i>Multiple
                             </td>
-                            <td @click="selectQuestionType('radio', 'Yes/No')">
+                            <td v-if="check_if_enabled('radio')" @click="selectQuestionType('radio', 'Yes/No')">
                                 <i class="fas fa-dot-circle"></i>Yes/No
                             </td>
                         </tr>
                         <tr>
-                            <td @click="selectQuestionType('dropdown', 'Dropdown')">
+                            <td v-if="check_if_enabled('dropdown')" @click="check_if_enabled('dropdown') && selectQuestionType('dropdown', 'Dropdown')">
                                 <i class="fas fa-caret-down"></i>Dropdown
                             </td>
-                            <td @click="selectQuestionType('text', 'Short Text')">
+                            <td v-if="check_if_enabled('text')"  @click="check_if_enabled('text') && selectQuestionType('text', 'Short Text')">
                                 <i class="fas fa-align-justify"></i> Short Text
                             </td>
                         </tr>
                         <tr>
-                            <td @click="selectQuestionType('file', 'Picture Choice')">
+                            <td v-if="check_if_enabled('file')"  @click="check_if_enabled('file') && selectQuestionType('file', 'Picture Choice')">
                                 <i class="far fa-image"></i> Picture Choice
                             </td>
-                            <td @click="selectQuestionType('textarea', 'Long Text')">
+                            <td v-if="check_if_enabled('textarea')"  @click="check_if_enabled('textarea') && selectQuestionType('textarea', 'Long Text')">
                                 <i class="fas fa-align-justify"></i>Long Text
                             </td>
                         </tr>
@@ -295,6 +295,7 @@ export default {
     name: "Question",
     data() {
         return {
+            enabled_options: window.question_options.split(','),
             i: 0,
             questionCurrentType: null,
             formChanged: false,
@@ -844,7 +845,15 @@ export default {
                 }).catch(error => {
                 console.log(error)
             })
-        }
+        },
+        check_if_enabled(option){
+            if (this.enabled_options.includes(option)) {
+                console.log(option + ' is enabled'  );
+            } else{
+                console.log(option + ' disabledddddddddddd');
+            }
+           return this.enabled_options.includes(option);
+        },
     },
     mounted() {
         $('.questionCreateModel').on('shown.bs.modal' , function (){

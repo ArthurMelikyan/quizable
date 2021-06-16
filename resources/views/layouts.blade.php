@@ -29,6 +29,7 @@
     <script src="{{ asset('/vendor/quizable/js/script.js') }}"></script>
     <script>
         window.urlprefix = "{{ config('quizable.urlprefix') }}";
+        window.question_options = "{{ config('quizable.enabled_question_options') }}";
         @if (session()->has('success'))
             Swal.fire({
                 title: 'Success', text: "{!! session()->get('success') !!}", icon: 'success', timer: 5000
