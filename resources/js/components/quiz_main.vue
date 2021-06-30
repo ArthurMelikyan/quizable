@@ -215,10 +215,8 @@
                                                             <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_limit">
                                                                 This field must not exceed 255 characters
                                                             </div>
-
                                                         </div>
                                                         <div class="dropdown">
-
                                                             <button
                                                                 class="btn btn-secondary dropdown-toggle w-100"
                                                                 type="button"
@@ -258,6 +256,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+
                                                     <div v-if="questionType === 'multiple'" v-for="(item, index) in data"
                                                             class="block-3 d-flex align-items-center mb-3 ">
                                                         <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
@@ -346,6 +346,13 @@
                                                                 </span>
                                                                 <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="questionType === 'text'" v-for="(item, index) in data"
+                                                         class="block-3 d-flex align-items-center mb-3">
+                                                        <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
+                                                            <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice' "
+                                                                   v-model="data[index]['short_answer']" >
                                                         </div>
                                                     </div>
                                                     <div v-if="validationAnswer" style="color: red">

@@ -73,6 +73,8 @@ class QuestionController extends Controller
         }
 
         if ($request->file('file')) {
+            \Log::debug('ok');
+
             $data['url'] = null;
             // $path = ImageService::saveFile($request->file('file'), 'questions/' . $question->id);
             $data['file'] = HelperRepo::upload_image($request->file('file') ,"questions/$question->id",[1600 => null]);
