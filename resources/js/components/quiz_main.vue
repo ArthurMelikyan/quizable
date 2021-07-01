@@ -468,7 +468,7 @@ import ClickOutside from 'vue-click-outside';
 export default {
     data() {
         return {
-            enabled_options: window.question_options.split(','),
+            enabled_options: window.question_options.split(',').map(item=>item.trim()),
             quiz_is_active: false,
             questionCurrentType: null,
             formChanged: false,

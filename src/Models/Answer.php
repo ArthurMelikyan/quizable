@@ -21,7 +21,9 @@ class Answer extends Model
 
     public function getFileUrlAttribute()
     {
-        return config('quizable.asseturl').$this->file;
+        if ($this->file) {
+            return config('quizable.asseturl').$this->file;
+        }
     }
 
     public function question()

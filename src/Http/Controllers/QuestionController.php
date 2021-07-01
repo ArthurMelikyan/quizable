@@ -16,6 +16,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Arthurmelikyan\Quizable\Models\Answer;
 use Spatie\Url\Url;
 
+use function Psy\debug;
+
 class QuestionController extends Controller
 {
 
@@ -73,13 +75,11 @@ class QuestionController extends Controller
         }
 
         if ($request->file('file')) {
-            \Log::debug('ok');
 
             $data['url'] = null;
             // $path = ImageService::saveFile($request->file('file'), 'questions/' . $question->id);
             $data['file'] = HelperRepo::upload_image($request->file('file') ,"questions/$question->id",[1600 => null]);
         }
-
         $question->update($data);
 
         return QuestionResource::make($question);
