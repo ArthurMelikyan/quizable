@@ -101,7 +101,7 @@
                                             <div class="card-title">
                                                 <div class="col-md-12">
                                                     <div class="row">
-                                                        <div class="col-md-10">
+                                                        <div class="col-md-9">
                                                             <span @click="openedItem(element.id)" class="collapsed quiz-question-title-ellipsis pt-3"
                                                                 data-toggle="collapse"
                                                                 :data-target="'#collapseOne'+element.id"
@@ -118,8 +118,8 @@
 
                                                         </span>
                                                         </div>
-                                                        <div class="col-md-2 question_list_actions">
-                                                            <div>
+                                                        <div class="col-md-3 question_list_actions">
+                                                            <div style="text-align: right; white-space: nowrap">
                                                                     <a href="#"
                                                                         @click.prevent="questionEdit(element, [
                                                                             'Multiple',
