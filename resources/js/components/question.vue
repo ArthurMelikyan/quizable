@@ -302,7 +302,7 @@ export default {
     name: "Question",
     data() {
         return {
-            enabled_options: window.question_options.split(','),
+            enabled_options: window.question_options.split(',').map(item=>item.trim()),
             i: 0,
             questionCurrentType: null,
             formChanged: false,

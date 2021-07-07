@@ -18,7 +18,7 @@ Route::middleware(explode(',' , config('quizable.middlewares')))->prefix(config(
         Route::patch('/api-quiz/{quiz}/update', [QuizController::class,'updateQuiz']);
         Route::delete('/api-quiz/{quiz}', [QuizController::class,'deleteQuiz']);
 
-        //    QUESTIONS API
+        //    / API
         Route::post('/quiz/{quiz_id}/questions/{question_id}', [QuestionController::class,'cloneQuestionWithAnswers']);
         Route::get('/quiz/{quiz_id}/questions', [QuestionController::class,'retrieveAllQuestionByQuizID']);
         Route::post('/quiz/{quiz_id}/questions',  [QuestionController::class, 'createQuestion']);
