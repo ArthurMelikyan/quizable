@@ -9,5 +9,6 @@ return [
     'migrations_publish_path'   =>    'tenant',
     'middlewares'               =>    'web', // 'web, auth , ...' separated with comma
     'urlprefix'                 =>    'dashboard',
-    'enabled_question_options'  =>    'multiple,radio,dropdown,text,file,textarea',
+    // ? 'enabled_question_options'  =>    'multiple,radio,dropdown,text,file,textarea,enable_video_and_image_navigations'
+    'enabled_question_options'  =>    'multiple,radio,dropdown,text,file,textarea,enable_video_and_image_navigations'
 ];
