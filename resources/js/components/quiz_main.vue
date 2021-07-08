@@ -164,7 +164,7 @@
                                                         <div class="form-group mb-0 questionTitleAndNavigationBlock w-100"
                                                                 @mouseover="showEditNavigation()" @mouseout="hide">
                                                             <div class="d-flex justify-content-end">
-                                                                <div class="questionsNavigationButton" :class="{'_show':showNavigation}"
+                                                                <div v-if="check_if_enabled('enable_video_and_image_navigations')" class="questionsNavigationButton" :class="{'_show':showNavigation}"
                                                                         data-toggle="modal"
                                                                         data-target="#exampleModalCenter2">
                                                                     <button :class="{'active' : questionNavigation.file_type.name == 'image'}" class="q-navigation-btn" style="margin-right: -4px;"
@@ -1249,13 +1249,27 @@ export default {
             })
         },
         questionDelete(questionId, index) {
-            axios.delete(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${questionId}`)
-                .then(resp => {
-                    this.getAllQuizQuestions();
-                    this.showSweet({successmsg:'Question deleted successfully'}, 'success');
-                }).catch(error => {
-                console.log(error)
-            })
+                  Swal.fire({
+                    title: "Are you sure?",
+                    text: "Delete question?",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+                    if (result.value) {
+                        axios.delete(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${questionId}`).then(resp => {
+                            this.getAllQuizQuestions();
+                            this.showSweet({successmsg:'Question deleted successfully'}, 'success');
+                        }).catch(error => {
+                            console.log(error)
+                        })
+                    } else {
+                        return false;
+                    }
+                });
+
         },
         validation() {
             let i = 0;
@@ -1363,7 +1377,6 @@ export default {
         }
     },
     mounted() {
-        console.log(this.enabled_options);
     },
     created: function () {
         if (this.quiz) {
