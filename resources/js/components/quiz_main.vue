@@ -256,8 +256,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-
                                                     <div v-if="questionType === 'multiple'" v-for="(item, index) in data"
                                                             class="block-3 d-flex align-items-center mb-3 ">
                                                         <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
