@@ -80,7 +80,7 @@
                 <div class="col-md-12">
                     <label :for="'Q'+(index+1)" class="questionCount ">Question <span>{{': '+(index+1)}}</span></label>
                         <div class="d-flex justify-content-between">
-                            <div class="questionsNavigationButton" :class="{'_show':showNavigation}" data-toggle="modal"
+                            <div v-if="check_if_enabled('enable_video_and_image_navigations')" class="questionsNavigationButton" :class="{'_show':showNavigation}" data-toggle="modal"
                                 :data-target="'#exampleModalCenter'+index">
                                 <button style="margin-right: -4px;" @click.prevent="questionNavigationControl('image', 'image', 'quiz.Choose file', index, 'jpeg | jpg | png ', 'image')">
                                     <svg class="bi bi-card-image"
@@ -855,9 +855,7 @@ export default {
         },
         check_if_enabled(option){
             if (this.enabled_options.includes(option)) {
-                console.log(option + ' is enabled'  );
             } else{
-                console.log(option + ' disabledddddddddddd');
             }
            return this.enabled_options.includes(option);
         },
