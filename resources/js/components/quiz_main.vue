@@ -419,6 +419,7 @@
                                                             class="d-flex align-items-center mb-4">
                                                         <div class="form-group mb-0 position-relative flex-grow-1">
                                                             <input type="text" class="form-control pr-5"
+                                                                   :value="element.answers.length ? element.answers[0].short_answer : ''"
                                                                     maxlength="250" :placeholder="'Enter an answer choice'">
                                                         </div>
                                                     </div>
