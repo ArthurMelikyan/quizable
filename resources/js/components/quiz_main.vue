@@ -263,7 +263,7 @@
                                                             <input type="text" class="form-control" maxlength="250" :placeholder="'Enter an answer choice'"
                                                                     v-model="data[index]['title']">
                                                             <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
-                                                                <span class="CP">Correct answer</span>
+                                                                <span class="CP">{{ trans('__quiz__.Correct answer') }}</span>
                                                                 <span class="mobile position-absolute">
                                                                     {{ trans('__quiz__.Correct answer') }}
                                                                 </span>
@@ -283,7 +283,7 @@
 
                                                             <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
                                                                 <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
-                                                                    <span class="mr-3">Correct answer</span>
+                                                                    <span class="mr-3">{{ trans('__quiz__.Correct answer') }}</span>
                                                                     <input type="radio" name="Yes/No" :value="true" @change="getRadioValue(true, 'Yes')">
                                                                 </div>
                                                             </div>
@@ -323,7 +323,7 @@
                                                                 <label class="custom-file-label answer-image-label" :data-browse="'quiz.Choose file'" for="customFile">Choose file</label>
                                                             </div>
                                                             <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success " style="background: transparent;">
-                                                                <span class="CP">Correct answer</span>
+                                                                <span class="CP">{{ trans('__quiz__.Correct answer') }}</span>
                                                                 <span class="mobile position-absolute"  style="top: -14px; width: auto">
                                                                     {{ trans('__quiz__.Correct answer') }}
                                                                 </span>
@@ -338,7 +338,7 @@
                                                             <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice'"
                                                                     v-model="data[index]['title']" >
                                                             <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
-                                                                <span class="CP">Correct answer</span>
+                                                                <span class="CP">{{ trans('__quiz__.Correct answer') }}</span>
                                                                 <span class="mobile position-absolute">
                                                                     {{ trans('__quiz__.Correct answer') }}
                                                                 </span>

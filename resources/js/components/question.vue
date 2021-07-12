@@ -148,18 +148,18 @@
                             </td>
                         </tr>
                         <tr>
-                            <td v-if="check_if_enabled('dropdown')" @click="check_if_enabled('dropdown') && selectQuestionType('dropdown', 'Dropdown')">
+                            <td v-if="check_if_enabled('dropdown')" @click="check_if_enabled('dropdown') && selectQuestionType('dropdown', trans('__quiz__.Dropdown'))">
                                 <i class="fas fa-caret-down"></i>{{ trans('__quiz__.Dropdown') }}
                             </td>
-                            <td v-if="check_if_enabled('text')"  @click="check_if_enabled('text') && selectQuestionType('text', 'Short Text')">
+                            <td v-if="check_if_enabled('text')"  @click="check_if_enabled('text') && selectQuestionType('text', trans('__quiz__.Short Text'))">
                                 <i class="fas fa-align-justify"></i>{{ trans('__quiz__.Short Text') }}
                             </td>
                         </tr>
                         <tr>
-                            <td v-if="check_if_enabled('file')"  @click="check_if_enabled('file') && selectQuestionType('file', 'Picture Choice')">
+                            <td v-if="check_if_enabled('file')"  @click="check_if_enabled('file') && selectQuestionType('file', trans('__quiz__.Picture Choice'))">
                                 <i class="far fa-image"></i>{{ trans('__quiz__.Picture Choice') }}
                             </td>
-                            <td v-if="check_if_enabled('textarea')"  @click="check_if_enabled('textarea') && selectQuestionType('textarea', 'Long Text')">
+                            <td v-if="check_if_enabled('textarea')"  @click="check_if_enabled('textarea') && selectQuestionType('textarea', trans('__quiz__.Long Text'))">
                                 <i class="fas fa-align-justify"></i>{{ trans('__quiz__.Long Text') }}
                             </td>
                         </tr>
@@ -238,7 +238,7 @@
                     <label class="custom-file-label answer-image-label"  for="customFile">{{ trans('__quiz__.Choose file') }}</label>
                 </div>
                 <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success " style="background: transparent;">
-                    <span class="CP">Correct answer</span>
+                    <span class="CP">{{ trans('__quiz__.Correct answer') }}</span>
                     <span class="mobile position-absolute" style="top: -14px; width: auto">
                         {{ trans('__quiz__.Correct answer') }}
                     </span>
@@ -250,7 +250,7 @@
                 class="block-3 d-flex align-items-center mb-3">
             <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
                 <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
-                <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice' "
+                <input type="text" class="form-control pr-5" maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice') "
                         v-model="data[index]['title']" >
                 <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
                     <span class="CP">{{ trans('__quiz__.Correct answer') }}</span>
@@ -285,7 +285,7 @@
         </div>
         <div class="text-right mr-3">
             <a href="#" class="btn btn-secondary mr-2"
-                @click.prevent="formToEmpty">Clear</a>
+                @click.prevent="formToEmpty">{{ trans('__quiz__.Clear') }}</a>
             <button type="submit" class="btn btn-primary" :disabled="loading">
                 <span v-if="loading" class="spinner-border spinner-border-sm mr-1" style="padding: 5px;" role="status" aria-hidden="true"></span>
                 <span>{{ trans('__quiz__.Save') }}</span>
