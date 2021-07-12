@@ -223,33 +223,33 @@
                                                                 :id="'dropdownMenuButton'+element.id"
                                                                 data-toggle="dropdown" aria-haspopup="true"
                                                                 aria-expanded="false">
-                                                                {{ questionCurrentType || 'Select question type' }}
+                                                                {{ questionCurrentType || trans('__quiz__.Select question type') }}
                                                             </button>
                                                             <div class="dropdown-menu w-100"
                                                                     :aria-labelledby="'dropdownMenuButton'+element.id">
                                                                 <table class="table drop-table">
                                                                     <tr>
                                                                         <td v-if="check_if_enabled('multiple')" @click="selectQuestionType('multiple', element.id, 'Multiple')">
-                                                                            <i class="fas fa-bars"></i>Multiple
+                                                                            <i class="fas fa-bars"></i>{{ trans('__quiz__.Multiple') }}
                                                                         </td>
                                                                         <td v-if="check_if_enabled('radio')" @click="selectQuestionType('radio', element.id, 'Yes/No')">
-                                                                            <i class="fas fa-dot-circle"></i>Yes/No
+                                                                            <i class="fas fa-dot-circle"></i>{{ trans('__quiz__.Yes/No') }}
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td v-if="check_if_enabled('dropdown')" @click="selectQuestionType('dropdown', element.id, 'Dropdown')">
-                                                                            <i class="fas fa-caret-down"></i>Dropdown
+                                                                            <i class="fas fa-caret-down"></i>{{ trans('__quiz__.Dropdown') }}
                                                                         </td>
                                                                         <td v-if="check_if_enabled('text')" @click="selectQuestionType('text', element.id, 'Short Text')">
-                                                                                <i class="fas fa-align-justify"></i> Short Text
+                                                                                <i class="fas fa-align-justify"></i> {{ trans('__quiz__.Short Text') }}
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td  v-if="check_if_enabled('file')" @click="selectQuestionType('file', element.id, 'Picture Choice')">
-                                                                            <i class="far fa-image"></i> Picture Choice
+                                                                            <i class="far fa-image"></i> {{ trans('__quiz__.Picture Choice') }}
                                                                         </td>
                                                                         <td  v-if="check_if_enabled('textarea')"  @click="selectQuestionType('textarea', element.id, 'Long Text')">
-                                                                            <i class="fas fa-align-justify"></i>Long Text
+                                                                            <i class="fas fa-align-justify"></i>{{ trans('__quiz__.Long Text') }}
                                                                         </td>
                                                                     </tr>
                                                                 </table>
