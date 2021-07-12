@@ -32,7 +32,7 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Question {{ questionNavigation.checkLangType }}</h5>
+                                            <h5 class="modal-title">{{ trans('__quiz__.Question') }} {{ questionNavigation.checkLangType }}</h5>
                                             <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
@@ -46,10 +46,10 @@
                                                         v-model="questionNavigation.url"
                                                         :class="{'is-invalid': error.validUrl}" :placeholder="question_file_type">
                                                 <div v-if="error.validUrl" class="mt-1" style="color: red">
-                                                    Please enter correct values
+                                                    {{ trans('__quiz__.Please enter correct values') }}
                                                 </div>
                                                 <div v-if="error.validUrlYoutube" class="mt-1" style="color: red">
-                                                    Please enter correct Youtube video url
+                                                    {{ trans('__quiz__.Please enter correct Youtube video url') }}
                                                 </div>
                                             </div>
                                             <div class="form-group  align-items-center" :class="{'d-md-flex' : questionNavigation.class}" v-show="questionNavigation.file_type.file">
@@ -71,17 +71,17 @@
                                                 </div>
                                             </div>
                                             <div v-if="error.validUploadFile" class="mt-1" style="color: red">
-                                                Please select {{questionNavigation.checkLangType__}}
+                                                {{ trans('__quiz__.Please select') }} {{questionNavigation.checkLangType__}}
                                             </div>
                                         </div>
                                         <div class="modal-footer">
 
                                             <button v-if="formChanged" type="button" class=" btn btn-secondary"
                                                     @click="questionNavigationFileTypeChange('Choose file')">
-                                                    Clear
+                                                {{ trans('__quiz__.Clear') }}
                                             </button>
                                             <button type="button" class="btn btn-primary" v-if="modal_button_save" data-dismiss="modal">
-                                                Save
+                                                {{ trans('__quiz__.Save') }}
                                             </button>
                                         </div>
                                     </div>
@@ -206,14 +206,14 @@
                                                                     v-model="questionName">
                                                             <div class="valid q-correct mt-2 position-absolute"
                                                                     v-show="valid_error.r_title">
-                                                                Is required question title
+                                                                {{ trans('__quiz__.Is required question title') }}
                                                             </div>
                                                             <div class="valid q-correct mt-2 position-absolute"
                                                                     v-show="valid_error.r_select">
-                                                                Please select question type
+                                                                {{ trans('__quiz__.Please select question type') }}
                                                             </div>
                                                             <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_limit">
-                                                                This field must not exceed 255 characters
+                                                                {{ trans('__quiz__.This field must not exceed 255 characters') }}
                                                             </div>
                                                         </div>
                                                         <div class="dropdown">
@@ -265,7 +265,7 @@
                                                             <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
                                                                 <span class="CP">Correct answer</span>
                                                                 <span class="mobile position-absolute">
-                                                                    Correct answer
+                                                                    {{ trans('__quiz__.Correct answer') }}
                                                                 </span>
                                                                 <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                                                             </div>
@@ -277,7 +277,7 @@
                                                         <div class="d-flex align-items-center mb-3 answer">
                                                             <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
                                                                 <span class="d-flex align-items-center " style="width: 30px;">
-                                                                    Yes
+                                                                    {{ trans('__quiz__.Yes') }}
                                                                 </span>
                                                             </label>
 
@@ -291,12 +291,12 @@
                                                         <div class="d-flex align-items-center">
                                                             <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
                                                                 <span class="d-flex align-items-center " style="width: 30px;">
-                                                                    No
+                                                                    {{ trans('__quiz__.No') }}
                                                                 </span>
                                                             </label>
                                                             <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
                                                                 <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
-                                                                    <span class="mr-3">Correct answer</span>
+                                                                    <span class="mr-3">{{ trans('__quiz__.Correct answer') }}</span>
                                                                     <input type="radio" name="Yes/No" :value="false" @change="getRadioValue(false, 'No')">
                                                                 </div>
                                                             </div>
@@ -325,7 +325,7 @@
                                                             <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success " style="background: transparent;">
                                                                 <span class="CP">Correct answer</span>
                                                                 <span class="mobile position-absolute"  style="top: -14px; width: auto">
-                                                                    Correct answer
+                                                                    {{ trans('__quiz__.Correct answer') }}
                                                                 </span>
                                                                 <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                                                             </div>
@@ -340,7 +340,7 @@
                                                             <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
                                                                 <span class="CP">Correct answer</span>
                                                                 <span class="mobile position-absolute">
-                                                                    Correct answer
+                                                                    {{ trans('__quiz__.Correct answer') }}
                                                                 </span>
                                                                 <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                                                             </div>
@@ -354,24 +354,25 @@
                                                         </div>
                                                     </div>
                                                     <div v-if="validationAnswer" style="color: red">
-                                                        Please fill in all fields and select at least one correct variant
+                                                        {{ trans('__quiz__.Please fill in all fields and select at least one correct variant') }}
+
                                                     </div>
                                                     <div v-if="validationAnswerUploadFile" style="color: red">
-                                                        Please select image
+                                                        {{ trans('__quiz__.Please select image') }}
                                                     </div>
                                                     <div v-if="addOtherQuestionShow"
                                                             class="block-4 d-inline-flex align-items-center mt-3 mb-3"
                                                             @click="addOtherQuestion()">
                                                         <span class="plus-icon mr-2">+</span>
-                                                        <p class="m-0">Add new answer</p>
+                                                        <p class="m-0">{{ trans('__quiz__.Add new answer') }}</p>
                                                     </div>
                                                     <div class="text-right mr-3">
                                                         <a href="#" class="btn btn-secondary mr-2"
-                                                            @click.prevent="formToEmpty">Clear</a>
+                                                            @click.prevent="formToEmpty">{{ trans('__quiz__.Clear') }}</a>
                                                         <button type="submit" class="btn btn-primary" :disabled="loading"
                                                                 @click="questionUpdateSave(element.id)">
                                                             <span v-if="loading" class="spinner-border spinner-border-sm mr-1" style="padding: 5px;" role="status" aria-hidden="true"></span>
-                                                            <span>Save</span>
+                                                            <span>{{ trans('__quiz__.Save') }}</span>
                                                         </button>
                                                     </div>
                                                 </div>

@@ -16,7 +16,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Question {{questionNavigation.checkLangType }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ trans('__quiz__.Question') }} {{questionNavigation.checkLangType }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -29,10 +29,10 @@
                                 @input="questionNavigationUrlChange"
                                 v-model="questionNavigation.url" :placeholder="question_file_type">
                         <div v-if="error.validUrl" class="mt-1" style="color: red">
-                                Please enter correct values
+                            {{ trans('__quiz__.Please enter correct values') }}
                         </div>
                         <div v-if="error.validUrlYoutube" class="mt-1" style="color: red">
-                            Please enter correct Youtube video url
+                            {{ trans('__quiz__.Please enter correct Youtube video url') }}
                         </div>
                     </div>
                     <div class="form-group  align-items-center" :class="{'d-md-flex' : questionNavigation.class}"
@@ -47,7 +47,7 @@
                                 <input type="file" class="custom-file-input "   :accept="(questionNavigation.file_type.name == 'image') ? 'image/x-png,image/jpeg' : 'video/mp4,video/x-m4v,video/*'" :id="'c-file'+index"
                                         @change="getFileQuestion($event, index)">
                                 <label class="custom-file-label overflow-hidden" :for="'c-file'+index">
-                                    Choose file
+                                    {{ trans('__quiz__.Choose file') }}
                                 </label>
                             </div>
 
@@ -63,10 +63,10 @@
                 </div>
                 <div class="modal-footer">
                     <button v-if="formChanged" type="button" class=" btn btn-secondary"
-                            @click="questionNavigationFileClear('quiz.Choose file', index)">  Clear
+                            @click="questionNavigationFileClear('quiz.Choose file', index)">{{ trans('__quiz__.Clear') }}
                     </button>
                     <button type="button" class="btn btn-primary" v-if="modal_button_save" data-dismiss="modal">
-                            Save
+                        {{ trans('__quiz__.Save') }}
                     </button>
                 </div>
             </div>
@@ -135,7 +135,7 @@
                 <button class="btn btn-secondary dropdown-toggle w-100" type="button"
                         id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{ questionCurrentType || 'Select question type' }}
+                    {{ questionCurrentType || trans('__quiz__.Select question type') }}
                 </button>
                 <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                     <table class="table drop-table">
@@ -181,9 +181,9 @@
                 <input type="text" class="form-control"  maxlength="250"  :placeholder="'Enter an answer choice'"
                         v-model="data[index]['title']">
                 <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
-                    <span class="CP">Correct answer_by_one</span>
+                    <span class="CP">{{ trans('__quiz__.Correct answer_by_one') }}</span>
                     <span class="mobile position-absolute">
-                        Correct answer
+                        {{ trans('__quiz__.Correct answer') }}
                     </span>
                     <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                 </div>
@@ -195,13 +195,13 @@
             <div class="d-flex align-items-center mb-3 answer">
                 <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
                 <span class="d-flex align-items-center " style="width: 30px;">
-                    Yes
+                    {{ trans('__quiz__.Yes') }}
                 </span>
                 </label>
 
                 <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
                     <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
-                        <span class="mr-3">Correct answer</span>
+                        <span class="mr-3">{{ trans('__quiz__.Correct answer') }}</span>
                         <input type="radio" name="Yes/No" :value="true" @change="getRadioValue(true, 'Yes')">
                     </div>
                 </div>
@@ -209,12 +209,12 @@
             <div class="d-flex align-items-center">
                 <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
                 <span class="d-flex align-items-center " style="width: 30px;">
-                    No
+                    {{ trans('__quiz__.No') }}
                 </span>
                 </label>
                 <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
                     <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
-                        <span class="mr-3 ">Correct answer</span>
+                        <span class="mr-3 ">{{ trans('__quiz__.Correct answer') }}</span>
                         <input type="radio" name="Yes/No" :value="false" @change="getRadioValue(false, 'No')">
                     </div>
                 </div>
@@ -235,12 +235,12 @@
                 <div class="custom-file w-auto ">
                     <input type="file" class="custom-file-input answer-image"  accept="image/x-png,image/jpeg"
                             id="customFile" @change="getImages(index, $event)">
-                    <label class="custom-file-label answer-image-label"  for="customFile">Choose file</label>
+                    <label class="custom-file-label answer-image-label"  for="customFile">{{ trans('__quiz__.Choose file') }}</label>
                 </div>
                 <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success " style="background: transparent;">
                     <span class="CP">Correct answer</span>
                     <span class="mobile position-absolute" style="top: -14px; width: auto">
-                        Correct answer
+                        {{ trans('__quiz__.Correct answer') }}
                     </span>
                     <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                 </div>
@@ -253,9 +253,9 @@
                 <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice' "
                         v-model="data[index]['title']" >
                 <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
-                    <span class="CP">Correct answer</span>
+                    <span class="CP">{{ trans('__quiz__.Correct answer') }}</span>
                     <span class="mobile position-absolute">
-                        Correct answer
+                        {{ trans('__quiz__.Correct answer') }}
                     </span>
                     <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                 </div>
@@ -269,10 +269,11 @@
             </div>
         </div>
         <div v-if="validationAnswer" style="color: red">
-            Please fill in all fields and select at least one correct variant
+            {{ trans('__quiz__.Please fill in all fields and select at least one correct variant') }}
+
         </div>
         <div v-if="validationAnswerUploadFile" class="file_validate_err" style="color: red">
-            Please select image
+            {{ trans('__quiz__.Please select image') }}
         </div>
         <div v-if="addOtherQuestionShow"
                 class="block-4 d-inline-flex align-items-center mt-3"
@@ -280,14 +281,14 @@
             <span class="mr-2 badge badge-primary">
                 <i class="fas fa-plus"></i>
             </span>
-            <p class="m-0">Add new answer</p>
+            <p class="m-0">{{ trans('__quiz__.Add new answer') }}</p>
         </div>
         <div class="text-right mr-3">
             <a href="#" class="btn btn-secondary mr-2"
                 @click.prevent="formToEmpty">Clear</a>
             <button type="submit" class="btn btn-primary" :disabled="loading">
                 <span v-if="loading" class="spinner-border spinner-border-sm mr-1" style="padding: 5px;" role="status" aria-hidden="true"></span>
-                <span>Save</span>
+                <span>{{ trans('__quiz__.Save') }}</span>
             </button>
         </div>
     </div>
