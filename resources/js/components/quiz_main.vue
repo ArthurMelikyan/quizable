@@ -202,7 +202,7 @@
                                                             <input type="text"
                                                                     @input="questionNameChange"
                                                                     class="form-control questionName"
-                                                                    :placeholder="'Enter your question'"
+                                                                    :placeholder="trans('__quiz__.Enter your question')"
                                                                     v-model="questionName">
                                                             <div class="valid q-correct mt-2 position-absolute"
                                                                     v-show="valid_error.r_title">
@@ -229,26 +229,26 @@
                                                                     :aria-labelledby="'dropdownMenuButton'+element.id">
                                                                 <table class="table drop-table">
                                                                     <tr>
-                                                                        <td v-if="check_if_enabled('multiple')" @click="selectQuestionType('multiple', element.id, 'Multiple')">
+                                                                        <td v-if="check_if_enabled('multiple')" @click="selectQuestionType('multiple', element.id, trans('__quiz__.Multiple'))">
                                                                             <i class="fas fa-bars"></i>{{ trans('__quiz__.Multiple') }}
                                                                         </td>
-                                                                        <td v-if="check_if_enabled('radio')" @click="selectQuestionType('radio', element.id, 'Yes/No')">
+                                                                        <td v-if="check_if_enabled('radio')" @click="selectQuestionType('radio', element.id, trans('__quiz__.Yes/No'))">
                                                                             <i class="fas fa-dot-circle"></i>{{ trans('__quiz__.Yes/No') }}
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td v-if="check_if_enabled('dropdown')" @click="selectQuestionType('dropdown', element.id, 'Dropdown')">
+                                                                        <td v-if="check_if_enabled('dropdown')" @click="selectQuestionType('dropdown', element.id, trans('__quiz__.Dropdown'))">
                                                                             <i class="fas fa-caret-down"></i>{{ trans('__quiz__.Dropdown') }}
                                                                         </td>
-                                                                        <td v-if="check_if_enabled('text')" @click="selectQuestionType('text', element.id, 'Short Text')">
+                                                                        <td v-if="check_if_enabled('text')" @click="selectQuestionType('text', element.id, trans('__quiz__.Short Text'))">
                                                                                 <i class="fas fa-align-justify"></i> {{ trans('__quiz__.Short Text') }}
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td  v-if="check_if_enabled('file')" @click="selectQuestionType('file', element.id, 'Picture Choice')">
+                                                                        <td  v-if="check_if_enabled('file')" @click="selectQuestionType('file', element.id, trans('__quiz__.Picture Choice'))">
                                                                             <i class="far fa-image"></i> {{ trans('__quiz__.Picture Choice') }}
                                                                         </td>
-                                                                        <td  v-if="check_if_enabled('textarea')"  @click="selectQuestionType('textarea', element.id, 'Long Text')">
+                                                                        <td  v-if="check_if_enabled('textarea')"  @click="selectQuestionType('textarea', element.id, trans('__quiz__.Long Text'))">
                                                                             <i class="fas fa-align-justify"></i>{{ trans('__quiz__.Long Text') }}
                                                                         </td>
                                                                     </tr>
@@ -260,7 +260,7 @@
                                                             class="block-3 d-flex align-items-center mb-3 ">
                                                         <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
                                                             <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
-                                                            <input type="text" class="form-control" maxlength="250" :placeholder="'Enter an answer choice'"
+                                                            <input type="text" class="form-control" maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice')"
                                                                     v-model="data[index]['title']">
                                                             <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
                                                                 <span class="CP">{{ trans('__quiz__.Correct answer') }}</span>
@@ -335,7 +335,7 @@
                                                             class="block-3 d-flex align-items-center mb-3">
                                                         <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
                                                             <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
-                                                            <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice'"
+                                                            <input type="text" class="form-control pr-5" maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice')"
                                                                     v-model="data[index]['title']" >
                                                             <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
                                                                 <span class="CP">{{ trans('__quiz__.Correct answer') }}</span>
@@ -349,7 +349,7 @@
                                                     <div v-if="questionType === 'text'" v-for="(item, index) in data"
                                                          class="block-3 d-flex align-items-center mb-3">
                                                         <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
-                                                            <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice' "
+                                                            <input type="text" class="form-control pr-5" maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice')"
                                                                    v-model="data[index]['short_answer']" >
                                                         </div>
                                                     </div>
@@ -419,7 +419,7 @@
                                                         <div class="form-group mb-0 position-relative flex-grow-1">
                                                             <input type="text" class="form-control pr-5"
                                                                    :value="element.answers.length ? element.answers[0].short_answer : ''"
-                                                                    maxlength="250" :placeholder="'Enter an answer choice'">
+                                                                    maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice')">
                                                         </div>
                                                     </div>
                                                     <div v-if="element.type === 'dropdown'" class="form-group">
