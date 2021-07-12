@@ -12,7 +12,7 @@
                             <div class="text-center">
                                 <a href="#" class="btn btn-success add__question__item"
                                     @click.prevent="addNewQuestion">
-                                        Create New Question <i class="fas fa-plus"></i>
+                                    {{ trans('__quiz__.Create New Question') }} <i class="fas fa-plus"></i>
                                 </a>
                             </div>
                         </div>
