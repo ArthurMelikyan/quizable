@@ -45,7 +45,7 @@
         $trans = [];
         foreach ($lang_files as $f) {
             $filename = pathinfo($f)['filename'];
-            if (pathinfo($f)['filename'] == '__shop__') {
+            if (pathinfo($f)['filename'] == '__quiz__') {
                 $trans[$filename] = trans($filename);
             }
         }
