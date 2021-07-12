@@ -78,7 +78,7 @@
             <div class="form-group mb-0" @mouseover="showEditNavigation()" @mouseout="hide">
 
                 <div class="col-md-12">
-                    <label :for="'Q'+(index+1)" class="questionCount ">Question <span>{{': '+(index+1)}}</span></label>
+                    <label :for="'Q'+(index+1)" class="questionCount ">{{ trans('__quiz__.Question') }} <span>{{': '+(index+1)}}</span></label>
                         <div class="d-flex justify-content-between">
                             <div v-if="check_if_enabled('enable_video_and_image_navigations')" class="questionsNavigationButton" :class="{'_show':showNavigation}" data-toggle="modal"
                                 :data-target="'#exampleModalCenter'+index">
@@ -118,16 +118,16 @@
                         <input type="text"
                             @input="questionNameChange"
                             class="form-control questionName w-100"
-                            :placeholder="'Enter your question'" :id="'Q'+(index+1)"
+                            :placeholder="trans('__quiz__.Enter your question')" :id="'Q'+(index+1)"
                             v-model="questionName">
                         <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_title">
-                            Is required question title
+                            {{trans('__quiz__.Is required question title')}}
                         </div>
                         <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_select">
-                            Please select question type
+                            {{trans('__quiz__.Please select question type')}}
                         </div>
                         <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_limit">
-                            This field must not exceed 255 characters
+                            {{trans('__quiz__.This field must not exceed 255 characters')}}
                         </div>
                     </div>
 
@@ -141,26 +141,26 @@
                     <table class="table drop-table">
                         <tr>
                             <td v-if="check_if_enabled('multiple') " @click="selectQuestionType('multiple', 'quiz.Multiple')">
-                                <i class="fas fa-bars"></i>Multiple
+                                <i class="fas fa-bars"></i>{{ trans('__quiz__.Multiple') }}
                             </td>
                             <td v-if="check_if_enabled('radio')" @click="selectQuestionType('radio', 'Yes/No')">
-                                <i class="fas fa-dot-circle"></i>Yes/No
+                                <i class="fas fa-dot-circle"></i>{{ trans('__quiz__.Yes/No') }}
                             </td>
                         </tr>
                         <tr>
                             <td v-if="check_if_enabled('dropdown')" @click="check_if_enabled('dropdown') && selectQuestionType('dropdown', 'Dropdown')">
-                                <i class="fas fa-caret-down"></i>Dropdown
+                                <i class="fas fa-caret-down"></i>{{ trans('__quiz__.Dropdown') }}
                             </td>
                             <td v-if="check_if_enabled('text')"  @click="check_if_enabled('text') && selectQuestionType('text', 'Short Text')">
-                                <i class="fas fa-align-justify"></i> Short Text
+                                <i class="fas fa-align-justify"></i>{{ trans('__quiz__.Short Text') }}
                             </td>
                         </tr>
                         <tr>
                             <td v-if="check_if_enabled('file')"  @click="check_if_enabled('file') && selectQuestionType('file', 'Picture Choice')">
-                                <i class="far fa-image"></i> Picture Choice
+                                <i class="far fa-image"></i>{{ trans('__quiz__.Picture Choice') }}
                             </td>
                             <td v-if="check_if_enabled('textarea')"  @click="check_if_enabled('textarea') && selectQuestionType('textarea', 'Long Text')">
-                                <i class="fas fa-align-justify"></i>Long Text
+                                <i class="fas fa-align-justify"></i>{{ trans('__quiz__.Long Text') }}
                             </td>
                         </tr>
                     </table>

@@ -10,6 +10,9 @@
  Vue.component('quiz', require('./components/quiz_main.vue').default);
 //  Vue.component('question', require('./components/question.vue').default);
 
+ Vue.prototype.trans = (key) => {
+     return _.get(window.trans, key, key);
+ };
 
  const app = new Vue({
      el: '#app',
