@@ -20,10 +20,11 @@ class CreateUserQuizesTable extends Migration
             $table->boolean('is_completed')->default(false);
 
             $table->index(['user_id', 'quiz_id']);
-
             $table->timestamps();
-
             $table->softDeletes();
+
+            $table->foreign('user_id')->on('users')->references('id')->onDelete('cascade');
+            $table->foreign('quiz_id')->on('quizes')->references('id')->onDelete('cascade');
         });
     }
 

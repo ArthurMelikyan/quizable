@@ -335,7 +335,7 @@
                                                             class="block-3 d-flex align-items-center mb-3">
                                                         <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
                                                             <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
-                                                            <input type="text" class="form-control pr-5" maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice')"
+                                                            <input type="text"  class="form-control pr-5" maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice')"
                                                                     v-model="data[index]['title']" >
                                                             <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
                                                                 <span class="CP">{{ trans('__quiz__.Correct answer') }}</span>
@@ -349,11 +349,11 @@
                                                     <div v-if="questionType === 'text'" v-for="(item, index) in data"
                                                          class="block-3 d-flex align-items-center mb-3">
                                                         <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
-                                                            <input type="text" class="form-control pr-5" maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice')"
+                                                            <input type="text"  class="form-control pr-5" maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice')"
                                                                    v-model="data[index]['short_answer']" >
                                                         </div>
                                                     </div>
-                                                    <div v-if="validationAnswer" style="color: red">
+                                                    <div v-if="validationAnswer" style="color: #ff0000">
                                                         {{ trans('__quiz__.Please fill in all fields and select at least one correct variant') }}
 
                                                     </div>
@@ -418,6 +418,7 @@
                                                             class="d-flex align-items-center mb-4">
                                                         <div class="form-group mb-0 position-relative flex-grow-1">
                                                             <input type="text" class="form-control pr-5"
+
                                                                    :value="element.answers.length ? element.answers[0].short_answer : ''"
                                                                     maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice')">
                                                         </div>
