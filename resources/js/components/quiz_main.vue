@@ -1,133 +1,118 @@
 <template>
-    <div id="quiz">
-        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="kt-portlet">
-                        <div class="kt-portlet__body">
-                            <div class="mt-3">
-                                <app-question v-for="(item, index) in questionData" :index="index"
-                                              :quizResponse="quizResponse" :quiz_id="quiz_id" :item="item" :key="index"
-                                              @allQuestions="allQuestions" @questionCountDelete="questionCountDelete"/>
-                                <div class="text-center">
-                                    <a href="#" class="btn btn-success add__question__item"
-                                       @click.prevent="addNewQuestion">
-                                        {{ trans('__quiz__.Create New Question') }} <i class="fas fa-plus"></i>
-                                    </a>
-                                </div>
+<div id="quiz">
+    <div  class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="kt-portlet">
+                    <div class="kt-portlet__body">
+                        <div class="mt-3">
+                            <app-question v-for="(item, index) in questionData" :index="index"
+                                            :quizResponse="quizResponse" :quiz_id="quiz_id" :item="item" :key="index"
+                                            @allQuestions="allQuestions" @questionCountDelete="questionCountDelete"/>
+                            <div class="text-center">
+                                <a href="#" class="btn btn-success add__question__item"
+                                    @click.prevent="addNewQuestion">
+                                        Create New Question <i class="fas fa-plus"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div v-if="openQuestion" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="kt-portlet">
-                        <div class="kt-portlet__body">
-                            <div class="mt-3 ">
-                                <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog"
-                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">{{ trans('__quiz__.Question') }} {{
-                                                    questionNavigation.checkLangType }}</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="form-group" v-show="questionNavigation.file_type.url">
-                                                    <label for="url"><b>Set your file url</b></label>
-                                                    <input type="text" class="form-control" id="url"
-                                                           @input="questionNavigationUrlChange"
-                                                           v-model="questionNavigation.url"
-                                                           :class="{'is-invalid': error.validUrl}"
-                                                           :placeholder="question_file_type">
-                                                    <div v-if="error.validUrl" class="mt-1" style="color: red">
-                                                        {{ trans('__quiz__.Please enter correct values') }}
-                                                    </div>
-                                                    <div v-if="error.validUrlYoutube" class="mt-1" style="color: red">
-                                                        {{ trans('__quiz__.Please enter correct Youtube video url') }}
-                                                    </div>
+    </div>
+    <div v-if="openQuestion" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="kt-portlet">
+                    <div class="kt-portlet__body">
+                        <div class="mt-3 ">
+                            <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Question {{ questionNavigation.checkLangType }}</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group" v-show="questionNavigation.file_type.url">
+                                                <label for="url"><b>Set your file url</b></label>
+                                                <input type="text" class="form-control" id="url"
+                                                        @input="questionNavigationUrlChange"
+                                                        v-model="questionNavigation.url"
+                                                        :class="{'is-invalid': error.validUrl}" :placeholder="question_file_type">
+                                                <div v-if="error.validUrl" class="mt-1" style="color: red">
+                                                    Please enter correct values
                                                 </div>
-                                                <div class="form-group  align-items-center"
-                                                     :class="{'d-md-flex' : questionNavigation.class}"
-                                                     v-show="questionNavigation.file_type.file">
-                                                    <div v-show="questionNavigation.class"
-                                                         class="position-relative question-img-preview "
-                                                         :class="{'my-style block-5': questionNavigation.class}">
-                                                        <img :src="questionNavigation.file_url" alt="">
-                                                    </div>
-
-                                                    <div class="block-3 d-flex align-items-center ">
-                                                        <div class="custom-file w-auto">
-                                                            <input type="file" class="custom-file-input" id="file"
-                                                                   @change="getFileQuestion($event)"
-                                                                   :accept="(questionNavigation.file_type.name == 'image') ? 'image/x-png,image/jpeg' : 'video/mp4,video/x-m4v,video/*'">
-                                                            <label class="custom-file-label overflow-hidden" for="file">Choose
-                                                                file</label>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="position-relative question-video-preview "
-                                                         style="margin-bottom: -25px;"
-                                                         v-show="questionNavigation.video">
-                                                        <video :src="questionNavigation.file_url" width="100%"
-                                                               height="100%" class="mt-3" controls></video>
-                                                    </div>
-                                                </div>
-                                                <div v-if="error.validUploadFile" class="mt-1" style="color: red">
-                                                    {{ trans('__quiz__.Please select') }}
-                                                    {{questionNavigation.checkLangType__}}
+                                                <div v-if="error.validUrlYoutube" class="mt-1" style="color: red">
+                                                    Please enter correct Youtube video url
                                                 </div>
                                             </div>
-                                            <div class="modal-footer">
+                                            <div class="form-group  align-items-center" :class="{'d-md-flex' : questionNavigation.class}" v-show="questionNavigation.file_type.file">
+                                                <div v-show="questionNavigation.class"
+                                                        class="position-relative question-img-preview "
+                                                        :class="{'my-style block-5': questionNavigation.class}">
+                                                    <img :src="questionNavigation.file_url" alt="">
+                                                </div>
 
-                                                <button v-if="formChanged" type="button" class=" btn btn-secondary"
-                                                        @click="questionNavigationFileTypeChange('Choose file')">
-                                                    {{ trans('__quiz__.Clear') }}
-                                                </button>
-                                                <button type="button" class="btn btn-primary" v-if="modal_button_save"
-                                                        data-dismiss="modal">
-                                                    {{ trans('__quiz__.Save') }}
-                                                </button>
+                                                <div class="block-3 d-flex align-items-center ">
+                                                    <div class="custom-file w-auto">
+                                                        <input type="file" class="custom-file-input" id="file" @change="getFileQuestion($event)"  :accept="(questionNavigation.file_type.name == 'image') ? 'image/x-png,image/jpeg' : 'video/mp4,video/x-m4v,video/*'">
+                                                        <label class="custom-file-label overflow-hidden" for="file">Choose file</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="position-relative question-video-preview " style="margin-bottom: -25px;" v-show="questionNavigation.video">
+                                                    <video :src="questionNavigation.file_url" width="100%"  height="100%" class="mt-3" controls></video>
+                                                </div>
                                             </div>
+                                            <div v-if="error.validUploadFile" class="mt-1" style="color: red">
+                                                Please select {{questionNavigation.checkLangType__}}
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+
+                                            <button v-if="formChanged" type="button" class=" btn btn-secondary"
+                                                    @click="questionNavigationFileTypeChange('Choose file')">
+                                                    Clear
+                                            </button>
+                                            <button type="button" class="btn btn-primary" v-if="modal_button_save" data-dismiss="modal">
+                                                Save
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <draggable
-                                    tag="div"
-                                    v-model="dataQuestions"
-                                    v-bind="dragOptions"
-                                    @change="changeQuestions"
-                                > -->
+                            </div>
+                            <!-- <draggable
+                                tag="div"
+                                v-model="dataQuestions"
+                                v-bind="dragOptions"
+                                @change="changeQuestions"
+                            > -->
                                 <div class="accordion accordion-quize" :id="'accordionExample'+element.id"
-                                     v-for="(element, index) in dataQuestions"
-                                     :key="element.id">
+                                        v-for="(element, index) in dataQuestions"
+                                        :key="element.id">
                                     <div class="card mb-3">
                                         <div class="question" :id="'headingOne'+element.id">
                                             <div class="card-title">
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <div class="col-md-9">
-                                                            <span @click="openedItem(element.id)"
-                                                                  class="collapsed quiz-question-title-ellipsis pt-3"
-                                                                  data-toggle="collapse"
-                                                                  :data-target="'#collapseOne'+element.id"
-                                                                  :aria-expanded="index ? 'false' : 'true'"
-                                                                  :aria-controls="'collapseOne'+element.id">
+                                                            <span @click="openedItem(element.id)" class="collapsed quiz-question-title-ellipsis pt-3"
+                                                                data-toggle="collapse"
+                                                                :data-target="'#collapseOne'+element.id"
+                                                                :aria-expanded="index ? 'false' : 'true'"
+                                                                :aria-controls="'collapseOne'+element.id">
                                                                 <!-- <i class="fas fa-arrows-alt mr-3 my-handle"></i>
                                                                 TODO DO DRAGGABLE LOGIC
                                                                 -->
 
-                                                            <i v-if="element.file_type == 'image' || element.file_type == 'image_url'"
-                                                               class="far fa-images text-info"></i>
-                                                            <i v-if="element.file_type == 'video' || element.file_type == 'youtube'"
-                                                               class="fas fa-video text-info"></i>
+                                                            <i  v-if="element.file_type == 'image' || element.file_type == 'image_url'" class="far fa-images text-info"></i>
+                                                            <i  v-if="element.file_type == 'video' || element.file_type == 'youtube'" class="fas fa-video text-info"></i>
 
                                                             <span>{{element.title}}</span>
 
@@ -135,8 +120,8 @@
                                                         </div>
                                                         <div class="col-md-3 question_list_actions">
                                                             <div style="text-align: right; white-space: nowrap">
-                                                                <a href="#"
-                                                                   @click.prevent="questionEdit(element, [
+                                                                    <a href="#"
+                                                                        @click.prevent="questionEdit(element, [
                                                                             'Multiple',
                                                                             'Yes/No',
                                                                             'Dropdown',
@@ -144,28 +129,22 @@
                                                                             'Picture Choice',
                                                                             'Long Text',
                                                                         ], 'Choose file')"
-                                                                   class="btn btn-sm  btn-clean btn-icon btn-icon-md ml-auto"
-                                                                   :title="'Edit details'">
+                                                                        class="btn btn-sm  btn-clean btn-icon btn-icon-md ml-auto"
+                                                                        :title="'Edit details'">
                                                                     <i class="fas fa-pen"></i>
-                                                                </a>
-                                                                <a href="#" @click.prevent="cloneQuestion(element.id)"
-                                                                   class="btn btn-sm btn-clean btn-icon btn-icon-md ml-auto"
-                                                                   :title="'quiz.Copy'">
-                                                                    <i class="fas fa-copy"></i>
-                                                                </a>
-                                                                <a href="#"
-                                                                   @click.prevent="questionDelete(element.id, index)"
-                                                                   class="btn btn-sm btn-clean btn-icon btn-icon-md"
-                                                                   :title="'Delete'">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </a>
-                                                                <i class="fas fa-chevron-up"
-                                                                   style="padding: 12px 10px;transition: .2s;"
-                                                                   :data-target="'#collapseOne'+element.id"
-                                                                   data-toggle="collapse"
-                                                                   @click="openedItem(element.id)"
-                                                                   :class="[opened === element.id ? 'rotate' : '']"></i>
-                                                            </div>
+                                                                    </a>
+                                                                    <a href="#" @click.prevent="cloneQuestion(element.id)"
+                                                                        class="btn btn-sm btn-clean btn-icon btn-icon-md ml-auto"
+                                                                        :title="'quiz.Copy'">
+                                                                        <i class="fas fa-copy"></i>
+                                                                    </a>
+                                                                    <a href="#" @click.prevent="questionDelete(element.id, index)"
+                                                                        class="btn btn-sm btn-clean btn-icon btn-icon-md"
+                                                                        :title="'Delete'">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </a>
+                                                                    <i class="fas fa-chevron-up" style="padding: 12px 10px;transition: .2s;"  :data-target="'#collapseOne'+element.id" data-toggle="collapse" @click="openedItem(element.id)" :class="[opened === element.id ? 'rotate' : '']"></i>
+                                                                </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -175,50 +154,41 @@
                                         </div>
 
                                         <div :id="'collapseOne'+element.id" :data-id="element.id"
-                                             class="questionBodyCollapse collapse"
-                                             :aria-labelledby="'headingOne'+element.id"
-                                             :data-parent="'#accordionExample'+element.id"
-                                             :data-question-id="element.id">
+                                                class="questionBodyCollapse collapse"
+                                                :aria-labelledby="'headingOne'+element.id"
+                                                :data-parent="'#accordionExample'+element.id"
+                                                :data-question-id="element.id">
                                             <div class="questionItemEdit">
                                                 <div class="edit-block mb-5">
                                                     <div class="d-md-flex align-items-end block-2 mb-5">
-                                                        <div
-                                                            class="form-group mb-0 questionTitleAndNavigationBlock w-100"
-                                                            @mouseover="showEditNavigation()" @mouseout="hide">
+                                                        <div class="form-group mb-0 questionTitleAndNavigationBlock w-100"
+                                                                @mouseover="showEditNavigation()" @mouseout="hide">
                                                             <div class="d-flex justify-content-end">
-                                                                <div
-                                                                    v-if="check_if_enabled('enable_video_and_image_navigations')"
-                                                                    class="questionsNavigationButton"
-                                                                    :class="{'_show':showNavigation}"
-                                                                    data-toggle="modal"
-                                                                    data-target="#exampleModalCenter2">
-                                                                    <button
-                                                                        :class="{'active' : questionNavigation.file_type.name == 'image'}"
-                                                                        class="q-navigation-btn"
-                                                                        style="margin-right: -4px;"
+                                                                <div v-if="check_if_enabled('enable_video_and_image_navigations')" class="questionsNavigationButton" :class="{'_show':showNavigation}"
+                                                                        data-toggle="modal"
+                                                                        data-target="#exampleModalCenter2">
+                                                                    <button :class="{'active' : questionNavigation.file_type.name == 'image'}" class="q-navigation-btn" style="margin-right: -4px;"
                                                                         @click.prevent="questionNavigationControl('image', 'quiz.image', 'Choose file', 'jpeg | jpg | gif | png', 'image')">
                                                                         <svg class="bi bi-card-image "
-                                                                             width="1.4em" height="1.4em"
-                                                                             viewBox="0 0 16 16"
-                                                                             fill="currentColor"
-                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                                width="1.4em" height="1.4em"
+                                                                                viewBox="0 0 16 16"
+                                                                                fill="currentColor"
+                                                                                xmlns="http://www.w3.org/2000/svg">
                                                                             <path fill-rule="evenodd"
-                                                                                  d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                                                                                    d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
                                                                             <path
                                                                                 d="M10.648 7.646a.5.5 0 0 1 .577-.093L15.002 9.5V13h-14v-1l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71z"/>
                                                                             <path fill-rule="evenodd"
-                                                                                  d="M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                                                                                    d="M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                                                                         </svg>
                                                                     </button>
-                                                                    <button
-                                                                        :class="{'active' : questionNavigation.file_type.name == 'video'}"
-                                                                        class="q-navigation-btn"
+                                                                    <button :class="{'active' : questionNavigation.file_type.name == 'video'}" class="q-navigation-btn"
                                                                         @click.prevent="questionNavigationControl('video', 'video', 'Choose file', 'Youtube video url', 'quiz.video__')">
                                                                         <svg class="bi bi-camera-video-fill "
-                                                                             width="1.4em" height="1.4em"
-                                                                             viewBox="0 0 16 16"
-                                                                             fill="currentColor"
-                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                                width="1.4em" height="1.4em"
+                                                                                viewBox="0 0 16 16"
+                                                                                fill="currentColor"
+                                                                                xmlns="http://www.w3.org/2000/svg">
                                                                             <path
                                                                                 d="M2.667 3h6.666C10.253 3 11 3.746 11 4.667v6.666c0 .92-.746 1.667-1.667 1.667H2.667C1.747 13 1 12.254 1 11.333V4.667C1 3.747 1.746 3 2.667 3z"/>
                                                                             <path
@@ -230,21 +200,20 @@
                                                             </div>
 
                                                             <input type="text"
-                                                                   @input="questionNameChange"
-                                                                   class="form-control questionName"
-                                                                   :placeholder="trans('__quiz__.Enter your question')"
-                                                                   v-model="questionName">
+                                                                    @input="questionNameChange"
+                                                                    class="form-control questionName"
+                                                                    :placeholder="'Enter your question'"
+                                                                    v-model="questionName">
                                                             <div class="valid q-correct mt-2 position-absolute"
-                                                                 v-show="valid_error.r_title">
-                                                                {{ trans('__quiz__.Is required question title') }}
+                                                                    v-show="valid_error.r_title">
+                                                                Is required question title
                                                             </div>
                                                             <div class="valid q-correct mt-2 position-absolute"
-                                                                 v-show="valid_error.r_select">
-                                                                {{ trans('__quiz__.Please select question type') }}
+                                                                    v-show="valid_error.r_select">
+                                                                Please select question type
                                                             </div>
-                                                            <div class="valid q-correct mt-2 position-absolute"
-                                                                 v-show="valid_error.r_limit">
-                                                                {{ trans('__quiz__.This field must not exceed 255 characters') }}
+                                                            <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_limit">
+                                                                This field must not exceed 255 characters
                                                             </div>
                                                         </div>
                                                         <div class="dropdown">
@@ -254,122 +223,91 @@
                                                                 :id="'dropdownMenuButton'+element.id"
                                                                 data-toggle="dropdown" aria-haspopup="true"
                                                                 aria-expanded="false">
-                                                                {{ questionCurrentType || trans('__quiz__.Select question type') }}
+                                                                {{ questionCurrentType || 'Select question type' }}
                                                             </button>
                                                             <div class="dropdown-menu w-100"
-                                                                 :aria-labelledby="'dropdownMenuButton'+element.id">
+                                                                    :aria-labelledby="'dropdownMenuButton'+element.id">
                                                                 <table class="table drop-table">
                                                                     <tr>
-                                                                        <td v-if="check_if_enabled('multiple')"
-                                                                            @click="selectQuestionType('multiple', element.id, trans('__quiz__.Multiple'))">
-                                                                            <i class="fas fa-bars"></i>{{
-                                                                            trans('__quiz__.Multiple') }}
+                                                                        <td v-if="check_if_enabled('multiple')" @click="selectQuestionType('multiple', element.id, 'Multiple')">
+                                                                            <i class="fas fa-bars"></i>Multiple
                                                                         </td>
-                                                                        <td v-if="check_if_enabled('radio')"
-                                                                            @click="selectQuestionType('radio', element.id, trans('__quiz__.Yes/No'))">
-                                                                            <i class="fas fa-dot-circle"></i>{{
-                                                                            trans('__quiz__.Yes/No') }}
+                                                                        <td v-if="check_if_enabled('radio')" @click="selectQuestionType('radio', element.id, 'Yes/No')">
+                                                                            <i class="fas fa-dot-circle"></i>Yes/No
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td v-if="check_if_enabled('dropdown')"
-                                                                            @click="selectQuestionType('dropdown', element.id, trans('__quiz__.Dropdown'))">
-                                                                            <i class="fas fa-caret-down"></i>{{
-                                                                            trans('__quiz__.Dropdown') }}
+                                                                        <td v-if="check_if_enabled('dropdown')" @click="selectQuestionType('dropdown', element.id, 'Dropdown')">
+                                                                            <i class="fas fa-caret-down"></i>Dropdown
                                                                         </td>
-                                                                        <td v-if="check_if_enabled('text')"
-                                                                            @click="selectQuestionType('text', element.id, trans('__quiz__.Short Text'))">
-                                                                            <i class="fas fa-align-justify"></i> {{
-                                                                            trans('__quiz__.Short Text') }}
+                                                                        <td v-if="check_if_enabled('text')" @click="selectQuestionType('text', element.id, 'Short Text')">
+                                                                                <i class="fas fa-align-justify"></i> Short Text
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td v-if="check_if_enabled('file')"
-                                                                            @click="selectQuestionType('file', element.id, trans('__quiz__.Picture Choice'))">
-                                                                            <i class="far fa-image"></i> {{
-                                                                            trans('__quiz__.Picture Choice') }}
+                                                                        <td  v-if="check_if_enabled('file')" @click="selectQuestionType('file', element.id, 'Picture Choice')">
+                                                                            <i class="far fa-image"></i> Picture Choice
                                                                         </td>
-                                                                        <td v-if="check_if_enabled('textarea')"
-                                                                            @click="selectQuestionType('textarea', element.id, trans('__quiz__.Long Text'))">
-                                                                            <i class="fas fa-align-justify"></i>{{
-                                                                            trans('__quiz__.Long Text') }}
+                                                                        <td  v-if="check_if_enabled('textarea')"  @click="selectQuestionType('textarea', element.id, 'Long Text')">
+                                                                            <i class="fas fa-align-justify"></i>Long Text
                                                                         </td>
                                                                     </tr>
                                                                 </table>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div v-if="questionType === 'multiple'"
-                                                         v-for="(item, index) in data"
-                                                         class="block-3 d-flex align-items-center mb-3 ">
-                                                        <div
-                                                            class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
-                                                            <button @click.prevent="deleteAnswer(index)"
-                                                                    class="answer-delete-btn">X
-                                                            </button>
-                                                            <input type="text" class="form-control" maxlength="250"
-                                                                   :placeholder="trans('__quiz__.Enter an answer choice')"
-                                                                   v-model="data[index]['title']">
-                                                            <div
-                                                                class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
-                                                                <span
-                                                                    class="CP">{{ trans('__quiz__.Correct answer') }}</span>
+
+
+                                                    <div v-if="questionType === 'multiple'" v-for="(item, index) in data"
+                                                            class="block-3 d-flex align-items-center mb-3 ">
+                                                        <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
+                                                            <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
+                                                            <input type="text" class="form-control" maxlength="250" :placeholder="'Enter an answer choice'"
+                                                                    v-model="data[index]['title']">
+                                                            <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
+                                                                <span class="CP">Correct answer</span>
                                                                 <span class="mobile position-absolute">
-                                                                    {{ trans('__quiz__.Correct answer') }}
+                                                                    Correct answer
                                                                 </span>
-                                                                <input type="checkbox"
-                                                                       @change="showMessageSelectCorrectAnswer($event)"
-                                                                       v-model="data[index]['is_right']">
+                                                                <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                                                             </div>
                                                         </div>
 
                                                     </div>
                                                     <div v-if="questionType === 'radio'"
-                                                         class="block-3 mb-3">
+                                                            class="block-3 mb-3">
                                                         <div class="d-flex align-items-center mb-3 answer">
-                                                            <label
-                                                                class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
-                                                                <span class="d-flex align-items-center "
-                                                                      style="width: 30px;">
-                                                                    {{ trans('__quiz__.Yes') }}
+                                                            <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
+                                                                <span class="d-flex align-items-center " style="width: 30px;">
+                                                                    Yes
                                                                 </span>
                                                             </label>
 
-                                                            <div
-                                                                class="form-group mb-0 position-relative flex-grow-1 ml-3">
-                                                                <div
-                                                                    class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start"
-                                                                    style="background: transparent;">
-                                                                    <span class="mr-3">{{ trans('__quiz__.Correct answer') }}</span>
-                                                                    <input type="radio" name="Yes/No" :value="true"
-                                                                           @change="getRadioValue(true, 'Yes')">
+                                                            <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
+                                                                <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
+                                                                    <span class="mr-3">Correct answer</span>
+                                                                    <input type="radio" name="Yes/No" :value="true" @change="getRadioValue(true, 'Yes')">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="d-flex align-items-center">
-                                                            <label
-                                                                class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
-                                                                <span class="d-flex align-items-center "
-                                                                      style="width: 30px;">
-                                                                    {{ trans('__quiz__.No') }}
+                                                            <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
+                                                                <span class="d-flex align-items-center " style="width: 30px;">
+                                                                    No
                                                                 </span>
                                                             </label>
-                                                            <div
-                                                                class="form-group mb-0 position-relative flex-grow-1 ml-3">
-                                                                <div
-                                                                    class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start"
-                                                                    style="background: transparent;">
-                                                                    <span class="mr-3">{{ trans('__quiz__.Correct answer') }}</span>
-                                                                    <input type="radio" name="Yes/No" :value="false"
-                                                                           @change="getRadioValue(false, 'No')">
+                                                            <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
+                                                                <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
+                                                                    <span class="mr-3">Correct answer</span>
+                                                                    <input type="radio" name="Yes/No" :value="false" @change="getRadioValue(false, 'No')">
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                     </div>
                                                     <div v-if="questionType === 'file'"
-                                                         class="pl-4 block-3 d-md-flex align-items-center mb-3 image-block"
-                                                         v-for="(item, index) in data">
+                                                            class="pl-4 block-3 d-md-flex align-items-center mb-3 image-block"
+                                                            v-for="(item, index) in data">
                                                         <div class="position-relative mb-3 block-5 ">
                                                             <button type="button" style="display: block"
                                                                     class="position-absolute userSelectImageIcon"
@@ -377,102 +315,72 @@
                                                                 ×
                                                             </button>
                                                             <div class="img-preview block-5 mr-0">
-                                                                <img class="rounded"
-                                                                     :src="data[index]['file_url'] ? data[index]['file_url'] : data[index]['url']"
-                                                                     alt="">
+                                                                <img class="rounded" :src="data[index]['file_url'] ? data[index]['file_url'] : data[index]['url']" alt="">
                                                             </div>
                                                         </div>
-                                                        <div
-                                                            class="block-3 d-flex align-items-center mb-3 position-relative answer">
+                                                        <div class="block-3 d-flex align-items-center mb-3 position-relative answer">
                                                             <div class="custom-file w-auto ">
-                                                                <input type="file"
-                                                                       class="custom-file-input answer-image"
-                                                                       accept="image/x-png,image/jpeg"
-                                                                       id="customFile"
-                                                                       @change="getImages(index, $event)">
-                                                                <label class="custom-file-label answer-image-label"
-                                                                       :data-browse="'quiz.Choose file'"
-                                                                       for="customFile">Choose file</label>
+                                                                <input type="file" class="custom-file-input answer-image" accept="image/x-png,image/jpeg"
+                                                                        id="customFile" @change="getImages(index, $event)">
+                                                                <label class="custom-file-label answer-image-label" :data-browse="'quiz.Choose file'" for="customFile">Choose file</label>
                                                             </div>
-                                                            <div
-                                                                class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success "
-                                                                style="background: transparent;">
-                                                                <span
-                                                                    class="CP">{{ trans('__quiz__.Correct answer') }}</span>
-                                                                <span class="mobile position-absolute"
-                                                                      style="top: -14px; width: auto">
-                                                                    {{ trans('__quiz__.Correct answer') }}
+                                                            <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success " style="background: transparent;">
+                                                                <span class="CP">Correct answer</span>
+                                                                <span class="mobile position-absolute"  style="top: -14px; width: auto">
+                                                                    Correct answer
                                                                 </span>
-                                                                <input type="checkbox"
-                                                                       @change="showMessageSelectCorrectAnswer($event)"
-                                                                       v-model="data[index]['is_right']">
+                                                                <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div v-if="questionType === 'dropdown'"
-                                                         v-for="(item, index) in data"
-                                                         class="block-3 d-flex align-items-center mb-3">
-                                                        <div
-                                                            class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
-                                                            <button @click.prevent="deleteAnswer(index)"
-                                                                    class="answer-delete-btn">X
-                                                            </button>
-                                                            <input type="text" class="form-control pr-5" maxlength="250"
-                                                                   :placeholder="trans('__quiz__.Enter an answer choice')"
-                                                                   v-model="data[index]['title']">
-                                                            <div
-                                                                class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
-                                                                <span
-                                                                    class="CP">{{ trans('__quiz__.Correct answer') }}</span>
+                                                    <div v-if="questionType === 'dropdown'" v-for="(item, index) in data"
+                                                            class="block-3 d-flex align-items-center mb-3">
+                                                        <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
+                                                            <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
+                                                            <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice'"
+                                                                    v-model="data[index]['title']" >
+                                                            <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
+                                                                <span class="CP">Correct answer</span>
                                                                 <span class="mobile position-absolute">
-                                                                    {{ trans('__quiz__.Correct answer') }}
+                                                                    Correct answer
                                                                 </span>
-                                                                <input type="checkbox"
-                                                                       @change="showMessageSelectCorrectAnswer($event)"
-                                                                       v-model="data[index]['is_right']">
+                                                                <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div v-if="questionType === 'text'" v-for="(item, index) in data"
                                                          class="block-3 d-flex align-items-center mb-3">
-                                                        <div
-                                                            class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
-                                                            <input type="text" class="form-control pr-5" maxlength="250"
-                                                                   :placeholder="trans('__quiz__.Enter an answer choice')"
-                                                                   v-model="data[index]['short_answer']">
+                                                        <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
+                                                            <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice' "
+                                                                   v-model="data[index]['short_answer']" >
                                                         </div>
                                                     </div>
-                                                    <div v-if="validationAnswer" style="color: #ff0000">
-                                                        {{ trans('__quiz__.Please fill in all fields and select at least one correct variant') }}
-
+                                                    <div v-if="validationAnswer" style="color: red">
+                                                        Please fill in all fields and select at least one correct variant
                                                     </div>
                                                     <div v-if="validationAnswerUploadFile" style="color: red">
-                                                        {{ trans('__quiz__.Please select image') }}
+                                                        Please select image
                                                     </div>
                                                     <div v-if="addOtherQuestionShow"
-                                                         class="block-4 d-inline-flex align-items-center mt-3 mb-3"
-                                                         @click="addOtherQuestion()">
+                                                            class="block-4 d-inline-flex align-items-center mt-3 mb-3"
+                                                            @click="addOtherQuestion()">
                                                         <span class="plus-icon mr-2">+</span>
-                                                        <p class="m-0">{{ trans('__quiz__.Add new answer') }}</p>
+                                                        <p class="m-0">Add new answer</p>
                                                     </div>
                                                     <div class="text-right mr-3">
                                                         <a href="#" class="btn btn-secondary mr-2"
                                                            @click.prevent="formToEmpty">{{ trans('__quiz__.Clear') }}</a>
-                                                        <button type="submit" class="btn btn-primary"
-                                                                :disabled="loading"
+                                                        <button type="submit" class="btn btn-primary" :disabled="loading"
                                                                 @click="questionUpdateSave(element.id)">
-                                                            <span v-if="loading"
-                                                                  class="spinner-border spinner-border-sm mr-1"
-                                                                  style="padding: 5px;" role="status"
-                                                                  aria-hidden="true"></span>
-                                                            <span>{{ trans('__quiz__.Save') }}</span>
+                                                            <span v-if="loading" class="spinner-border spinner-border-sm mr-1" style="padding: 5px;" role="status" aria-hidden="true"></span>
+                                                            <span>Save</span>
                                                         </button>
                                                     </div>
                                                 </div>
                                                 <div class="preview">
                                                     <div v-if="element.type === 'multiple'">
                                                         <div class="d-flex align-items-center mb-4"
-                                                             v-for="answer in element.answers">
+                                                                v-for="answer in element.answers">
                                                             <label
                                                                 class="radio radio-outline radio-big radio-success mr-4 mb-0 d-flex align-items-center">
                                                                 <input type="checkbox" class="mr-2">
@@ -489,7 +397,7 @@
                                                                 <label
                                                                     class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mb-0">
                                                                     <span class="d-flex align-items-center "
-                                                                          style="width: 60px;">
+                                                                            style="width: 60px;">
                                                                         <input
                                                                             class="d-flex align-items-center mr-1"
                                                                             type="radio" name="type-radio[2]"
@@ -500,20 +408,18 @@
                                                                 <div
                                                                     class="form-group mb-0 position-relative flex-grow-1 ">
                                                                     <i
-                                                                        class="correct-icon fas fa-check-circle"
-                                                                        v-if="!!answer.is_right"
-                                                                        style="position: static; opacity: 1"> </i>
+                                                                            class="correct-icon fas fa-check-circle"
+                                                                            v-if="!!answer.is_right"
+                                                                            style="position: static; opacity: 1"> </i>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div v-if="element.type === 'text'"
-                                                         class="d-flex align-items-center mb-4">
+                                                            class="d-flex align-items-center mb-4">
                                                         <div class="form-group mb-0 position-relative flex-grow-1">
                                                             <input type="text" class="form-control pr-5"
-                                                                   :value="element.answers.length ? element.answers[0].short_answer : ''"
-                                                                   maxlength="250"
-                                                                   :placeholder="trans('__quiz__.Enter an answer choice')">
+                                                                    maxlength="250" :placeholder="'Enter an answer choice'">
                                                         </div>
                                                     </div>
                                                     <div v-if="element.type === 'dropdown'" class="form-group">
@@ -526,18 +432,17 @@
                                                     </div>
                                                     <div v-if="element.type === 'textarea'" class="form-group">
                                                         <textarea class="form-control"
-                                                                  :placeholder="'Textbox'"></textarea>
+                                                                    :placeholder="'Textbox'"></textarea>
                                                     </div>
                                                     <div v-if="element.type === 'file'"
-                                                         class="d-flex flex-wrap align-items-start">
+                                                            class="d-flex flex-wrap align-items-start">
                                                         <div class="position-relative block-5 mt-2"
-                                                             v-for="answer in element.answers">
+                                                                v-for="answer in element.answers">
                                                             <img :src="answer.file_url ? answer.file_url : answer.url "
-                                                                 alt="">
+                                                                    alt="">
                                                             <label
                                                                 class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-4 mb-0">
-                                                                <input type="checkbox" checked disabled
-                                                                       v-if="answer.is_right">
+                                                                <input type="checkbox" checked disabled v-if="answer.is_right">
                                                                 <span></span>
                                                             </label>
                                                         </div>
@@ -547,678 +452,677 @@
                                         </div>
                                     </div>
                                 </div>
-                                </draggable>
-                            </div>
+                            </draggable>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
-    import Question from "./question";
-    import ClickOutside from 'vue-click-outside';
+import Question from "./question";
+import ClickOutside from 'vue-click-outside';
+export default {
+    data() {
+        return {
+            enabled_options: window.question_options.split(',').map(item=>item.trim()),
+            quiz_is_active: false,
+            questionCurrentType: null,
+            formChanged: false,
+            validationAnswer: false,
+            validationAnswerUploadFile: false,
+            quiz_edit_block_show: false,
+            questionType: null,
+            addOtherQuestionShow: false,
+            questionName: '',
+            questionId: null,
+            question_file_type: '',
+            data: [],
+            showNavigation: true,
+            showQuestionAnswer: true,
+            edit: false,
+            valid: true,
+            question_id: null,
+            modal_button_save: true,
+            fromButtonShow: false,
+            loading: false,
+            valid_error: {
+                r_title: false,
+                r_select: false,
+                r_limit: false
+            },
+            questionNavigation: {
+                type: '',
+                checkLangType: '',
+                inputUrl: true,
+                image: false,
+                url: null,
+                video: false,
+                file: null,
+                file_url: null,
+                class: false,
+                file_type: {
+                    name: null,
+                    url: true,
+                    file: true,
+                },
+            },
+            exceptionAnswers: [
+                'text',
+                'textarea',
+                'radio'
+            ],
+            error: {
+                validUrl: false,
+                validUrlYoutube: false,
+                validUploadFile: false
+            },
+            opened: null,
+            __edit: null,
+            ___i: null,
 
-    export default {
-        data() {
-            return {
-                enabled_options: window.question_options.split(',').map(item => item.trim()),
-                quiz_is_active: false,
-                questionCurrentType: null,
-                formChanged: false,
-                validationAnswer: false,
-                validationAnswerUploadFile: false,
-                quiz_edit_block_show: false,
-                questionType: null,
-                addOtherQuestionShow: false,
-                questionName: '',
-                questionId: null,
-                question_file_type: '',
-                data: [],
-                showNavigation: true,
-                showQuestionAnswer: true,
-                edit: false,
-                valid: true,
-                question_id: null,
-                modal_button_save: true,
-                fromButtonShow: false,
-                loading: false,
-                valid_error: {
-                    r_title: false,
-                    r_select: false,
-                    r_limit: false
-                },
-                questionNavigation: {
-                    type: '',
-                    checkLangType: '',
-                    inputUrl: true,
-                    image: false,
-                    url: null,
-                    video: false,
-                    file: null,
-                    file_url: null,
-                    class: false,
-                    file_type: {
-                        name: null,
-                        url: true,
-                        file: true,
-                    },
-                },
-                exceptionAnswers: [
-                    'text',
-                    'textarea',
-                    'radio'
-                ],
-                error: {
-                    validUrl: false,
-                    validUrlYoutube: false,
-                    validUploadFile: false
-                },
-                opened: null,
-                __edit: null,
-                ___i: null,
+            quiz_id: null,
+            copyText: '',
+            questionData: [],
+            title: '',
+            description: '',
+            time_limit: '',
+            multiple: false,
+            multipleChoiceType: null,
+            dataQuestions: [],
+            openQuestion: false,
+            quizHide: true,
+            quizResponse: null,
+            saveOrEdit: true,
+            quiz_create_valid: {
+                title: false,
+                description: false,
+                limit_time: false
+            }
+        }
+    },
+    components: {
+        'app-question': Question
+    },
+    props: [
+        'quiz'
+    ],
+    methods: {
+        openedItem(item_id) {
+            if (this.__edit) {
+                this.showEditBlock(true, item_id);
+            }
+            if (this.opened === item_id) {
+                this.opened = 0;
+                this.__edit = 0;
+                return;
+            }
+            this.__edit = 0;
+            this.opened = item_id;
 
-                quiz_id: null,
-                copyText: '',
-                questionData: [],
-                title: '',
-                description: '',
-                time_limit: '',
-                multiple: false,
-                multipleChoiceType: null,
-                dataQuestions: [],
-                openQuestion: false,
-                quizHide: true,
-                quizResponse: null,
-                saveOrEdit: true,
-                quiz_create_valid: {
-                    title: false,
-                    description: false,
-                    limit_time: false
-                }
+        },
+        quizActive(){
+            let formData = new FormData();
+            formData.append('is_active', this.quiz_is_active);
+            axios.patch(`/${window.urlprefix}/quizable/api-quiz-is_active/${this.quiz_id}`, {is_active:this.quiz_is_active})
+                .then()
+                .catch(error => console.log(error))
+        },
+        questionCountDelete(index)
+        {
+            this.questionData.splice(index, 1);
+        },
+        showMessageSelectCorrectAnswer(e) {
+            if($(e.target).is(":checked")){
+                $(e.target).siblings('.mobile').addClass('mobile_is_true')
+            }else{
+                $(e.target).siblings('.mobile').removeClass('mobile_is_true')
             }
         },
-        components: {
-            'app-question': Question
-        },
-        props: [
-            'quiz'
-        ],
-        methods: {
-            openedItem(item_id) {
-                if (this.__edit) {
-                    this.showEditBlock(true, item_id);
-                }
-                if (this.opened === item_id) {
-                    this.opened = 0;
-                    this.__edit = 0;
-                    return;
-                }
-                this.__edit = 0;
-                this.opened = item_id;
-
-            },
-            quizActive() {
-                let formData = new FormData();
-                formData.append('is_active', this.quiz_is_active);
-                axios.patch(`/${window.urlprefix}/quizable/api-quiz-is_active/${this.quiz_id}`, {is_active: this.quiz_is_active})
-                    .then()
-                    .catch(error => console.log(error))
-            },
-            questionCountDelete(index) {
-                this.questionData.splice(index, 1);
-            },
-            showMessageSelectCorrectAnswer(e) {
-                if ($(e.target).is(":checked")) {
-                    $(e.target).siblings('.mobile').addClass('mobile_is_true')
-                } else {
-                    $(e.target).siblings('.mobile').removeClass('mobile_is_true')
-                }
-            },
-            async deleteAnswer(index) {
-                if (this.questionType == 'file') {
-                    let imageBlock = document.querySelectorAll('.image-block');
-                    if (imageBlock[0]) {
-                        await imageBlock.forEach(item => {
-                            if (item.getAttribute('data-id') == index) {
-                                if (item.getAttribute('data-id') == 0) {
-                                    item.classList.add('d-none')
-                                } else {
-                                    item.remove()
-                                }
+        async deleteAnswer(index) {
+            if(this.questionType == 'file'){
+                let imageBlock = document.querySelectorAll('.image-block');
+                if (imageBlock[0]){
+                    await imageBlock.forEach(item=>{
+                        if (item.getAttribute('data-id') == index){
+                            if(item.getAttribute('data-id') == 0){
+                                item.classList.add('d-none')
+                            }else {
+                                item.remove()
                             }
-                        })
-                    }
-                    this.data[index] = {}
-                } else {
-                    this.$delete(this.data, index);
-                }
-            },
-            validURL(str) {
-                let pattern = new RegExp('^(https?:\\/\\/)?' +
-                    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
-                    '((\\d{1,3}\\.){3}\\d{1,3}))' +
-                    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
-                    '(\\?[;&a-z\\d%_.~+=-]*)?' +
-                    '(\\#[-a-z\\d_]*)?$', 'i');
-                return !!pattern.test(str);
-            },
-            formToEmpty() {
-                this.questionName = '';
-                this.questionNavigation.type = null;
-                this.questionNavigation.url = null;
-                this.questionNavigation.file = null;
-                this.questionNavigation.file_url = null;
-                this.error.validUrlYoutube = false;
-                this.error.validUrl = false;
-                this.data = [];
-                this.questionType = '';
-                this.valid = true;
-                this.questionCurrentType = null;
-                this.addOtherQuestionShow = false;
-            },
-            checkURL(url) {
-                return (url.match(/\.(jpeg|jpg|gif|png|svg)$/) != null);
-            },
-            getRadioValue(is_tight, title) {
-                this.data = [{}];
-                if (is_tight) {
-                    this.data[0]['title'] = title;
-                    this.data.push({
-                        title: 'No',
-                        order: 2
-                    });
-                    this.data[0]['is_right'] = true;
-                    this.data[0]['order'] = 1;
-                } else {
-                    this.data[0]['title'] = title;
-                    this.data.push({
-                        title: 'Yes',
-                        order: 1
-                    });
-                    this.data[0]['is_right'] = true;
-                    this.data[0]['order'] = 2;
-                }
-            },
-            questionNavigationUrlChange() {
-                if (this.validURL(this.questionNavigation.url)) {
-                    if (this.questionNavigation.file_type.name == 'image' && this.checkURL(this.questionNavigation.url)) {
-                        this.error.validUrlYoutube = false;
-                        this.questionNavigation.type = 'image_url';
-                        this.error.validUrl = false;
-                        this.modal_button_save = true;
-                    } else {
-                        this.error.validUrl = true;
-                        this.modal_button_save = false;
-                    }
-                    if (this.questionNavigation.file_type.name == 'video') {
-                        this.error.validUrl = false;
-                        if (this.validateYouTubeUrl(this.questionNavigation.url)) {
-                            this.questionNavigation.type = 'youtube';
-                            this.error.validUrlYoutube = false;
-                            this.modal_button_save = true;
-                        } else {
-                            this.error.validUrlYoutube = true;
-                            this.modal_button_save = false;
                         }
-                    }
-                    this.questionNavigation.file_type.file = false;
-                    this.formChanged = true;
-                } else if (this.questionNavigation.url == "") {
+                    })
+                }
+                this.data[index] = {}
+            }else {
+                this.$delete(this.data, index);
+            }
+        },
+        validURL(str) {
+            let pattern = new RegExp('^(https?:\\/\\/)?' +
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
+                '((\\d{1,3}\\.){3}\\d{1,3}))' +
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
+                '(\\?[;&a-z\\d%_.~+=-]*)?' +
+                '(\\#[-a-z\\d_]*)?$', 'i');
+            return !!pattern.test(str);
+        },
+        formToEmpty() {
+            this.questionName = '';
+            this.questionNavigation.type = null;
+            this.questionNavigation.url = null;
+            this.questionNavigation.file = null;
+            this.questionNavigation.file_url = null;
+            this.error.validUrlYoutube = false;
+            this.error.validUrl = false;
+            this.data = [];
+            this.questionType = '';
+            this.valid = true;
+            this.questionCurrentType = null;
+            this.addOtherQuestionShow = false;
+        },
+        checkURL(url) {
+            return (url.match(/\.(jpeg|jpg|gif|png|svg)$/) != null);
+        },
+        getRadioValue(is_tight, title) {
+            this.data = [{}];
+            if (is_tight) {
+                this.data[0]['title'] = title;
+                this.data.push({
+                    title: 'No',
+                    order: 2
+                });
+                this.data[0]['is_right'] = true;
+                this.data[0]['order'] = 1;
+            } else {
+                this.data[0]['title'] = title;
+                this.data.push({
+                    title: 'Yes',
+                    order: 1
+                });
+                this.data[0]['is_right'] = true;
+                this.data[0]['order'] = 2;
+            }
+        },
+        questionNavigationUrlChange() {
+            if (this.validURL(this.questionNavigation.url)) {
+                if (this.questionNavigation.file_type.name == 'image' && this.checkURL(this.questionNavigation.url)){
+                    this.error.validUrlYoutube = false;
+                    this.questionNavigation.type = 'image_url';
                     this.error.validUrl = false;
                     this.modal_button_save = true;
-                } else {
+                }else {
                     this.error.validUrl = true;
                     this.modal_button_save = false;
                 }
-            },
-            validateYouTubeUrl(url) {
-                var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-                if (url.match(p)) {
-                    return url.match(p)[1];
+                if (this.questionNavigation.file_type.name == 'video'){
+                    this.error.validUrl = false;
+                    if (this.validateYouTubeUrl( this.questionNavigation.url )) {
+                        this.questionNavigation.type = 'youtube';
+                        this.error.validUrlYoutube = false;
+                        this.modal_button_save = true;
+                    } else {
+                        this.error.validUrlYoutube = true;
+                        this.modal_button_save = false;
+                    }
                 }
-                return false;
-            },
-            questionNavigationFileTypeChange(choose) {
+                this.questionNavigation.file_type.file = false;
+                this.formChanged = true;
+            } else if (this.questionNavigation.url == "") {
+                this.error.validUrl = false;
+                this.modal_button_save = true;
+            } else {
+                this.error.validUrl = true;
+                this.modal_button_save = false;
+            }
+        },
+        validateYouTubeUrl(url){
+            var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+            if(url.match(p)){
+                return url.match(p)[1];
+            }
+            return false;
+        },
+        questionNavigationFileTypeChange(choose) {
+            this.formChanged = false;
+            this.questionNavigation.file_type.url = true;
+            this.questionNavigation.file_type.file = true;
+            this.questionNavigation.url = null;
+            this.questionNavigation.file = null;
+            this.questionNavigation.file_url = null;
+            this.questionNavigation.video = false;
+            this.questionNavigation.class = false;
+            this.error.validUploadFile = false;
+            this.questionNavigation.url = null;
+            this.error.validUrl = false;
+            this.error.validUrlYoutube = false;
+            this.formChanged = false;
+            this.questionNavigation.class = false;
+            document.getElementById('file').nextElementSibling.innerHTML = choose;
+
+        },
+        checkExceptionAnswers() {
+            this.exceptionAnswers.forEach((item) => {
+                if (item == this.questionType) {
+                    this.addOtherQuestionShow = false;
+                }
+            })
+        },
+        hide() {
+            this.showNavigation = false
+        },
+        showEditNavigation() {
+            this.showNavigation = !this.showNavigation
+        },
+        addOtherQuestion() {
+            if (this.questionType) {
+                this.data.push({});
+                this.edit = false;
+            }
+        },
+        getFileQuestion(e) {
+            var that = this;
+            let files = e.target.files;
+            if (files[0] != undefined) {
+                let currentType = files[0].type.slice(0, 5);
+                if (currentType == 'image' || currentType == 'video'){
+                    this.error.validUploadFile = false;
+                    if (this.questionNavigation.file_type.name == 'video') {
+                        if (currentType == 'video') {
+                            this.questionNavigation.type = 'video';
+                            var reader = new FileReader();
+                            reader.onload = function (file) {
+                                var fileContent = file.target.result;
+                                that.questionNavigation.class = false;
+                                that.questionNavigation.file_url = fileContent;
+                                that.questionNavigation.video = true;
+                            };
+                            reader.readAsDataURL(files[0]);
+                            this.error.validUploadFile = false;
+                            this.questionNavigation.file_type.url = false;
+                            this.questionNavigation.file = e.target.files[0];
+                            this.modal_button_save = true;
+                        }else {
+                            this.error.validUploadFile = true;
+                            that.questionNavigation.video = false;
+                            this.questionNavigation.file_url = '';
+                            this.modal_button_save = false;
+                        }
+                    } else {
+                        if (currentType == 'image'){
+                            this.questionNavigation.type = 'image';
+                            this.error.validUploadFile = false;
+                            for (let i = 0, f; f = files[i]; i++) {
+                                if (!f.type.match('image.*')) {
+                                    continue;
+                                }
+                                let reader = new FileReader();
+                                reader.onload = (function (theFile) {
+                                    return function (e) {
+                                        that.questionNavigation.file_url = e.target.result;
+                                        that.questionNavigation.video = false;
+                                        that.questionNavigation.class = true;
+                                    };
+                                })(f);
+                                reader.readAsDataURL(f);
+                            }
+                            this.questionNavigation.file_type.url = false;
+                            this.questionNavigation.file = e.target.files[0];
+                            this.modal_button_save = true;
+                        }else {
+                            that.questionNavigation.class = false;
+                            this.error.validUploadFile = true;
+                            this.questionNavigation.file_url = '';
+                            this.modal_button_save = false;
+                        }
+
+                    }
+
+                }else {
+                    this.error.validUploadFile = true;
+                    this.questionNavigation.file_url = '';
+                    this.modal_button_save = false;
+                }
+
+            }
+            this.formChanged = true;
+        },
+        questionNameChange() {
+            if (this.questionName == "") {
+                this.valid = false;
+                this.valid_error.r_title = true;
+            } else {
+                this.valid = true;
+                this.valid_error.r_title = false;
+            }
+        },
+        clearUserSelectImg(index, choose) {
+            // this.answerImgDeleteButtonShow = false;
+            this.data.splice(index, 1);
+            event.target.parentElement.nextElementSibling.querySelector('.answer-image').value = '';
+            event.target.parentElement.nextElementSibling.querySelector('.answer-image-label').innerHTML = choose;
+            // event.target.style.display = 'none';
+        },
+        questionNavigationControl(type, currentTypeName, choose, questionFileType, currentTypeName__) {
+            this.questionNavigation.checkLangType = currentTypeName;
+            this.questionNavigation.checkLangType__ = currentTypeName__;
+            this.question_file_type = questionFileType;
+            if (this.questionNavigation.file_type.name != type) {
+                document.getElementById('file').nextElementSibling.innerHTML = choose;
+                this.questionNavigation.file_type.url = true;
+                this.questionNavigation.file_type.file = true;
+                this.questionNavigation.file_type.name = type;
+                this.error.validUploadFile = false;
+                this.questionNavigation.url = null;
+                this.questionNavigation.file_url = '';
+                this.questionNavigation.video = false;
+                this.questionNavigation.class = false;
+                this.error.validUrl = false;
+                this.error.validUrlYoutube = false;
+                this.formChanged = false;
+            }
+
+        },
+        getImages(index, e) {
+            let files = e.target.files;
+            if (files[0]) {
+                let currentType = files[0].type.slice(0, 5);
+                if (currentType == 'image') {
+                    this.validationAnswerUploadFile = false;
+                    let imgBlock = $(e.target).closest('.image-block').find('.img-preview')[0];
+                    // $(imgBlock).siblings('button.userSelectImageIcon')[0].style.display = 'block';
+                    imgBlock.innerHTML = '';
+                    for (let i = 0, f; f = files[i]; i++) {
+                        if (!f.type.match('image.*')) {
+                            continue;
+                        }
+                        let reader = new FileReader();
+                        reader.onload = (function (theFile) {
+                            return function (e) {
+                                var span = document.createElement('span');
+                                span.innerHTML = ['<img class="thumb rounded" src="', e.target.result,
+                                    '" title="', theFile.name, '"/>'].join('');
+
+                                imgBlock.insertBefore(span, null);
+                            };
+                        })(f);
+                        reader.readAsDataURL(f);
+                    }
+                    this.data[index].file = e.target.files[0];
+                    this.data[index]['file_type'] = 'image';
+                    e.target.nextElementSibling.innerHTML = e.target.files[0].name
+                }else {
+                    this.validationAnswerUploadFile = true
+                }
+            }
+        },
+        /*chooseRightOption(index) {
+            if (this.data[index]['is_right']) {
+                this.data[index]['is_right'] = false;
+                event.target.style.opacity = '0.5'
+            } else {
+                this.data[index]['is_right'] = true;
+                event.target.style.opacity = '1'
+            }
+            console.log(this.data)
+        },*/
+        async selectQuestionType(name, id, currentName) {
+            this.data = [];
+            this.questionType = name;
+            this.questionCurrentType = currentName;
+            this.valid_error.r_select = false;
+            this.data.push({});
+            this.edit = false;
+            this.createAnswer = false;
+            this.validationAnswer = false;
+            this.addOtherQuestionShow = true;
+            this.checkExceptionAnswers();
+        },
+        async questionUpdate(url, method) {
+            let form = new FormData();
+            form.append('title', this.questionName);
+            form.append('type', this.questionType);
+            form.append('_method', 'PATCH');
+            if (this.questionNavigation.file) form.append('file', this.questionNavigation.file);
+            if (this.questionNavigation.url) form.append('url', this.questionNavigation.url);
+            if (this.questionNavigation.type) form.append('file_type', this.questionNavigation.type);
+            await axios({
+                url: url,
+                method: method,
+                data: form
+            }).then(response => {
+                this.valid = true;
+                this.questionId = response.data.data.id;
+                this.showSweet({successmsg:'Question updated successfully'}, 'success');
+            }).catch(error => {
+                this.valid = false;
+                console.log(error)
+            })
+        },
+        async questionUpdateSave(question_id) {
+            await this.validationAnswers();
+            if (!this.validationAnswer) {
+                if (this.questionType != 'text' && this.questionType != 'textarea') {
+                    let i = 0;
+                    while (i < this.data.length) {
+                        if (this.data[i].is_right) {
+                            this.validationAnswer = false;
+                            break;
+                        } else {
+                            this.validationAnswer = true;
+                        }
+                        i++;
+                    }
+                } else {
+                    this.validationAnswer = false;
+                }
+                if (!this.validationAnswer) {
+                    if (this.questionName == "") {
+                        this.valid = false;
+                        this.valid_error.r_title = true;
+                        this.valid_error.r_select = false;
+                    } else if (this.questionType == "") {
+                        this.valid = false;
+                        this.valid_error.r_title = false;
+                        this.valid_error.r_select = true;
+                    } /*else if (this.questionName.length > 255) {
+                        this.valid_error.r_title = false;
+                        this.valid_error.r_select = false;
+                        this.valid_error.r_limit = true;
+                        this.valid = false;
+                    }*/else {
+                        this.valid = true;
+                        this.valid_error.r_limit = false;
+                        this.valid_error.r_title = false;
+                        this.valid_error.r_select = false;
+                    }
+                    if (this.valid) {
+                        this.loading = true;
+                        let edit_block = document.querySelectorAll('.card-body');
+                        edit_block.forEach((item, index) => {
+                            if (item.getAttribute('data-question-id') == question_id) {
+                                item.querySelector('.preview').style.display = 'block';
+                                item.querySelector('.edit-block').style.display = 'none';
+                            }
+                        });
+                        await this.questionUpdate(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${question_id}`, 'post');
+                        await axios.delete(`/${window.urlprefix}/quizable/questions/${question_id}/answers`).catch(error => {
+                            console.log(error)
+                        });
+                        let formData = new FormData();
+                        if (this.questionType == 'file') {
+                            for (let i = 0; i < this.data.length; i++) {
+                                let data = this.data[i];
+                                if (data.file_type) formData.append(`data[${i}][file_type]`, data.file_type);
+                                if (data.file) formData.append(`data[${i}][file]`, data.file);
+                                if (data.is_right) {
+                                    formData.append(`data[${i}][is_right]`, 1);
+                                } else formData.append(`data[${i}][is_right]`, 0);
+                                if (data.title) formData.append(`data[${i}][title]`, data.title);
+                                if (data.file_url) formData.append(`data[${i}][url]`, data.file_url);
+                                if (data.url) formData.append(`data[${i}][url]`, data.url);
+                            }
+                        } else {
+                            formData = {
+                                data: this.data
+                            }
+                        }
+                        axios.post(`/${window.urlprefix}/quizable/questions/${question_id}/answers`, formData).then(response => {
+                            this.getAllQuizQuestions();
+                            this.valid = true;
+                            this.edit = true;
+                            this.createAnswer = false;
+                            this.showQuestionEditBLock = false;
+                            this.showEditBlock(false, this.question_id);
+                            this.loading = false;
+                            this.showQuestionAnswer = false;
+                            for (let i = 0; i < response.data.data.length; i++) {
+                                this.data[i]['id'] = response.data.data[i].id
+                            }
+                        }).catch(error => {
+                            console.log(error);
+                            this.loading = false;
+                        })
+                    } else {
+                        this.valid = false;
+                        this.validError = true
+                    }
+                }
+            }
+
+
+        },
+        showEditBlock(is_show, question_id) {
+            if (this.__edit == question_id){
+                this.__edit = 0;
+                is_show = false;
+            }else this.__edit = question_id;
+
+            let edit_block = document.querySelectorAll('.questionBodyCollapse');
+            document.getElementById(`collapseOne${question_id}`).classList.add('show');
+            edit_block.forEach((item) => {
+                item.querySelector('.preview').style.display = 'block';
+                item.querySelector('.edit-block').style.display = 'none';
+                if (is_show) {
+                    if (item.getAttribute('data-question-id') == question_id) {
+                        item.querySelector('.preview').style.display = 'none';
+                        item.classList.add('show');
+                        item.querySelector('.edit-block').style.display = 'block';
+                    } else {
+                        this.opened = question_id;
+                        item.querySelector('.preview').style.display = 'block';
+                        item.querySelector('.edit-block').style.display = 'none';
+                    }
+                } else {
+                    if (item.getAttribute('data-question-id') == question_id) {
+                        this.opened = question_id;
+                        item.querySelector('.preview').style.display = 'block';
+                        item.querySelector('.edit-block').style.display = 'none';
+                    }
+                }
+            });
+        },
+        questionEdit(question, currentType, choose) {
+            if (this.questionId != question.id){
                 this.formChanged = false;
                 this.questionNavigation.file_type.url = true;
                 this.questionNavigation.file_type.file = true;
                 this.questionNavigation.url = null;
                 this.questionNavigation.file = null;
-                this.questionNavigation.file_url = null;
-                this.questionNavigation.video = false;
-                this.questionNavigation.class = false;
-                this.error.validUploadFile = false;
-                this.questionNavigation.url = null;
-                this.error.validUrl = false;
                 this.error.validUrlYoutube = false;
-                this.formChanged = false;
+                this.error.validUrl = false;
+                document.getElementById('file').value = "";
                 this.questionNavigation.class = false;
                 document.getElementById('file').nextElementSibling.innerHTML = choose;
+                this.questionNavigation.file_type.name = null;
+            }
+            this.showQuestionEditBLock = !this.showQuestionEditBLock;
+            this.data = [];
+            this.questionName = question.title;
+            this.questionType = question.type;
+            this.checkQuestionTypeName(question.type, currentType);
+            this.question_id = question.id;
+            this.showEditBlock(true, question.id);
+            this.formChanged = true;
+            this.questionNavigation.type = question.file_type;
+            if (question.file_type == 'image') {
+                this.questionNavigation.file_type.name = 'image';
+                this.questionNavigation.file_type.url = false;
+                this.questionNavigation.file_url = question.file_url;
+                this.questionNavigation.file_type.file = true;
+                this.questionNavigation.video = false;
+                this.questionNavigation.class = true;
+            } else if (question.file_type == 'image_url') {
+                this.questionNavigation.file_type.name = 'image';
+                this.questionNavigation.url = question.url;
+                this.questionNavigation.file_type.url = true;
+                this.questionNavigation.file_type.file = false;
+            } else if (question.file_type == 'video') {
+                this.questionNavigation.file_type.name = 'video';
+                this.questionNavigation.file_url = question.file_url;
+                this.questionNavigation.file_type.file = true;
+                this.questionNavigation.file_type.url = false;
+                this.questionNavigation.class = false;
+                this.questionNavigation.video = true;
+            } else if (question.file_type == 'youtube') {
+                this.questionNavigation.file_type.name = 'video';
+                this.questionNavigation.url = question.url;
+                this.questionNavigation.file_type.url = true;
+                this.questionNavigation.file_type.file = false;
+            } else{
+                this.formChanged = false;
+                this.questionNavigation.file_type.url = true;
+                this.questionNavigation.file_type.file = true;
+                this.questionNavigation.url = null;
+                this.questionNavigation.file = null;
+                this.error.validUrlYoutube = false;
+                this.error.validUrl = false;
+                this.questionNavigation.class = false;
+                document.getElementById('file').nextElementSibling.innerHTML = choose;
+                this.questionNavigation.file_type.name = null;
+            }
 
-            },
-            checkExceptionAnswers() {
-                this.exceptionAnswers.forEach((item) => {
-                    if (item == this.questionType) {
-                        this.addOtherQuestionShow = false;
+            if (question.answers.length) {
+                question.answers.forEach((item) => {
+                    if (item.title == null) {
+                        delete item.title;
                     }
-                })
-            },
-            hide() {
-                this.showNavigation = false
-            },
-            showEditNavigation() {
-                this.showNavigation = !this.showNavigation
-            },
-            addOtherQuestion() {
-                if (this.questionType) {
-                    this.data.push({});
-                    this.edit = false;
-                }
-            },
-            getFileQuestion(e) {
-                var that = this;
-                let files = e.target.files;
-                if (files[0] != undefined) {
-                    let currentType = files[0].type.slice(0, 5);
-                    if (currentType == 'image' || currentType == 'video') {
-                        this.error.validUploadFile = false;
-                        if (this.questionNavigation.file_type.name == 'video') {
-                            if (currentType == 'video') {
-                                this.questionNavigation.type = 'video';
-                                var reader = new FileReader();
-                                reader.onload = function (file) {
-                                    var fileContent = file.target.result;
-                                    that.questionNavigation.class = false;
-                                    that.questionNavigation.file_url = fileContent;
-                                    that.questionNavigation.video = true;
-                                };
-                                reader.readAsDataURL(files[0]);
-                                this.error.validUploadFile = false;
-                                this.questionNavigation.file_type.url = false;
-                                this.questionNavigation.file = e.target.files[0];
-                                this.modal_button_save = true;
-                            } else {
-                                this.error.validUploadFile = true;
-                                that.questionNavigation.video = false;
-                                this.questionNavigation.file_url = '';
-                                this.modal_button_save = false;
-                            }
-                        } else {
-                            if (currentType == 'image') {
-                                this.questionNavigation.type = 'image';
-                                this.error.validUploadFile = false;
-                                for (let i = 0, f; f = files[i]; i++) {
-                                    if (!f.type.match('image.*')) {
-                                        continue;
-                                    }
-                                    let reader = new FileReader();
-                                    reader.onload = (function (theFile) {
-                                        return function (e) {
-                                            that.questionNavigation.file_url = e.target.result;
-                                            that.questionNavigation.video = false;
-                                            that.questionNavigation.class = true;
-                                        };
-                                    })(f);
-                                    reader.readAsDataURL(f);
-                                }
-                                this.questionNavigation.file_type.url = false;
-                                this.questionNavigation.file = e.target.files[0];
-                                this.modal_button_save = true;
-                            } else {
-                                that.questionNavigation.class = false;
-                                this.error.validUploadFile = true;
-                                this.questionNavigation.file_url = '';
-                                this.modal_button_save = false;
-                            }
-
-                        }
-
-                    } else {
-                        this.error.validUploadFile = true;
-                        this.questionNavigation.file_url = '';
-                        this.modal_button_save = false;
+                    delete item.file;
+                    delete item.id;
+                    if (!item.file_type) {
+                        delete item.file_type;
+                        delete item.file_url;
+                        delete item.url;
                     }
-
-                }
-                this.formChanged = true;
-            },
-            questionNameChange() {
-                if (this.questionName == "") {
-                    this.valid = false;
-                    this.valid_error.r_title = true;
-                } else {
-                    this.valid = true;
-                    this.valid_error.r_title = false;
-                }
-            },
-            clearUserSelectImg(index, choose) {
-                // this.answerImgDeleteButtonShow = false;
-                this.data.splice(index, 1);
-                event.target.nextElementSibling.innerHTML = '<img>';
-                event.target.parentElement.nextElementSibling.querySelector('.answer-image').value = '';
-                event.target.parentElement.nextElementSibling.querySelector('.answer-image-label').innerHTML = choose;
-                // event.target.style.display = 'none';
-            },
-            questionNavigationControl(type, currentTypeName, choose, questionFileType, currentTypeName__) {
-                this.questionNavigation.checkLangType = currentTypeName;
-                this.questionNavigation.checkLangType__ = currentTypeName__;
-                this.question_file_type = questionFileType;
-                if (this.questionNavigation.file_type.name != type) {
-                    document.getElementById('file').nextElementSibling.innerHTML = choose;
-                    this.questionNavigation.file_type.url = true;
-                    this.questionNavigation.file_type.file = true;
-                    this.questionNavigation.file_type.name = type;
-                    this.error.validUploadFile = false;
-                    this.questionNavigation.url = null;
-                    this.questionNavigation.file_url = '';
-                    this.questionNavigation.video = false;
-                    this.questionNavigation.class = false;
-                    this.error.validUrl = false;
-                    this.error.validUrlYoutube = false;
-                    this.formChanged = false;
-                }
-
-            },
-            getImages(index, e) {
-                let files = e.target.files;
-                if (files[0]) {
-                    let currentType = files[0].type.slice(0, 5);
-                    if (currentType == 'image') {
-                        this.validationAnswerUploadFile = false;
-                        let imgBlock = $(e.target).closest('.image-block').find('.img-preview')[0];
-                        // $(imgBlock).siblings('button.userSelectImageIcon')[0].style.display = 'block';
-                        imgBlock.innerHTML = '';
-                        for (let i = 0, f; f = files[i]; i++) {
-                            if (!f.type.match('image.*')) {
-                                continue;
-                            }
-                            let reader = new FileReader();
-                            reader.onload = (function (theFile) {
-                                return function (e) {
-                                    var span = document.createElement('span');
-                                    span.innerHTML = ['<img class="thumb rounded" src="', e.target.result,
-                                        '" title="', theFile.name, '"/>'].join('');
-
-                                    imgBlock.insertBefore(span, null);
-                                };
-                            })(f);
-                            reader.readAsDataURL(f);
-                        }
-                        this.data[index].file = e.target.files[0];
-                        this.data[index]['file_type'] = 'image';
-                        e.target.nextElementSibling.innerHTML = e.target.files[0].name
-                    } else {
-                        this.validationAnswerUploadFile = true
-                    }
-                }
-            },
-            /*chooseRightOption(index) {
-                if (this.data[index]['is_right']) {
-                    this.data[index]['is_right'] = false;
-                    event.target.style.opacity = '0.5'
-                } else {
-                    this.data[index]['is_right'] = true;
-                    event.target.style.opacity = '1'
-                }
-                console.log(this.data)
-            },*/
-            async selectQuestionType(name, id, currentName) {
-                this.data = [];
-                this.questionType = name;
-                this.questionCurrentType = currentName;
-                this.valid_error.r_select = false;
-                this.data.push({});
-                this.edit = false;
-                this.createAnswer = false;
-                this.validationAnswer = false;
-                this.addOtherQuestionShow = true;
-                this.checkExceptionAnswers();
-            },
-            async questionUpdate(url, method) {
-                let form = new FormData();
-                form.append('title', this.questionName);
-                form.append('type', this.questionType);
-                form.append('_method', 'PATCH');
-                if (this.questionNavigation.file) form.append('file', this.questionNavigation.file);
-                if (this.questionNavigation.url) form.append('url', this.questionNavigation.url);
-                if (this.questionNavigation.type) form.append('file_type', this.questionNavigation.type);
-                await axios({
-                    url: url,
-                    method: method,
-                    data: form
-                }).then(response => {
-                    this.valid = true;
-                    this.questionId = response.data.data.id;
-                    this.showSweet({successmsg: 'Question updated successfully'}, 'success');
-                }).catch(error => {
-                    this.valid = false;
-                    console.log(error)
-                })
-            },
-            async questionUpdateSave(question_id) {
-                await this.validationAnswers();
-                if (!this.validationAnswer) {
-                    if (this.questionType != 'text' && this.questionType != 'textarea') {
-                        let i = 0;
-                        while (i < this.data.length) {
-                            if (this.data[i].is_right) {
-                                this.validationAnswer = false;
-                                break;
-                            } else {
-                                this.validationAnswer = true;
-                            }
-                            i++;
-                        }
-                    } else {
-                        this.validationAnswer = false;
-                    }
-                    if (!this.validationAnswer) {
-                        if (this.questionName == "") {
-                            this.valid = false;
-                            this.valid_error.r_title = true;
-                            this.valid_error.r_select = false;
-                        } else if (this.questionType == "") {
-                            this.valid = false;
-                            this.valid_error.r_title = false;
-                            this.valid_error.r_select = true;
-                        } /*else if (this.questionName.length > 255) {
-                        this.valid_error.r_title = false;
-                        this.valid_error.r_select = false;
-                        this.valid_error.r_limit = true;
-                        this.valid = false;
-                    }*/ else {
-                            this.valid = true;
-                            this.valid_error.r_limit = false;
-                            this.valid_error.r_title = false;
-                            this.valid_error.r_select = false;
-                        }
-                        if (this.valid) {
-                            this.loading = true;
-                            let edit_block = document.querySelectorAll('.card-body');
-                            edit_block.forEach((item, index) => {
-                                if (item.getAttribute('data-question-id') == question_id) {
-                                    item.querySelector('.preview').style.display = 'block';
-                                    item.querySelector('.edit-block').style.display = 'none';
-                                }
-                            });
-                            await this.questionUpdate(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${question_id}`, 'post');
-                            await axios.delete(`/${window.urlprefix}/quizable/questions/${question_id}/answers`).catch(error => {
-                                console.log(error)
-                            });
-                            let formData = new FormData();
-                            if (this.questionType == 'file') {
-                                for (let i = 0; i < this.data.length; i++) {
-                                    let data = this.data[i];
-                                    if (data.file_type) formData.append(`data[${i}][file_type]`, data.file_type);
-                                    if (data.file) formData.append(`data[${i}][file]`, data.file);
-                                    if (data.is_right) {
-                                        formData.append(`data[${i}][is_right]`, 1);
-                                    } else formData.append(`data[${i}][is_right]`, 0);
-                                    if (data.title) formData.append(`data[${i}][title]`, data.title);
-                                    if (data.file_url) formData.append(`data[${i}][url]`, data.file_url);
-                                    if (data.url) formData.append(`data[${i}][url]`, data.url);
-                                }
-                            } else {
-                                formData = {
-                                    data: this.data
-                                }
-                            }
-                            axios.post(`/${window.urlprefix}/quizable/questions/${question_id}/answers`, formData).then(response => {
-                                this.getAllQuizQuestions();
-                                this.valid = true;
-                                this.edit = true;
-                                this.createAnswer = false;
-                                this.showQuestionEditBLock = false;
-                                this.showEditBlock(false, this.question_id);
-                                this.loading = false;
-                                this.showQuestionAnswer = false;
-                                for (let i = 0; i < response.data.data.length; i++) {
-                                    this.data[i]['id'] = response.data.data[i].id
-                                }
-                            }).catch(error => {
-                                console.log(error);
-                                this.loading = false;
-                            })
-                        } else {
-                            this.valid = false;
-                            this.validError = true
-                        }
-                    }
-                }
-
-
-            },
-            showEditBlock(is_show, question_id) {
-                if (this.__edit == question_id) {
-                    this.__edit = 0;
-                    is_show = false;
-                } else this.__edit = question_id;
-
-                let edit_block = document.querySelectorAll('.questionBodyCollapse');
-                document.getElementById(`collapseOne${question_id}`).classList.add('show');
-                edit_block.forEach((item) => {
-                    item.querySelector('.preview').style.display = 'block';
-                    item.querySelector('.edit-block').style.display = 'none';
-                    if (is_show) {
-                        if (item.getAttribute('data-question-id') == question_id) {
-                            item.querySelector('.preview').style.display = 'none';
-                            item.classList.add('show');
-                            item.querySelector('.edit-block').style.display = 'block';
-                        } else {
-                            this.opened = question_id;
-                            item.querySelector('.preview').style.display = 'block';
-                            item.querySelector('.edit-block').style.display = 'none';
-                        }
-                    } else {
-                        if (item.getAttribute('data-question-id') == question_id) {
-                            this.opened = question_id;
-                            item.querySelector('.preview').style.display = 'block';
-                            item.querySelector('.edit-block').style.display = 'none';
-                        }
-                    }
+                    delete item.question_id;
+                    delete item.created_at;
+                    delete item.deleted_at;
+                    this.data.push(item)
                 });
-            },
-            questionEdit(question, currentType, choose) {
-                if (this.questionId != question.id) {
-                    this.formChanged = false;
-                    this.questionNavigation.file_type.url = true;
-                    this.questionNavigation.file_type.file = true;
-                    this.questionNavigation.url = null;
-                    this.questionNavigation.file = null;
-                    this.error.validUrlYoutube = false;
-                    this.error.validUrl = false;
-                    document.getElementById('file').value = "";
-                    this.questionNavigation.class = false;
-                    document.getElementById('file').nextElementSibling.innerHTML = choose;
-                    this.questionNavigation.file_type.name = null;
+                if (this.data) this.addOtherQuestionShow = true;
+            }
+            this.exceptionAnswers.forEach(item => {
+                if (question.type == item) {
+                    this.addOtherQuestionShow = false;
                 }
-                this.showQuestionEditBLock = !this.showQuestionEditBLock;
-                this.data = [];
-                this.questionName = question.title;
-                this.questionType = question.type;
-                this.checkQuestionTypeName(question.type, currentType);
-                this.question_id = question.id;
-                this.showEditBlock(true, question.id);
-                this.formChanged = true;
-                this.questionNavigation.type = question.file_type;
-                if (question.file_type == 'image') {
-                    this.questionNavigation.file_type.name = 'image';
-                    this.questionNavigation.file_type.url = false;
-                    this.questionNavigation.file_url = question.file_url;
-                    this.questionNavigation.file_type.file = true;
-                    this.questionNavigation.video = false;
-                    this.questionNavigation.class = true;
-                } else if (question.file_type == 'image_url') {
-                    this.questionNavigation.file_type.name = 'image';
-                    this.questionNavigation.url = question.url;
-                    this.questionNavigation.file_type.url = true;
-                    this.questionNavigation.file_type.file = false;
-                } else if (question.file_type == 'video') {
-                    this.questionNavigation.file_type.name = 'video';
-                    this.questionNavigation.file_url = question.file_url;
-                    this.questionNavigation.file_type.file = true;
-                    this.questionNavigation.file_type.url = false;
-                    this.questionNavigation.class = false;
-                    this.questionNavigation.video = true;
-                } else if (question.file_type == 'youtube') {
-                    this.questionNavigation.file_type.name = 'video';
-                    this.questionNavigation.url = question.url;
-                    this.questionNavigation.file_type.url = true;
-                    this.questionNavigation.file_type.file = false;
-                } else {
-                    this.formChanged = false;
-                    this.questionNavigation.file_type.url = true;
-                    this.questionNavigation.file_type.file = true;
-                    this.questionNavigation.url = null;
-                    this.questionNavigation.file = null;
-                    this.error.validUrlYoutube = false;
-                    this.error.validUrl = false;
-                    this.questionNavigation.class = false;
-                    document.getElementById('file').nextElementSibling.innerHTML = choose;
-                    this.questionNavigation.file_type.name = null;
-                }
+            });
 
-                if (question.answers.length) {
-                    question.answers.forEach((item) => {
-                        if (item.title == null) {
-                            delete item.title;
-                        }
-                        delete item.file;
-                        delete item.id;
-                        if (!item.file_type) {
-                            delete item.file_type;
-                            delete item.file_url;
-                            delete item.url;
-                        }
-                        delete item.question_id;
-                        delete item.created_at;
-                        delete item.deleted_at;
-                        this.data.push(item)
-                    });
-                    if (this.data) this.addOtherQuestionShow = true;
-                }
-                this.exceptionAnswers.forEach(item => {
-                    if (question.type == item) {
-                        this.addOtherQuestionShow = false;
-                    }
-                });
-
-            },
+        },
 
 
-            checkQuestionTypeName(question_type, currentType) {
-                if (question_type == 'multiple') this.questionCurrentType = currentType[0];
-                else if (question_type == 'radio') this.questionCurrentType = currentType[1];
-                else if (question_type == 'dropdown') this.questionCurrentType = currentType[2];
-                else if (question_type == 'text') this.questionCurrentType = currentType[3];
-                else if (question_type == 'file') this.questionCurrentType = currentType[4];
-                else if (question_type == 'textarea') this.questionCurrentType = currentType[5];
-            },
-            async validationAnswers() {
-
+        checkQuestionTypeName(question_type, currentType) {
+            if (question_type == 'multiple') this.questionCurrentType = currentType[0];
+            else if (question_type == 'radio') this.questionCurrentType = currentType[1];
+            else if (question_type == 'dropdown') this.questionCurrentType = currentType[2];
+            else if (question_type == 'text') this.questionCurrentType = currentType[3];
+            else if (question_type == 'file') this.questionCurrentType = currentType[4];
+            else if (question_type == 'textarea') this.questionCurrentType = currentType[5];
+        },
+        async validationAnswers() {
+            if (this.questionType != 'text' && this.questionType != 'textarea') {
                 if (this.questionType == 'file') {
                     await this.data.forEach((item, index) => {
                         if (_.isEmpty(item)) {
@@ -1228,7 +1132,7 @@
                     if (this.data[0]) {
                         let i = 0;
                         while (i < this.data.length) {
-                            if (this.data[i].file) {
+                            if (this.data[i].file || this.data[i].file_url || this.data[i].url) {
                                 if (this.data[i].is_right) {
                                     this.validationAnswer = false;
                                     break;
@@ -1259,18 +1163,7 @@
                     } else {
                         let i = 0;
                         while (i < this.data.length) {
-                            if (!this.data[i].title) {
-                                this.validationAnswer = true;
-                                break;
-                            } else {
-                                this.validationAnswer = false;
-                            }
-                            i++;
-                        }
-
-                        i = 0;
-                        while (i < this.data.length) {
-                            if (!this.data[i].short_answer) {
+                            if (this.data[i].title == undefined || this.data[i].title == "") {
                                 this.validationAnswer = true;
                                 break;
                             } else {
@@ -1280,79 +1173,82 @@
                         }
                     }
                 }
-            },
-            async createQuiz() {
-                if (this.validation()) {
-                    let form = new FormData(), url;
-                    form.append('title', this.title);
-                    form.append('description', this.description);
-                    if (this.time_limit) form.append('time_limit', this.time_limit);
-                    this.loading = true;
-                    if (!this.quizResponse && !this.quiz_id) {
-                        url = `/${window.urlprefix}/quizable/api-quiz`;
-                        await this.sendMethod(url, 'post', form);
-                    } else {
-                        form.append('answer_by_one', 0);
-                        form.append('_method', 'PATCH');
-                        url = `/${window.urlprefix}/quizable/api-quiz/${this.quiz_id}/update`;
-                        await this.sendMethod(url, 'post', form);
-                    }
+            } else {
+                this.validationAnswer = false;
+            }
+        },
+        async createQuiz() {
+            if (this.validation()) {
+                let form = new FormData(), url;
+                form.append('title', this.title);
+                form.append('description', this.description);
+                if (this.time_limit) form.append('time_limit', this.time_limit);
+                this.loading = true;
+                if (!this.quizResponse && !this.quiz_id) {
+                    url = `/${window.urlprefix}/quizable/api-quiz`;
+                    await this.sendMethod(url, 'post', form);
+                } else {
+                    form.append('answer_by_one', 0);
+                    form.append('_method', 'PATCH');
+                    url = `/${window.urlprefix}/quizable/api-quiz/${this.quiz_id}/update`;
+                    await this.sendMethod(url, 'post', form);
                 }
+            }
 
-            },
-            quizEdit() {
-                this.saveOrEdit = true;
-                this.quizHide = true
-            },
-            showSweet(obj, level) {
-                showSweetMsg(obj, level);
-            },
+        },
+        quizEdit() {
+            this.saveOrEdit = true;
+            this.quizHide = true
+        },
+        showSweet(obj,level){
+            showSweetMsg(obj,level);
+        },
 
-            async cloneQuestion(question_id) {
-                await axios.post(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${question_id}`)
-                    .then(response => {
-                        this.getAllQuizQuestions();
-                        this.showSweet({successmsg: 'Question cloned successfully'}, 'success');
-                    }).catch(error => {
-                        console.log(error);
-                    });
-            },
-            addNewQuestion() {
-                this.questionData.push({
-                    check: true
-                });
-                if ($('.questionItem').last().length && $('.questionItem').last().offset) {
-                    $('html, body').animate({
-                        scrollTop: $('.questionItem').last().offset().top
-                    }, 700);
-                } else if ($("#kt-portlet__body").offset()) {
-                    $('html, body').animate({
-                        scrollTop: $("#kt-portlet__body").offset().top
-                    }, 700);
-                }
-            },
-            sendMethod(url, method, form) {
-                alert('aaa')
-                console.log(form);
-                axios({
-                    url: url,
-                    method: method,
-                    data: form,
-                }).then(response => {
-                    this.quiz_id = response.data.data.id;
-                    this.quizResponse = response.data;
-                    this.openQuestion = true;
-                    this.saveOrEdit = false;
-                    this.loading = false;
-                    this.quizHide = false
-                }).catch(error => {
-                    this.validation();
-                    console.log(error);
-                    this.loading = false;
-                })
-            },
-            questionDelete(questionId, index) {
-                Swal.fire({
+        async cloneQuestion(question_id) {
+            await axios.post(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${question_id}`)
+            .then(response => {
+                this.getAllQuizQuestions();
+                this.showSweet({successmsg:'Question cloned successfully'}, 'success');
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+        addNewQuestion() {
+            this.questionData.push({
+                check:true
+            });
+            if ($('.questionItem').last().length && $('.questionItem').last().offset){
+                $('html, body').animate({
+                    scrollTop: $('.questionItem').last().offset().top
+                }, 700);
+            }else if($("#kt-portlet__body").offset()) {
+                $('html, body').animate({
+                    scrollTop: $("#kt-portlet__body").offset().top
+                }, 700);
+            }
+        },
+        sendMethod(url, method, form) {
+            alert('aaa')
+            console.log(form);
+            axios({
+                url: url,
+                method: method,
+                data: form,
+            }).then(response => {
+                this.quiz_id = response.data.data.id;
+                this.quizResponse = response.data;
+                this.openQuestion = true;
+                this.saveOrEdit = false;
+                this.loading = false;
+                this.quizHide = false
+            }).catch(error => {
+                this.validation();
+                console.log(error);
+                this.loading = false;
+            })
+        },
+        questionDelete(questionId, index) {
+                  Swal.fire({
                     title: this.trans('__quiz__.Are you sure'),
                     text: this.trans('__quiz__.Delete question'),
                     showCancelButton: true,
@@ -1364,7 +1260,7 @@
                     if (result.value) {
                         axios.delete(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${questionId}`).then(resp => {
                             this.getAllQuizQuestions();
-                            this.showSweet({successmsg: this.trans('__quiz__.Question deleted successfully')}, 'success');
+                            this.showSweet({successmsg: this.trans('__quiz__.Question deleted successfully') }, 'success');
                         }).catch(error => {
                             console.log(error)
                         })
@@ -1373,322 +1269,309 @@
                     }
                 });
 
-            },
-            validation() {
-                let i = 0;
-                let parsTimeLimit = parseInt(this.time_limit);
-                if (parsTimeLimit) {
-                    if (parsTimeLimit <= 0 || parsTimeLimit > 9999) {
-                        this.quiz_create_valid.limit_time = true;
-                        i++
-                    } else {
-                        this.quiz_create_valid.limit_time = false;
-                    }
-                } else {
-                    i++;
+        },
+        validation() {
+            let i = 0;
+            let parsTimeLimit = parseInt(this.time_limit);
+            if (parsTimeLimit){
+                if (parsTimeLimit <= 0 || parsTimeLimit > 9999) {
                     this.quiz_create_valid.limit_time = true;
-                    if (this.time_limit == "" || this.time_limit == null) {
-                        i = 0;
-                        this.quiz_create_valid.limit_time = false;
-                    }
-                }
-                if (this.title == "" || this.title.length > 255) {
-                    this.quiz_create_valid.title = true;
                     i++
                 } else {
-                    this.quiz_create_valid.title = false;
+                    this.quiz_create_valid.limit_time = false;
                 }
-                if (this.description == "") {
-                    this.quiz_create_valid.description = true;
-                    i++
-                } else {
-                    this.quiz_create_valid.description = false;
+            }else {
+                i++;
+                this.quiz_create_valid.limit_time = true;
+                if (this.time_limit == "" || this.time_limit == null){
+                    i = 0;
+                    this.quiz_create_valid.limit_time = false;
                 }
+            }
+            if (this.title == "" || this.title.length > 255) {
+                this.quiz_create_valid.title = true;
+                i++
+            } else {
+                this.quiz_create_valid.title = false;
+            }
+            if (this.description == "") {
+                this.quiz_create_valid.description = true;
+                i++
+            } else {
+                this.quiz_create_valid.description = false;
+            }
 
-                if (i > 0) {
-                    return false
-                } else return true
-            },
-            allQuestions(data) {
-                this.dataQuestions = data.data.data
-            },
-            async changeQuestions() {
-                var obj = {};
-                this.dataQuestions.map(function (val, index) {
-                    val.order = index + 1;
-                    obj[val.id] = val.order
-                });
-                await axios({
-                    method: 'patch',
-                    url: `/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions`,
-                    data: {
-                        ids: obj
-                    },
-                    header: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(response => {
+            if (i > 0) {
+                return false
+            } else return true
+        },
+        allQuestions(data) {
+            this.dataQuestions = data.data.data
+        },
+        async changeQuestions() {
+            var obj = {};
+            this.dataQuestions.map(function (val, index) {
+                val.order = index + 1;
+                obj[val.id] = val.order
+            });
+            await axios({
+                method: 'patch',
+                url: `/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions`,
+                data: {
+                    ids: obj
+                },
+                header: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                this.dataQuestions = response.data.data;
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+        async getAllQuizQuestions() {
+            await axios.get(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions`)
+                .then(response => {
                     this.dataQuestions = response.data.data;
+                    this.questionData = [];
+                    for (let i = 0; i < response.data.data.length; i++) {
+                        if (i == response.data.data.length - 1 && this.___i) {
+                            this.questionData.push({
+                                check: true
+                            });
+                            this.___i = true;
+                        } else {
+                            this.questionData.push({
+                                check: false
+                            })
+                        }
+                    }
+
                 }).catch(error => {
                     console.log(error)
                 })
-            },
-            async getAllQuizQuestions() {
-                await axios.get(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions`)
-                    .then(response => {
-                        this.dataQuestions = response.data.data;
-                        this.questionData = [];
-                        for (let i = 0; i < response.data.data.length; i++) {
-                            if (i == response.data.data.length - 1 && this.___i) {
-                                this.questionData.push({
-                                    check: true
-                                });
-                                this.___i = true;
-                            } else {
-                                this.questionData.push({
-                                    check: false
-                                })
-                            }
-                        }
-
-                    }).catch(error => {
-                        console.log(error)
-                    })
-            },
-            check_if_enabled(option) {
-                return this.enabled_options.includes(option);
-            },
-            async init() {
-                if (this.quiz) {
-                    this.quiz_id = this.quiz.id;
-                    this.openQuestion = true;
-                    this.title = this.quiz.title;
-                    this.description = this.quiz.description;
-                    this.time_limit = this.quiz.time_limit;
-                    this.quizHide = false;
-                    if (this.quiz.is_active)
-                        this.quiz_is_active = true;
-                }
-                await this.getAllQuizQuestions();
-                /*$('.__open__block').click(function () {
-                    if ($(this).prop('tagName') === 'IMG'){
-                        $(this).addClass('rotate');
-                    }else {
-                        $(this).parent().find('img.__open__block').toggleClass('rotate');
-                    }
-                });*/
-            }
         },
-        mounted() {
+        check_if_enabled(option){
+           return this.enabled_options.includes(option);
         },
-        created: function () {
+        async init() {
             if (this.quiz) {
-                this.init();
-            } else this.questionData.push({
-                check: true
-            });
-        },
-        directives: {
-            ClickOutside
-        },
-        computed: {
-            dragOptions() {
-                return {
-                    animation: 200,
-                    group: "description",
-                    disabled: false,
-                    ghostClass: "ghost",
-                    handle: '.my-handle'
-                };
+                this.quiz_id = this.quiz.id;
+                this.openQuestion = true;
+                this.title = this.quiz.title;
+                this.description = this.quiz.description;
+                this.time_limit = this.quiz.time_limit;
+                this.quizHide = false;
+                if (this.quiz.is_active)
+                this.quiz_is_active = true;
             }
+            await this.getAllQuizQuestions();
+            /*$('.__open__block').click(function () {
+                if ($(this).prop('tagName') === 'IMG'){
+                    $(this).addClass('rotate');
+                }else {
+                    $(this).parent().find('img.__open__block').toggleClass('rotate');
+                }
+            });*/
+        }
+    },
+    mounted() {
+    },
+    created: function () {
+        if (this.quiz) {
+            this.init();
+        } else this.questionData.push({
+            check:true
+        });
+    },
+    directives: {
+        ClickOutside
+    },
+    computed: {
+        dragOptions() {
+            return {
+                animation: 200,
+                group: "description",
+                disabled: false,
+                ghostClass: "ghost",
+                handle: '.my-handle'
+            };
         }
     }
+}
 </script>
 
 
 <style scoped lang="scss">
-    .table.drop-table {
-        z-index: 999999;
+.table.drop-table{
+    z-index: 999999;
+}
+.question_list_actions i {
+    font-size: 18px;
+}
+.table.drop-table td i{
+    margin-left: 10px;
+}
+.active{
+    background: #ddd!important;
+}
+.answer-delete-btn {
+    background: #ddd;
+    border: none;
+    font-size: 10px;
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+    margin-right: 10px;
+    transition: .2s;
+    &:hover {
+        color: #fff;
+        background: #5766db;
     }
 
-    .question_list_actions i {
-        font-size: 18px;
-    }
+    border-radius: 48%;
+}
 
-    .table.drop-table td i {
-        margin-left: 10px;
-    }
+.quiz-question-title-ellipsis {
+    display: block;
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
 
-    .active {
-        background: #ddd !important;
-    }
+.my-style {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 4px;
+    overflow: hidden;
+}
 
-    .answer-delete-btn {
-        background: #ddd;
+.my-handle {
+    cursor: move;
+}
+
+.questionItem {
+    margin-bottom: 20px;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+.open {
+    display: block;
+}
+
+.edit-block,  .preview{
+    padding:30px;
+    background-color:#fff;
+    display: none;
+}
+
+.preview {
+    display: block;
+}
+
+._show {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.error {
+    display: block !important;
+}
+
+.valid {
+    color: red;
+}
+
+.questionsNavigationButton {
+    background: rgba(0, 0, 0, 0.34);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: .2s;
+    opacity: 0;
+    visibility: hidden;
+
+    button {
+        margin: 0;
+        height: 25.5px;
         border: none;
-        font-size: 10px;
-        width: 25px;
-        height: 25px;
-        margin-left: 10px;
-        margin-right: 10px;
-        transition: .2s;
+        background: transparent;
+
+        svg {
+            fill: #fff
+        }
 
         &:hover {
-            color: #fff;
-            background: #5766db;
-        }
-
-        border-radius: 48%;
-    }
-
-    .quiz-question-title-ellipsis {
-        display: block;
-        text-overflow: ellipsis;
-        width: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-    .my-style {
-        width: 80px !important;
-        height: 80px !important;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-
-    .my-handle {
-        cursor: move;
-    }
-
-    .questionItem {
-        margin-bottom: 20px;
-
-        &:first-child {
-            margin-top: 0;
+            background: #ddd;
         }
     }
-
-    .open {
-        display: block;
-    }
+}
 
 
-    .edit-block, .preview {
-        padding: 30px;
-        background-color: #fff;
-        display: none;
-    }
-
-    .preview {
-        display: block;
-    }
-
-
-    ._show {
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-
-    .error {
-        display: block !important;
-    }
-
-    .valid {
-        color: red;
-    }
-
-    .questionsNavigationButton {
-        background: rgba(0, 0, 0, 0.34);
-        border-radius: 3px;
-        overflow: hidden;
-        transition: .2s;
-        opacity: 0;
-        visibility: hidden;
-
-        button {
-            margin: 0;
-            height: 25.5px;
-            border: none;
-            background: transparent;
-
-            svg {
-                fill: #fff
-            }
-
-            &:hover {
-                background: #ddd;
-            }
+@media (max-width: 768px) {
+    .questionItemEdit{
+        padding-left: 1.25rem!important;
+        .dropdown{
+            width: 100%;
         }
     }
-
-
-    @media (max-width: 768px) {
-        .questionItemEdit {
-            padding-left: 1.25rem !important;
-
-            .dropdown {
-                width: 100%;
-            }
+}
+@media (min-width: 768px) {
+    .questionItemEdit{
+        .dropdown{
+            width: 60%;
         }
     }
+}
+.material-switch > input[type="checkbox"] {
+    display: none;
+}
 
-    @media (min-width: 768px) {
-        .questionItemEdit {
-            .dropdown {
-                width: 60%;
-            }
-        }
-    }
+.material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative;
+    width: 40px;
+}
 
-    .material-switch > input[type="checkbox"] {
-        display: none;
-    }
+.material-switch > label::before {
+    background: rgb(0, 0, 0);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 16px;
+    margin-top: -8px;
+    position:absolute;
+    opacity: 0.3;
+    transition: all 0.4s ease-in-out;
+    width: 40px;
+}
+.material-switch > label::after {
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    left: -4px;
+    margin-top: -8px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 24px;
+}
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+}
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: #0aba86;
+    left: 20px;
+}
 
-    .material-switch > label {
-        cursor: pointer;
-        height: 0px;
-        position: relative;
-        width: 40px;
-    }
-
-    .material-switch > label::before {
-        background: rgb(0, 0, 0);
-        box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
-        border-radius: 8px;
-        content: '';
-        height: 16px;
-        margin-top: -8px;
-        position: absolute;
-        opacity: 0.3;
-        transition: all 0.4s ease-in-out;
-        width: 40px;
-    }
-
-    .material-switch > label::after {
-        background: rgb(255, 255, 255);
-        border-radius: 16px;
-        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-        content: '';
-        height: 24px;
-        left: -4px;
-        margin-top: -8px;
-        position: absolute;
-        top: -4px;
-        transition: all 0.3s ease-in-out;
-        width: 24px;
-    }
-
-    .material-switch > input[type="checkbox"]:checked + label::before {
-        background: inherit;
-        opacity: 0.5;
-    }
-
-    .material-switch > input[type="checkbox"]:checked + label::after {
-        background: #0aba86;
-        left: 20px;
-    }
-
-    .rotate {
-        transform: rotate(180deg);
-    }
+.rotate{
+    transform: rotate(180deg);
+}
 </style>
