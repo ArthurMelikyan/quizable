@@ -244,8 +244,7 @@
                                                             </div>
                                                             <div class="valid q-correct mt-2 position-absolute"
                                                                  v-show="valid_error.r_limit">
-                                                                {{ trans('__quiz__.This field must not exceed 255
-                                                                characters') }}
+                                                                {{ trans('__quiz__.This field must not exceed 255 characters') }}
                                                             </div>
                                                         </div>
                                                         <div class="dropdown">
@@ -255,8 +254,7 @@
                                                                 :id="'dropdownMenuButton'+element.id"
                                                                 data-toggle="dropdown" aria-haspopup="true"
                                                                 aria-expanded="false">
-                                                                {{ questionCurrentType || trans('__quiz__.Select
-                                                                question type') }}
+                                                                {{ questionCurrentType || trans('__quiz__.Select question type') }}
                                                             </button>
                                                             <div class="dropdown-menu w-100"
                                                                  :aria-labelledby="'dropdownMenuButton'+element.id">
@@ -445,8 +443,7 @@
                                                         </div>
                                                     </div>
                                                     <div v-if="validationAnswer" style="color: #ff0000">
-                                                        {{ trans('__quiz__.Please fill in all fields and select at least
-                                                        one correct variant') }}
+                                                        {{ trans('__quiz__.Please fill in all fields and select at least one correct variant') }}
 
                                                     </div>
                                                     <div v-if="validationAnswerUploadFile" style="color: red">
@@ -1357,18 +1354,18 @@
             },
             questionDelete(questionId, index) {
                 Swal.fire({
-                    title: "Are you sure?",
-                    text: "Delete question?",
+                    title: this.trans('__quiz__.Are you sure'),
+                    text: this.trans('__quiz__.Delete question'),
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No'
+                    confirmButtonText: this.trans('__quiz__.Yes'),
+                    cancelButtonText: this.trans('__quiz__.No')
                 }).then((result) => {
                     if (result.value) {
                         axios.delete(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${questionId}`).then(resp => {
                             this.getAllQuizQuestions();
-                            this.showSweet({successmsg: 'Question deleted successfully'}, 'success');
+                            this.showSweet({successmsg: this.trans('__quiz__.Question deleted successfully')}, 'success');
                         }).catch(error => {
                             console.log(error)
                         })
