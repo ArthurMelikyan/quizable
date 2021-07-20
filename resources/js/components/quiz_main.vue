@@ -1248,19 +1248,20 @@ export default {
             })
         },
         questionDelete(questionId, index) {
+            console.log(window.trans.__quiz__['Fill all fields'])
                   Swal.fire({
-                    title: this.trans('__quiz__.Are you sure'),
-                    text: this.trans('__quiz__.Delete question'),
+                    title: window.trans.__quiz__['Are you sure'],
+                    text: window.trans.__quiz__['Delete question'],
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: this.trans('__quiz__.Yes'),
-                    cancelButtonText: this.trans('__quiz__.No')
+                    confirmButtonText: window.trans.__quiz__['Yes'],
+                    cancelButtonText: window.trans.__quiz__['No']
                 }).then((result) => {
                     if (result.value) {
                         axios.delete(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${questionId}`).then(resp => {
                             this.getAllQuizQuestions();
-                            this.showSweet({successmsg: this.trans('__quiz__.Question deleted successfully') }, 'success');
+                            this.showSweet({successmsg: window.trans.__quiz__['Question deleted successfully'] }, 'success');
                         }).catch(error => {
                             console.log(error)
                         })
