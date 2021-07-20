@@ -457,8 +457,7 @@
                                                     </div>
                                                     <div class="text-right mr-3">
                                                         <a href="#" class="btn btn-secondary mr-2"
-                                                           @click.prevent="formToEmpty">{{ trans('__quiz__.Clear')
-                                                            }}</a>
+                                                           @click.prevent="formToEmpty">{{ trans('__quiz__.Clear') }}</a>
                                                         <button type="submit" class="btn btn-primary"
                                                                 :disabled="loading"
                                                                 @click="questionUpdateSave(element.id)">
