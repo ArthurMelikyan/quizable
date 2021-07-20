@@ -405,7 +405,7 @@ export default {
 
         },
         async validationAnswers(){
-            if(this.questionType != 'text' && this.questionType != 'textarea'){
+
                 if (this.questionType == 'file'){
                     await this.data.forEach((item, index)=>{
                         if(_.isEmpty(item)) {
@@ -446,7 +446,18 @@ export default {
                     }else {
                         let i = 0;
                         while (i < this.data.length) {
-                            if (this.data[i].title == undefined || this.data[i].title == ""){
+                            if (!this.data[i].title){
+                                this.validationAnswer = true;
+                                break;
+                            } else {
+                                this.validationAnswer = false;
+                            }
+                            i++;
+                        }
+
+                        i = 0;
+                        while (i < this.data.length) {
+                            if (!this.data[i].short_answer){
                                 this.validationAnswer = true;
                                 break;
                             } else {
@@ -456,9 +467,6 @@ export default {
                         }
                     }
                 }
-            }else {
-                this.validationAnswer = false;
-            }
         },
         questionNameChange() {
             if (this.questionName == "") {
