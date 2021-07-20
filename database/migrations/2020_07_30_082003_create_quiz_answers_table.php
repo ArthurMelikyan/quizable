@@ -26,6 +26,12 @@ class CreateQuizAnswersTable extends Migration
             $table->unsignedBigInteger('quiz_report_id')->nullable()->index();
             $table->timestamps();
 
+            $table->foreign('quiz_id')->on('quizes')->references('id')->onDelete('cascade');
+            $table->foreign('user_id')->on('users')->references('id')->onDelete('cascade');
+            $table->foreign('question_id')->on('questions')->references('id')->onDelete('cascade');
+            $table->foreign('answer_id')->on('answers')->references('id')->onDelete('cascade');
+            $table->foreign('user_quiz_id')->on('user_quizes')->references('id')->onDelete('cascade');
+            $table->foreign('quiz_report_id')->on('quiz_reports')->references('id')->onDelete('cascade');
 
         });
     }

@@ -16,7 +16,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Question {{questionNavigation.checkLangType }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ trans('__quiz__.Question') }} {{questionNavigation.checkLangType }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -29,10 +29,10 @@
                                 @input="questionNavigationUrlChange"
                                 v-model="questionNavigation.url" :placeholder="question_file_type">
                         <div v-if="error.validUrl" class="mt-1" style="color: red">
-                                Please enter correct values
+                            {{ trans('__quiz__.Please enter correct values') }}
                         </div>
                         <div v-if="error.validUrlYoutube" class="mt-1" style="color: red">
-                            Please enter correct Youtube video url
+                            {{ trans('__quiz__.Please enter correct Youtube video url') }}
                         </div>
                     </div>
                     <div class="form-group  align-items-center" :class="{'d-md-flex' : questionNavigation.class}"
@@ -47,7 +47,7 @@
                                 <input type="file" class="custom-file-input "   :accept="(questionNavigation.file_type.name == 'image') ? 'image/x-png,image/jpeg' : 'video/mp4,video/x-m4v,video/*'" :id="'c-file'+index"
                                         @change="getFileQuestion($event, index)">
                                 <label class="custom-file-label overflow-hidden" :for="'c-file'+index">
-                                    Choose file
+                                    {{ trans('__quiz__.Choose file') }}
                                 </label>
                             </div>
 
@@ -63,10 +63,10 @@
                 </div>
                 <div class="modal-footer">
                     <button v-if="formChanged" type="button" class=" btn btn-secondary"
-                            @click="questionNavigationFileClear('quiz.Choose file', index)">  Clear
+                            @click="questionNavigationFileClear('quiz.Choose file', index)">{{ trans('__quiz__.Clear') }}
                     </button>
                     <button type="button" class="btn btn-primary" v-if="modal_button_save" data-dismiss="modal">
-                            Save
+                        {{ trans('__quiz__.Save') }}
                     </button>
                 </div>
             </div>
@@ -78,7 +78,7 @@
             <div class="form-group mb-0" @mouseover="showEditNavigation()" @mouseout="hide">
 
                 <div class="col-md-12">
-                    <label :for="'Q'+(index+1)" class="questionCount ">Question <span>{{': '+(index+1)}}</span></label>
+                    <label :for="'Q'+(index+1)" class="questionCount ">{{ trans('__quiz__.Question') }} <span>{{': '+(index+1)}}</span></label>
                         <div class="d-flex justify-content-between">
                             <div v-if="check_if_enabled('enable_video_and_image_navigations')" class="questionsNavigationButton" :class="{'_show':showNavigation}" data-toggle="modal"
                                 :data-target="'#exampleModalCenter'+index">
@@ -118,16 +118,16 @@
                         <input type="text"
                             @input="questionNameChange"
                             class="form-control questionName w-100"
-                            :placeholder="'Enter your question'" :id="'Q'+(index+1)"
+                            :placeholder="trans('__quiz__.Enter your question')" :id="'Q'+(index+1)"
                             v-model="questionName">
                         <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_title">
-                            Is required question title
+                            {{trans('__quiz__.Is required question title')}}
                         </div>
                         <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_select">
-                            Please select question type
+                            {{trans('__quiz__.Please select question type')}}
                         </div>
                         <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_limit">
-                            This field must not exceed 255 characters
+                            {{trans('__quiz__.This field must not exceed 255 characters')}}
                         </div>
                     </div>
 
@@ -135,32 +135,32 @@
                 <button class="btn btn-secondary dropdown-toggle w-100" type="button"
                         id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{ questionCurrentType || 'Select question type' }}
+                    {{ questionCurrentType || trans('__quiz__.Select question type') }}
                 </button>
                 <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                     <table class="table drop-table">
                         <tr>
                             <td v-if="check_if_enabled('multiple') " @click="selectQuestionType('multiple', 'quiz.Multiple')">
-                                <i class="fas fa-bars"></i>Multiple
+                                <i class="fas fa-bars"></i>{{ trans('__quiz__.Multiple') }}
                             </td>
                             <td v-if="check_if_enabled('radio')" @click="selectQuestionType('radio', 'Yes/No')">
-                                <i class="fas fa-dot-circle"></i>Yes/No
+                                <i class="fas fa-dot-circle"></i>{{ trans('__quiz__.Yes/No') }}
                             </td>
                         </tr>
                         <tr>
-                            <td v-if="check_if_enabled('dropdown')" @click="check_if_enabled('dropdown') && selectQuestionType('dropdown', 'Dropdown')">
-                                <i class="fas fa-caret-down"></i>Dropdown
+                            <td v-if="check_if_enabled('dropdown')" @click="check_if_enabled('dropdown') && selectQuestionType('dropdown', trans('__quiz__.Dropdown'))">
+                                <i class="fas fa-caret-down"></i>{{ trans('__quiz__.Dropdown') }}
                             </td>
-                            <td v-if="check_if_enabled('text')"  @click="check_if_enabled('text') && selectQuestionType('text', 'Short Text')">
-                                <i class="fas fa-align-justify"></i> Short Text
+                            <td v-if="check_if_enabled('text')"  @click="check_if_enabled('text') && selectQuestionType('text', trans('__quiz__.Short Text'))">
+                                <i class="fas fa-align-justify"></i>{{ trans('__quiz__.Short Text') }}
                             </td>
                         </tr>
                         <tr>
-                            <td v-if="check_if_enabled('file')"  @click="check_if_enabled('file') && selectQuestionType('file', 'Picture Choice')">
-                                <i class="far fa-image"></i> Picture Choice
+                            <td v-if="check_if_enabled('file')"  @click="check_if_enabled('file') && selectQuestionType('file', trans('__quiz__.Picture Choice'))">
+                                <i class="far fa-image"></i>{{ trans('__quiz__.Picture Choice') }}
                             </td>
-                            <td v-if="check_if_enabled('textarea')"  @click="check_if_enabled('textarea') && selectQuestionType('textarea', 'Long Text')">
-                                <i class="fas fa-align-justify"></i>Long Text
+                            <td v-if="check_if_enabled('textarea')"  @click="check_if_enabled('textarea') && selectQuestionType('textarea', trans('__quiz__.Long Text'))">
+                                <i class="fas fa-align-justify"></i>{{ trans('__quiz__.Long Text') }}
                             </td>
                         </tr>
                     </table>
@@ -178,12 +178,12 @@
                 class="block-3 d-flex align-items-center mb-3 ">
             <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
                 <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
-                <input type="text" class="form-control"  maxlength="250"  :placeholder="'Enter an answer choice'"
+                <input type="text"  class="form-control"  maxlength="250"  :placeholder="trans('__quiz__.Enter an answer choice')"
                         v-model="data[index]['title']">
                 <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
-                    <span class="CP">Correct answer_by_one</span>
+                    <span class="CP">{{ trans('__quiz__.Correct answer_by_one') }}</span>
                     <span class="mobile position-absolute">
-                        Correct answer
+                        {{ trans('__quiz__.Correct answer') }}
                     </span>
                     <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                 </div>
@@ -195,13 +195,13 @@
             <div class="d-flex align-items-center mb-3 answer">
                 <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
                 <span class="d-flex align-items-center " style="width: 30px;">
-                    Yes
+                    {{ trans('__quiz__.Yes') }}
                 </span>
                 </label>
 
                 <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
                     <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
-                        <span class="mr-3">Correct answer</span>
+                        <span class="mr-3">{{ trans('__quiz__.Correct answer') }}</span>
                         <input type="radio" name="Yes/No" :value="true" @change="getRadioValue(true, 'Yes')">
                     </div>
                 </div>
@@ -209,12 +209,12 @@
             <div class="d-flex align-items-center">
                 <label class="checkbox checkbox-outline checkbox-outline-2x checkbox-success mr-1 mb-0">
                 <span class="d-flex align-items-center " style="width: 30px;">
-                    No
+                    {{ trans('__quiz__.No') }}
                 </span>
                 </label>
                 <div class="form-group mb-0 position-relative flex-grow-1 ml-3">
                     <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success justify-content-start" style="background: transparent;">
-                        <span class="mr-3 ">Correct answer</span>
+                        <span class="mr-3 ">{{ trans('__quiz__.Correct answer') }}</span>
                         <input type="radio" name="Yes/No" :value="false" @change="getRadioValue(false, 'No')">
                     </div>
                 </div>
@@ -235,12 +235,12 @@
                 <div class="custom-file w-auto ">
                     <input type="file" class="custom-file-input answer-image"  accept="image/x-png,image/jpeg"
                             id="customFile" @change="getImages(index, $event)">
-                    <label class="custom-file-label answer-image-label"  for="customFile">Choose file</label>
+                    <label class="custom-file-label answer-image-label"  for="customFile">{{ trans('__quiz__.Choose file') }}</label>
                 </div>
                 <div class="correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success " style="background: transparent;">
-                    <span class="CP">Correct answer</span>
+                    <span class="CP">{{ trans('__quiz__.Correct answer') }}</span>
                     <span class="mobile position-absolute" style="top: -14px; width: auto">
-                        Correct answer
+                        {{ trans('__quiz__.Correct answer') }}
                     </span>
                     <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                 </div>
@@ -250,12 +250,12 @@
                 class="block-3 d-flex align-items-center mb-3">
             <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
                 <button @click.prevent="deleteAnswer(index)" class="answer-delete-btn">X</button>
-                <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice' "
+                <input type="text"  class="form-control pr-5" maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice') "
                         v-model="data[index]['title']" >
                 <div class="position-absolute correct-answer checkbox checkbox-outline checkbox-outline-2x checkbox-success ">
-                    <span class="CP">Correct answer</span>
+                    <span class="CP">{{ trans('__quiz__.Correct answer') }}</span>
                     <span class="mobile position-absolute">
-                        Correct answer
+                        {{ trans('__quiz__.Correct answer') }}
                     </span>
                     <input type="checkbox" @change="showMessageSelectCorrectAnswer($event)" v-model="data[index]['is_right']">
                 </div>
@@ -264,15 +264,16 @@
         <div v-if="questionType === 'text'" v-for="(item, index) in data"
              class="block-3 d-flex align-items-center mb-3">
             <div class="form-group mb-0 position-relative answer flex-grow-1 d-flex align-items-center overflow-hidden">
-                <input type="text" class="form-control pr-5" maxlength="250" :placeholder="'Enter an answer choice' "
+                <input type="text"  class="form-control pr-5" maxlength="250" :placeholder="trans('__quiz__.Enter an answer choice')"
                        v-model="data[index]['short_answer']" >
             </div>
         </div>
         <div v-if="validationAnswer" style="color: red">
-            Please fill in all fields and select at least one correct variant
+            {{ trans('__quiz__.Please fill in all fields and select at least one correct variant') }}
+
         </div>
         <div v-if="validationAnswerUploadFile" class="file_validate_err" style="color: red">
-            Please select image
+            {{ trans('__quiz__.Please select image') }}
         </div>
         <div v-if="addOtherQuestionShow"
                 class="block-4 d-inline-flex align-items-center mt-3"
@@ -280,14 +281,14 @@
             <span class="mr-2 badge badge-primary">
                 <i class="fas fa-plus"></i>
             </span>
-            <p class="m-0">Add new answer</p>
+            <p class="m-0">{{ trans('__quiz__.Add new answer') }}</p>
         </div>
         <div class="text-right mr-3">
             <a href="#" class="btn btn-secondary mr-2"
-                @click.prevent="formToEmpty">Clear</a>
+                @click.prevent="formToEmpty">{{ trans('__quiz__.Clear') }}</a>
             <button type="submit" class="btn btn-primary" :disabled="loading">
                 <span v-if="loading" class="spinner-border spinner-border-sm mr-1" style="padding: 5px;" role="status" aria-hidden="true"></span>
-                <span>Save</span>
+                <span>{{ trans('__quiz__.Save') }}</span>
             </button>
         </div>
     </div>
@@ -404,7 +405,7 @@ export default {
 
         },
         async validationAnswers(){
-            if(this.questionType != 'text' && this.questionType != 'textarea'){
+
                 if (this.questionType == 'file'){
                     await this.data.forEach((item, index)=>{
                         if(_.isEmpty(item)) {
@@ -445,7 +446,18 @@ export default {
                     }else {
                         let i = 0;
                         while (i < this.data.length) {
-                            if (this.data[i].title == undefined || this.data[i].title == ""){
+                            if (!this.data[i].title){
+                                this.validationAnswer = true;
+                                break;
+                            } else {
+                                this.validationAnswer = false;
+                            }
+                            i++;
+                        }
+
+                        i = 0;
+                        while (i < this.data.length) {
+                            if (!this.data[i].short_answer){
                                 this.validationAnswer = true;
                                 break;
                             } else {
@@ -455,9 +467,6 @@ export default {
                         }
                     }
                 }
-            }else {
-                this.validationAnswer = false;
-            }
         },
         questionNameChange() {
             if (this.questionName == "") {

@@ -25,6 +25,9 @@ class CreateQuizReportsTable extends Migration
             $table->string('questions_answers')->nullable();
 
             $table->timestamps();
+
+            $table->foreign('quiz_id')->on('quizes')->references('id')->onDelete('cascade');
+            $table->foreign('user_id')->on('users')->references('id')->onDelete('cascade');
         });
     }
 

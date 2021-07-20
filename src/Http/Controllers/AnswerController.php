@@ -50,7 +50,6 @@ class AnswerController extends Controller
     public function updateAnswer(UpdateAnswerRequest $request, int $question_id)
     {
         collect($request->data)->each(function ($item) use ($question_id) {
-
             $arr = [
                 'title' => '',
                 'is_right' => false,
