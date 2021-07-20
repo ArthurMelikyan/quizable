@@ -802,7 +802,6 @@ export default {
         clearUserSelectImg(index, choose) {
             // this.answerImgDeleteButtonShow = false;
             this.data.splice(index, 1);
-            event.target.nextElementSibling.innerHTML = '<img>';
             event.target.parentElement.nextElementSibling.querySelector('.answer-image').value = '';
             event.target.parentElement.nextElementSibling.querySelector('.answer-image-label').innerHTML = choose;
             // event.target.style.display = 'none';
