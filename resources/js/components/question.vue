@@ -443,7 +443,7 @@ export default {
                             }
                             i++;
                         }
-                    }else {
+                    }else{
                         let i = 0;
                         while (i < this.data.length) {
                             if (!this.data[i].title){
@@ -452,12 +452,13 @@ export default {
                             }
                             i++;
                         }
-
                         i = 0;
                         while (i < this.data.length) {
-                            if (!this.data[i].short_answer){
-                                this.validationAnswer = true;
+                            if (this.data[i].short_answer){
+                                this.validationAnswer = false;
                                 break;
+                            }else{
+                                this.validationAnswer = true;
                             }
                             i++;
                         }
