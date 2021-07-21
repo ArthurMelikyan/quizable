@@ -658,7 +658,7 @@ export default {
             }).then(response => {
                 this.valid = true;
                 this.questionId = response.data.data.id;
-                this.showSweet({successmsg: window.trans.__quiz__('Question created successfully') }, 'success');
+                this.showSweet({successmsg: window.trans.__quiz__['Question created successfully'] }, 'success');
             }).catch(error => {
                 this.valid = false;
                 console.log(error)
