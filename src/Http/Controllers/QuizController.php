@@ -46,8 +46,8 @@ class QuizController extends BaseController {
      */
     public function store(QuizRequest $request)
     {
-        Quiz::create($request->all());
-        return redirect()->route('quizable.quiz.index')->with('success','Quiz successfully added');
+        $quiz = Quiz::create($request->all());
+        return redirect()->route('quizable.quiz.edit', $quiz->id)->with('success','Quiz successfully added');
     }
 
     /**
