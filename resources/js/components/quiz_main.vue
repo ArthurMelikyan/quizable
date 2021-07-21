@@ -1248,14 +1248,13 @@ export default {
             })
         },
         questionDelete(questionId, index) {
-
                   Swal.fire({
                     title: window.trans.__quiz__['Are you sure'],
                     text: window.trans.__quiz__['Delete question'],
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: window.trans.__quiz__['Yes'],
+                    confirmButtonText: window.trans.__quiz__[' '],
                     cancelButtonText: window.trans.__quiz__['No']
                 }).then((result) => {
                     if (result.value) {
