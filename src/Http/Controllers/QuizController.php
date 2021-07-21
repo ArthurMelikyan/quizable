@@ -44,22 +44,8 @@ class QuizController extends BaseController {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(QuizRequest $request)
     {
-        $message = [
-//            'title.required' => 'Անվան դաշտը պարտադիր է լրացման համար',
-//            'title.max' => 'Անվան դաշտը պարտադիր է լրացման համար',
-            'title.required' => __('The title must be a string'),
-        ];
-        $validator = Validator::make($request->all(), [
-            'title' => ['required','max:255'],
-            'time_limit' => ['nullable', 'int','min:0','max:1440'],
-            'description' => ['string','nullable','max:255'],
-        ], $message);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
         Quiz::create($request->all());
         return redirect()->route('quizable.quiz.index')->with('success','Quiz successfully added');
     }
@@ -94,22 +80,8 @@ class QuizController extends BaseController {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Quiz $quiz)
+    public function update(QuizRequest $request,Quiz $quiz)
     {
-        $message = [
-//            'title.required' => 'Անվան դաշտը պարտադիր է լրացման համար',
-//            'title.max' => 'Անվան դաշտը պարտադիր է լրացման համար',
-            'title.required' => __('The title must be a string'),
-        ];
-        $validator = Validator::make($request->all(), [
-            'title' => ['required','max:255'],
-            'time_limit' => ['nullable', 'int','min:0','max:1440'],
-            'description' => ['string','nullable','max:255'],
-        ], $message);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
         $quiz->update($request->all());
         return redirect()->route('quizable.quiz.index')->with('success','Quiz successfully updated');
     }
