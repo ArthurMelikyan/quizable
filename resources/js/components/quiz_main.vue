@@ -356,7 +356,7 @@
                                                         </div>
                                                     </div>
                                                     <div v-if="validationAnswer" style="color: red">
-                                                        Please fill in all fields and select at least one correct variant
+                                                        {{ trans('__quiz__.Please fill in all fields and select at least one correct variant') }}
                                                     </div>
                                                     <div v-if="validationAnswerUploadFile" style="color: red">
                                                         Please select image
