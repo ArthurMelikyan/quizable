@@ -1248,14 +1248,15 @@ export default {
             })
         },
         questionDelete(questionId, index) {
-                  Swal.fire({
+            if (window.trans){
+                Swal.fire({
                     title: window.trans.__quiz__['Are you sure'],
                     text: window.trans.__quiz__['Delete question'],
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: window.trans.__quiz__['Yes'],
-                    cancelButtonText: window.trans.__quiz__['No'] ?? 'No'
+                    cancelButtonText: window.trans.__quiz__['No']
                 }).then((result) => {
                     if (result.value) {
                         axios.delete(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${questionId}`).then(resp => {
@@ -1268,6 +1269,29 @@ export default {
                         return false;
                     }
                 });
+            }else{
+                Swal.fire({
+                    title: 'Are you sure',
+                    text: 'Delete question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+                    if (result.value) {
+                        axios.delete(`/${window.urlprefix}/quizable/quiz/${this.quiz_id}/questions/${questionId}`).then(resp => {
+                            this.getAllQuizQuestions();
+                            this.showSweet({successmsg: 'Question deleted successfully' }, 'success');
+                        }).catch(error => {
+                            console.log(error)
+                        })
+                    } else {
+                        return false;
+                    }
+                });
+            }
+
 
         },
         validation() {
