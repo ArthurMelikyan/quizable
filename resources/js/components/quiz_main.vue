@@ -1122,7 +1122,7 @@ export default {
             else if (question_type == 'textarea') this.questionCurrentType = currentType[5];
         },
         async validationAnswers() {
-            if (this.questionType != 'text' && this.questionType != 'textarea') {
+            // if (this.questionType != 'text' && this.questionType != 'textarea') {
                 if (this.questionType == 'file') {
                     await this.data.forEach((item, index) => {
                         if (_.isEmpty(item)) {
@@ -1163,19 +1163,27 @@ export default {
                     } else {
                         let i = 0;
                         while (i < this.data.length) {
-                            if (this.data[i].title == undefined || this.data[i].title == "") {
+                            if (!this.data[i].title) {
                                 this.validationAnswer = true;
                                 break;
-                            } else {
+                            }
+                            i++;
+                        }
+                        i = 0;
+                        while (i < this.data.length) {
+                            if (this.data[i].short_answer){
                                 this.validationAnswer = false;
+                                break;
+                            }else{
+                                this.validationAnswer = true;
                             }
                             i++;
                         }
                     }
                 }
-            } else {
-                this.validationAnswer = false;
-            }
+            // } else {
+            //     this.validationAnswer = false;
+            // }
         },
         async createQuiz() {
             if (this.validation()) {
