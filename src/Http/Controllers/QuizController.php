@@ -10,12 +10,12 @@ use Arthurmelikyan\Quizable\Models\Quiz;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Validator;
 
 class QuizController extends BaseController {
     public function dashboard(){
         return view('arthurmelikyan::quiz.dashboard.index');
     }
-
 
      /**
      * Display a listing of the resource.
@@ -47,7 +47,7 @@ class QuizController extends BaseController {
     public function store(QuizRequest $request)
     {
         $quiz = Quiz::create($request->all());
-        return redirect()->route('quizable.quiz.edit', $quiz->id)->with('success','Quiz successfully added');
+        return redirect()->route('quizable.quiz.edit', $quiz->id)->with('success',__('Quiz successfully added'));
     }
 
     /**
@@ -83,7 +83,7 @@ class QuizController extends BaseController {
     public function update(QuizRequest $request,Quiz $quiz)
     {
         $quiz->update($request->all());
-        return redirect()->route('quizable.quiz.index')->with('success','Quiz successfully updated');
+        return redirect()->route('quizable.quiz.index')->with('success',__('Quiz successfully updated'));
     }
 
     /**
@@ -95,7 +95,7 @@ class QuizController extends BaseController {
     public function destroy(Quiz $quiz)
     {
         $quiz->delete();
-        return back()->with('success','Quiz successfully removed');
+        return back()->with('success',__('Quiz successfully removed'));
     }
 
     // ! QUIZABLE

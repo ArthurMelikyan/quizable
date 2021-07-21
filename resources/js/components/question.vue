@@ -405,7 +405,7 @@ export default {
 
         },
         async validationAnswers(){
-
+            // if(this.questionType != 'text' && this.questionType != 'textarea'){
                 if (this.questionType == 'file'){
                     await this.data.forEach((item, index)=>{
                         if(_.isEmpty(item)) {
@@ -443,30 +443,30 @@ export default {
                             }
                             i++;
                         }
-                    }else {
+                    }else{
                         let i = 0;
                         while (i < this.data.length) {
                             if (!this.data[i].title){
                                 this.validationAnswer = true;
                                 break;
-                            } else {
-                                this.validationAnswer = false;
                             }
                             i++;
                         }
-
                         i = 0;
                         while (i < this.data.length) {
-                            if (!this.data[i].short_answer){
-                                this.validationAnswer = true;
-                                break;
-                            } else {
+                            if (this.data[i].short_answer){
                                 this.validationAnswer = false;
+                                break;
+                            }else{
+                                this.validationAnswer = true;
                             }
                             i++;
                         }
                     }
                 }
+            // }else {
+            //     this.validationAnswer = false;
+            // }
         },
         questionNameChange() {
             if (this.questionName == "") {
@@ -658,7 +658,7 @@ export default {
             }).then(response => {
                 this.valid = true;
                 this.questionId = response.data.data.id;
-                this.showSweet({successmsg:'Question created successfully'}, 'success');
+                this.showSweet({successmsg: window.trans.__quiz__['Question created successfully'] }, 'success');
             }).catch(error => {
                 this.valid = false;
                 console.log(error)
