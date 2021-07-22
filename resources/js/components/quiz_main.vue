@@ -204,16 +204,15 @@
                                                                     class="form-control questionName"
                                                                     :placeholder="'Enter your question'"
                                                                     v-model="questionName">
-                                                            <div class="valid q-correct mt-2"
-                                                                    v-show="valid_error.r_title">
-                                                                Is required question title
+                                                            <div class="valid q-correct mt-2" v-show="valid_error.r_title">
+                                                                {{trans('__quiz__.Is required question title')}}
                                                             </div>
                                                             <div class="valid q-correct mt-2"
                                                                     v-show="valid_error.r_select">
-                                                                Please select question type
+                                                                {{trans('__quiz__.Please select question type')}}
                                                             </div>
                                                             <div class="valid q-correct mt-2" v-show="valid_error.r_limit">
-                                                                This field must not exceed 255 characters
+                                                                {{trans('__quiz__.This field must not exceed 255 characters')}}
                                                             </div>
                                                         </div>
                                                         <div class="dropdown">
@@ -473,6 +472,7 @@ export default {
             questionCurrentType: null,
             formChanged: false,
             validationAnswer: false,
+            validationAnswerTitle: false,
             validationAnswerUploadFile: false,
             quiz_edit_block_show: false,
             questionType: null,
@@ -791,7 +791,7 @@ export default {
             this.formChanged = true;
         },
         questionNameChange() {
-            if (this.questionName == "") {
+            if (this.questionName == "" || this.questionName.trim() == "") {
                 this.valid = false;
                 this.valid_error.r_title = true;
             } else {
@@ -878,6 +878,7 @@ export default {
             this.edit = false;
             this.createAnswer = false;
             this.validationAnswer = false;
+            this.validationAnswerTitle = false;
             this.addOtherQuestionShow = true;
             this.checkExceptionAnswers();
         },
@@ -920,7 +921,7 @@ export default {
                     this.validationAnswer = false;
                 }
                 if (!this.validationAnswer) {
-                    if (this.questionName == "") {
+                    if (this.questionName == "" || this.questionName.trim() == "") {
                         this.valid = false;
                         this.valid_error.r_title = true;
                         this.valid_error.r_select = false;
@@ -1163,15 +1164,17 @@ export default {
                     } else {
                         let i = 0;
                         while (i < this.data.length) {
-                            if (!this.data[i].title) {
-                                this.validationAnswer = true;
+                            if (this.data[i].title && this.data[i].title.trim()) {
+                                this.validationAnswer = false;
                                 break;
+                            }else {
+                                this.validationAnswer = true;
                             }
                             i++;
                         }
                         i = 0;
                         while (i < this.data.length) {
-                            if (this.data[i].short_answer){
+                            if (this.data[i].short_answer && this.data[i].short_answer.trim()){
                                 this.validationAnswer = false;
                                 break;
                             }else{

@@ -446,15 +446,17 @@ export default {
                     }else{
                         let i = 0;
                         while (i < this.data.length) {
-                            if (!this.data[i].title){
-                                this.validationAnswer = true;
+                            if (this.data[i].title && this.data[i].title.trim()){
+                                this.validationAnswer = false;
                                 break;
+                            }else {
+                                this.validationAnswer = true;
                             }
                             i++;
                         }
                         i = 0;
                         while (i < this.data.length) {
-                            if (this.data[i].short_answer){
+                            if (this.data[i].short_answer && this.data[i].short_answer.trim()){
                                 this.validationAnswer = false;
                                 break;
                             }else{
@@ -469,7 +471,7 @@ export default {
             // }
         },
         questionNameChange() {
-            if (this.questionName == "") {
+            if (this.questionName == "" || this.questionName.trim() == "") {
                 this.valid = false;
                 this.valid_error.r_title = true;
             } else {
@@ -683,7 +685,7 @@ export default {
                 }
                 if (!this.validationAnswer){
 
-                    if (this.questionName == "") {
+                    if (this.questionName == "" || this.questionName.trim() == "") {
                         this.valid = false;
                         this.valid_error.r_title = true;
                         this.valid_error.r_select = false;
