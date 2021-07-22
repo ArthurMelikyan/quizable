@@ -111,7 +111,7 @@
                             </div>
 
                         </div>
-                    <div class="row">
+                    <div class="row align-items-start">
                     <div class="col-md-6">
 
 
@@ -120,13 +120,13 @@
                             class="form-control questionName w-100"
                             :placeholder="trans('__quiz__.Enter your question')" :id="'Q'+(index+1)"
                             v-model="questionName">
-                        <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_title">
+                        <div class="valid q-correct mt-2" v-show="valid_error.r_title">
                             {{trans('__quiz__.Is required question title')}}
                         </div>
-                        <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_select">
+                        <div class="valid q-correct mt-2" v-show="valid_error.r_select">
                             {{trans('__quiz__.Please select question type')}}
                         </div>
-                        <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_limit">
+                        <div class="valid q-correct mt-2" v-show="valid_error.r_limit">
                             {{trans('__quiz__.This field must not exceed 255 characters')}}
                         </div>
                     </div>

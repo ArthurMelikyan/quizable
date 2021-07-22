@@ -161,7 +161,7 @@
                                             <div class="questionItemEdit">
                                                 <div class="edit-block mb-5">
                                                     <div class="d-md-flex align-items-end block-2 mb-5">
-                                                        <div class="form-group mb-0 questionTitleAndNavigationBlock w-100"
+                                                        <div class="form-group mb-0 questionTitleAndNavigationBlock w-100 pr-4"
                                                                 @mouseover="showEditNavigation()" @mouseout="hide">
                                                             <div class="d-flex justify-content-end">
                                                                 <div v-if="check_if_enabled('enable_video_and_image_navigations')" class="questionsNavigationButton" :class="{'_show':showNavigation}"
@@ -204,15 +204,15 @@
                                                                     class="form-control questionName"
                                                                     :placeholder="'Enter your question'"
                                                                     v-model="questionName">
-                                                            <div class="valid q-correct mt-2 position-absolute"
+                                                            <div class="valid q-correct mt-2"
                                                                     v-show="valid_error.r_title">
                                                                 Is required question title
                                                             </div>
-                                                            <div class="valid q-correct mt-2 position-absolute"
+                                                            <div class="valid q-correct mt-2"
                                                                     v-show="valid_error.r_select">
                                                                 Please select question type
                                                             </div>
-                                                            <div class="valid q-correct mt-2 position-absolute" v-show="valid_error.r_limit">
+                                                            <div class="valid q-correct mt-2" v-show="valid_error.r_limit">
                                                                 This field must not exceed 255 characters
                                                             </div>
                                                         </div>
