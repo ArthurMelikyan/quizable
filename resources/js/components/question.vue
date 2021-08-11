@@ -140,7 +140,7 @@
                 <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                     <table class="table drop-table">
                         <tr>
-                            <td v-if="check_if_enabled('multiple') " @click="selectQuestionType('multiple', 'quiz.Multiple')">
+                            <td v-if="check_if_enabled('multiple') " @click="selectQuestionType('multiple', trans('__quiz__.Multiple'))">
                                 <i class="fas fa-bars"></i>{{ trans('__quiz__.Multiple') }}
                             </td>
                             <td v-if="check_if_enabled('radio')" @click="selectQuestionType('radio', 'Yes/No')">
