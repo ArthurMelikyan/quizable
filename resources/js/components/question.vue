@@ -432,7 +432,7 @@ export default {
                         this.validationAnswer = true;
                     }
                 }else {
-                    if (this.questionType == 'radio'){
+                    if (this.questionType == 'radio' || this.questionType == 'multiple'){
                         let i = 0;
                         while (i < this.data.length) {
                             if (this.data[i].is_right != undefined){
@@ -668,7 +668,9 @@ export default {
         },
         async createQuestionAnswer(index) {
             await this.validationAnswers();
+            console.log(this.validationAnswer,'test')
             if (!this.validationAnswer) {
+                console.log(123)
                 if (this.questionType != 'text' && this.questionType != 'textarea'){
                     let i = 0;
                     while (i < this.data.length) {

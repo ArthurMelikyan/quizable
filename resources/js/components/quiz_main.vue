@@ -1158,7 +1158,7 @@ export default {
                         this.validationAnswer = true;
                     }
                 } else {
-                    if (this.questionType == 'radio') {
+                    if (this.questionType == 'radio' || this.questionType == 'multiple') {
                         let i = 0;
                         while (i < this.data.length) {
                             if (this.data[i].is_right != undefined) {
@@ -1267,6 +1267,7 @@ export default {
             })
         },
         questionDelete(questionId, index) {
+            console.log(this.validationAnswer, )
             if (window.trans){
                 Swal.fire({
                     title: window.trans.__quiz__['Are you sure'],
